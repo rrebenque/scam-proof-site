@@ -106,6 +106,7 @@ const sources = [
 ];
 ---
 <Base title="I've been scammed: what now?" description="Step-by-step help after a scam, by country: who to call, who to report to, and what to do first.">
+<div class="page">
   <h1>I've been scammed. What now?</h1>
   <p class="lead">Act fast: the first hour matters most. You're not alone, and it can happen to anyone.</p>
 
@@ -177,19 +178,12 @@ const sources = [
   <noscript>
     <style>[hidden] { display: block !important; } li[hidden] { display: list-item !important; } .prompt { display: none; }</style>
   </noscript>
+</div>
 </Base>
 
 <style>
-  .picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
-  .pick {
-    font: inherit; font-weight: 600; font-size: 0.95rem; cursor: pointer;
-    padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line);
-    background: var(--card); color: var(--ink);
-  }
-  .pick[aria-pressed='true'] { background: var(--ink); color: #fff; border-color: var(--ink); }
-  .prompt { color: var(--muted); font-size: 0.95rem; }
   section[data-country], section[data-situation] { margin: 16px 0; }
-  section h3 { margin: 16px 0 8px; font-size: 1.1rem; }
+  section h3 { margin: 20px 0 8px; }
 </style>
 
 <script>

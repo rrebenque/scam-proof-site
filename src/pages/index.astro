@@ -1,26 +1,193 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+
+const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.data.episode).slice(0, 3);
 ---
 <Base title="Scam-Proof Money">
-  <h1>Got a suspicious message, call or email?</h1>
-  <p class="lead">Short, plain-language guides to the scams that target ordinary people, and the one right move for each.</p>
+  <div class="wrap hero">
+    <div class="hero-copy">
+      <h1>Got a message that feels off?</h1>
+      <p class="lead">Plain-language guides to the scams aimed at ordinary people, each with the one right move.</p>
 
-  <div class="cards">
-    <a class="list-link" href="/scams/">
-      <div class="card">
-        <h3>Is this a scam? Look it up in the Scam Library</h3>
-        <p>How each scam works, the red flags, and what to do instead.</p>
+      <ul class="paths">
+        <li>
+          <a href="/scams/">
+            <span class="path-title">Look up a scam</span>
+            <span class="path-desc">How it works, the red flags, and what to do instead.</span>
+          </a>
+        </li>
+        <li>
+          <a href="/been-scammed/">
+            <span class="path-title">I've already been scammed</span>
+            <span class="path-desc">Who to call and who to report to, by country.</span>
+          </a>
+        </li>
+        <li>
+          <a href="/scams/safe-word/">
+            <span class="path-title">Protect my family</span>
+            <span class="path-desc">Set up a family safe word before a scammer calls.</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="hero-demo">
+      <div class="phone" id="phone" data-state="scam" data-busy="false">
+        <div class="screen">
+          <div class="tape" aria-hidden="true"></div>
+          <div class="states" aria-live="polite">
+            <div class="state" id="state-scam">
+              <span class="pill pill-red">Scam example</span>
+              <p class="from">State Toll Svcs</p>
+              <p class="bubble">Your toll balance of $6.99 is overdue. Pay today to avoid a late fee. <span class="fake-link">tolls-pay-now.com</span></p>
+            </div>
+            <div class="state" id="state-safe" hidden>
+              <span class="pill pill-green">The right move</span>
+              <p class="move-big">Don't tap the link.</p>
+              <p class="move-text">Open your real toll app yourself. Then forward the text to 7726.</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </a>
-    <a class="list-link" href="/been-scammed/">
-      <div class="card">
-        <h3>I've already been scammed. What now?</h3>
-        <p>Step-by-step help by country: who to call and who to report to.</p>
+      <button type="button" class="rewind" id="rewind">
+        <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true"><path d="M10 1v14L1 8l9-7Zm11 0v14l-9-7 9-7Z" fill="currentColor"/></svg>
+        <span id="rewind-label">Rewind</span>
+      </button>
+      <p class="demo-note">A US example. The sender and website are made up.</p>
+    </div>
+  </div>
+
+  <div class="wrap section">
+    <h2>Latest guides</h2>
+    <ul class="guide-list">
+      {latest.map((s) => (
+        <li>
+          <a href={`/scams/${s.id}/`}>
+            <span class="g-title">{s.data.title}</span>
+            <span class="g-answer">{s.data.answer}</span>
+          </a>
+          <p class="g-move"><strong>Right move:</strong> {s.data.rightMove}</p>
+        </li>
+      ))}
+    </ul>
+    <p><a href="/scams/">See all guides in the Scam Library</a></p>
+  </div>
+
+  <div class="wrap section">
+    <h2>How every guide works</h2>
+    <div class="trio">
+      <div class="t t-red">
+        <h3>See the scam</h3>
+        <p>We show how it plays out, step by step, and the red flags along the way.</p>
       </div>
-    </a>
-    <div class="card soon">
-      <h3>Protect my parents and kids</h3>
-      <p>The Family Protection Kit. Coming soon.</p>
+      <div class="t t-ink">
+        <h3>Rewind</h3>
+        <p>Then we go back to the moment it could have been stopped.</p>
+      </div>
+      <div class="t t-green">
+        <h3>Learn the one right move</h3>
+        <p>A single action you can remember when it's happening to you.</p>
+      </div>
     </div>
   </div>
 </Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center; padding-top: 56px; padding-bottom: 24px; }
+  .hero-copy .lead { max-width: 34ch; }
+
+  .paths { list-style: none; margin: 34px 0 0; padding: 0; max-width: 520px; border-top: 2px solid var(--ink); }
+  .paths li { border-bottom: 2px solid var(--line); }
+  .paths a { display: block; padding: 16px 4px; text-decoration: none; }
+  .paths a:hover { background: var(--mist); color: var(--ink); }
+  .path-title { display: block; font-family: var(--display); font-weight: 600; font-size: 1.35rem; }
+  .path-desc { display: block; color: var(--muted); font-size: 1.05rem; }
+
+  .hero-demo { display: flex; flex-direction: column; align-items: center; }
+  .phone { width: min(330px, 100%); border: 10px solid var(--ink); border-radius: 40px; background: var(--mist); overflow: hidden; }
+  .screen { position: relative; min-height: 380px; padding: 22px 18px; }
+  .state > :last-child { margin-bottom: 0; }
+
+  .pill { display: inline-block; font-family: var(--display); font-weight: 600; font-size: 0.95rem; color: #fff; padding: 3px 12px; border-radius: 999px; margin-bottom: 16px; }
+  .pill-red { background: var(--red-ink); }
+  .pill-green { background: var(--green); }
+
+  .from { font-weight: 700; font-size: 0.95rem; color: var(--muted); margin: 0 0 6px 6px; }
+  .bubble { background: #dbe2e9; border-radius: 20px 20px 20px 6px; padding: 14px 16px; font-size: 1.05rem; line-height: 1.45; margin: 0; }
+  .fake-link { text-decoration: underline; font-weight: 700; word-break: break-all; }
+
+  .move-big { font-family: var(--display); font-weight: 600; font-size: 1.9rem; line-height: 1.15; margin: 0 0 12px; }
+  .move-text { font-size: 1.15rem; margin: 0; }
+
+  .tape { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: repeating-linear-gradient(0deg, rgba(20, 20, 20, 0.5) 0 3px, rgba(255, 255, 255, 0.55) 3px 7px); mix-blend-mode: multiply; }
+  .phone[data-busy='true'] .tape { animation: scan 0.7s linear; }
+  .phone[data-busy='true'] .states { animation: jitter 0.7s steps(7); }
+  @keyframes scan {
+    0% { opacity: 0; transform: translateY(100%); }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-100%); }
+  }
+  @keyframes jitter {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    45% { transform: translateX(5px); }
+    70% { transform: translateX(-4px); }
+  }
+
+  .rewind { margin-top: 22px; display: inline-flex; align-items: center; gap: 12px; font: inherit; font-family: var(--display); font-weight: 600; font-size: 1.25rem; padding: 12px 26px; border-radius: 999px; border: 3px solid var(--ink); background: var(--ink); color: #fff; cursor: pointer; }
+  .rewind:hover { background: #fff; color: var(--ink); }
+  .demo-note { margin: 12px 0 0; color: var(--muted); font-size: 0.95rem; text-align: center; }
+
+  .section { padding-top: 24px; padding-bottom: 24px; }
+  .guide-list { list-style: none; margin: 18px 0 20px; padding: 0; max-width: 760px; }
+  .guide-list li { border-top: 2px solid var(--line); padding: 18px 0 20px; }
+  .guide-list li:last-child { border-bottom: 2px solid var(--line); }
+  .guide-list a { display: block; text-decoration: none; }
+  .guide-list a:hover .g-title { text-decoration: underline; text-decoration-thickness: 3px; }
+  .g-title { display: block; font-family: var(--display); font-weight: 600; font-size: 1.45rem; line-height: 1.2; }
+  .g-answer { display: block; color: var(--muted); margin-top: 4px; }
+  .g-move { margin: 8px 0 0; color: var(--green); }
+  .g-move strong { color: var(--green); }
+
+  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin: 18px 0 40px; }
+  .t { border-top: 8px solid var(--ink); padding-top: 14px; }
+  .t-red { border-top-color: var(--red); }
+  .t-green { border-top-color: var(--green); }
+  .t p { margin: 0; color: var(--muted); }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 36px; }
+    .trio { grid-template-columns: 1fr; gap: 22px; }
+  }
+</style>
+
+<script>
+  const phone = document.getElementById('phone') as HTMLElement | null;
+  const btn = document.getElementById('rewind') as HTMLButtonElement | null;
+  const label = document.getElementById('rewind-label');
+  const scam = document.getElementById('state-scam');
+  const safe = document.getElementById('state-safe');
+
+  function show(state: 'scam' | 'safe') {
+    if (!phone || !scam || !safe || !label) return;
+    phone.dataset.state = state;
+    scam.hidden = state !== 'scam';
+    safe.hidden = state !== 'safe';
+    label.textContent = state === 'scam' ? 'Rewind' : 'Play the scam again';
+  }
+
+  btn?.addEventListener('click', () => {
+    if (!phone) return;
+    const next = phone.dataset.state === 'scam' ? 'safe' : 'scam';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      show(next);
+      return;
+    }
+    phone.dataset.busy = 'true';
+    window.setTimeout(() => show(next), 350);
+    window.setTimeout(() => { phone.dataset.busy = 'false'; }, 700);
+  });
+</script>

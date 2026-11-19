@@ -2,19 +2,67 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 
-const scams = (await getCollection('scams')).sort((a, b) => a.data.episode - b.data.episode);
+const scams = (await getCollection('scams')).sort((a, b) => b.data.episode - a.data.episode);
+const markets = ['US', 'UK', 'Canada', 'Australia'];
 ---
 <Base title="Scam Library" description="Every scam we've covered: how it works, the red flags, and the right move.">
-  <h1>Scam Library</h1>
-  <p class="lead">Each guide explains how the scam works and the one right move.</p>
-  <div class="cards">
-    {scams.map((s) => (
-      <a class="list-link" href={`/scams/${s.id}/`}>
-        <div class="card">
-          <h3>{s.data.title}</h3>
-          <p>{s.data.answer}</p>
-        </div>
-      </a>
-    ))}
+  <div class="page">
+    <h1>Scam Library</h1>
+    <p class="lead">Each guide shows how the scam works and the one right move.</p>
+
+    <div class="picker" role="group" aria-label="Show guides for">
+      <button type="button" class="pick" data-market="all" aria-pressed="true">All countries</button>
+      {markets.map((m) => <button type="button" class="pick" data-market={m} aria-pressed="false">{m}</button>)}
+    </div>
+
+    <ul class="lib wide">
+      {scams.map((s) => (
+        <li data-markets={s.data.markets.join(' ')}>
+          <a href={`/scams/${s.id}/`}>
+            <span class="l-title">{s.data.title}</span>
+            <span class="l-answer">{s.data.answer}</span>
+          </a>
+          <p class="l-move"><strong>Right move:</strong> {s.data.rightMove}</p>
+          <ul class="chips">
+            {s.data.markets.map((m) => <li class="chip">{m}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ul>
+    <p class="empty" id="empty" hidden>No guides for that country yet.</p>
   </div>
 </Base>
+
+<style>
+  .lib { list-style: none; margin: 24px 0 0; padding: 0; max-width: 760px; }
+  .lib > li { border-top: 2px solid var(--line); padding: 20px 0 8px; }
+  .lib > li:last-child { border-bottom: 2px solid var(--line); }
+  .lib a { display: block; text-decoration: none; }
+  .lib a:hover .l-title { text-decoration: underline; text-decoration-thickness: 3px; }
+  .l-title { display: block; font-family: var(--display); font-weight: 600; font-size: 1.5rem; line-height: 1.2; }
+  .l-answer { display: block; color: var(--muted); margin-top: 4px; }
+  .l-move { margin: 10px 0 12px; color: var(--green); max-width: var(--measure); }
+  .l-move strong { color: var(--green); }
+  .lib .chips { margin: 0 0 8px; }
+  .empty { color: var(--muted); }
+</style>
+
+<script>
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-market]'));
+  const items = Array.from(document.querySelectorAll<HTMLElement>('.lib > li'));
+  const empty = document.getElementById('empty');
+
+  function apply(market: string) {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.market === market)));
+    let shown = 0;
+    items.forEach((li) => {
+      const list = (li.dataset.markets || '').split(' ');
+      const ok = market === 'all' || list.includes(market);
+      li.hidden = !ok;
+      if (ok) shown += 1;
+    });
+    if (empty) empty.hidden = shown !== 0;
+  }
+
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.market || 'all')));
+</script>

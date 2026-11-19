@@ -15,62 +15,100 @@ const related = d.related
   .filter((s) => s !== undefined);
 ---
 <Base title={d.pageTitle} description={d.answer}>
-  <p>
-    {d.markets.map((m) => <span class="tag">{m}</span>)}
-  </p>
-  <h1>{d.pageTitle}</h1>
-  <p class="answer">{d.answer}</p>
+  <div class="page">
+    <p class="crumb"><a href="/scams/">Scam Library</a></p>
+    <ul class="chips">
+      {d.markets.map((m) => <li class="chip">{m}</li>)}
+    </ul>
+    <h1>{d.pageTitle}</h1>
+    <p class="answer">{d.answer}</p>
 
-  {d.videoId && (
-    <div class="video">
-      <iframe
-        src={`https://www.youtube-nocookie.com/embed/${d.videoId}`}
-        title={d.title}
-        loading="lazy"
-        allowfullscreen
-      ></iframe>
+    {d.videoId && (
+      <div class="video wide">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${d.videoId}`}
+          title={d.title}
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+      </div>
+    )}
+
+    {(d.steps.length > 0 || d.redFlags.length > 0) && (
+      <section class="scam-side">
+        {d.steps.length > 0 && (
+          <>
+            <h2>How the scam works</h2>
+            <ol class="steps">{d.steps.map((s) => <li>{s}</li>)}</ol>
+          </>
+        )}
+        {d.redFlags.length > 0 && (
+          <>
+            <h2>Red flags</h2>
+            <ul class="flags">{d.redFlags.map((s) => <li>{s}</li>)}</ul>
+          </>
+        )}
+      </section>
+    )}
+
+    <div class="rewind-line wide" role="separator" aria-label="Let's rewind">
+      <svg width="26" height="18" viewBox="0 0 22 16" aria-hidden="true"><path d="M10 1v14L1 8l9-7Zm11 0v14l-9-7 9-7Z" fill="currentColor"/></svg>
+      <span>Let's rewind.</span>
     </div>
-  )}
 
-  {d.steps.length > 0 && (
-    <>
-      <h2>How it works</h2>
-      <ol>{d.steps.map((s) => <li>{s}</li>)}</ol>
-    </>
-  )}
+    <section class="move">
+      <strong>The right move</strong>
+      {d.rightMove}
+    </section>
 
-  {d.redFlags.length > 0 && (
-    <>
-      <h2>Red flags</h2>
-      <ul class="plain">{d.redFlags.map((s) => <li>{s}</li>)}</ul>
-    </>
-  )}
+    <div class="prose">
+      <Content />
+    </div>
 
-  <h2>The right move</h2>
-  <div class="move">
-    <strong>Do this instead</strong>
-    {d.rightMove}
+    {related.length > 0 && (
+      <>
+        <h2>Related guides</h2>
+        <ul class="plain">
+          {related.map((s) => <li><a href={`/scams/${s.id}/`}>{s.data.title}</a></li>)}
+        </ul>
+      </>
+    )}
+
+    {d.sources.length > 0 && (
+      <>
+        <h2>Sources</h2>
+        <ul class="plain sources">
+          {d.sources.map((s) => <li><a href={s.url} rel="noopener">{s.label}</a></li>)}
+        </ul>
+      </>
+    )}
+
+    <p class="meta">Last reviewed: {d.reviewed}. Applies to: {d.markets.join(', ')}.</p>
   </div>
-
-  <Content />
-
-  {related.length > 0 && (
-    <>
-      <h2>Related guides</h2>
-      <ul class="plain">
-        {related.map((s) => <li><a href={`/scams/${s.id}/`}>{s.data.title}</a></li>)}
-      </ul>
-    </>
-  )}
-
-  {d.sources.length > 0 && (
-    <>
-      <h2>Sources</h2>
-      <ul class="plain">
-        {d.sources.map((s) => <li><a href={s.url} rel="noopener">{s.label}</a></li>)}
-      </ul>
-    </>
-  )}
-
-  <p class="meta">Last reviewed: {d.reviewed}. Applies to: {d.markets.join(', ')}.</p>
 </Base>
+
+<style>
+  .crumb { margin: 0 0 18px; font-weight: 700; }
+  .answer { font-family: var(--display); font-weight: 400; font-size: 1.6rem; line-height: 1.3; margin: 16px 0 28px; }
+
+  .video { position: relative; padding-top: 56.25%; margin: 8px 0 28px; max-width: 760px; }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 14px; }
+
+  .scam-side { border-left: 8px solid var(--red); padding-left: 24px; margin-top: 8px; }
+  .scam-side h2:first-child { margin-top: 0; }
+  .steps { list-style: none; counter-reset: step; padding: 0; margin: 0; }
+  .steps li { counter-increment: step; position: relative; padding-left: 52px; margin-bottom: 18px; min-height: 36px; }
+  .steps li::before { content: counter(step); position: absolute; left: 0; top: -2px; width: 36px; height: 36px; border-radius: 50%; background: var(--red-ink); color: #fff; font-family: var(--display); font-weight: 600; text-align: center; line-height: 36px; }
+  .flags { list-style: none; padding: 0; margin: 0; }
+  .flags li { position: relative; padding-left: 34px; margin-bottom: 12px; }
+  .flags li::before { content: '\00d7'; position: absolute; left: 4px; top: -6px; font-family: var(--display); font-weight: 600; font-size: 1.8rem; color: var(--red-ink); }
+
+  .rewind-line { display: flex; align-items: center; gap: 14px; margin: 44px 0 28px; font-family: var(--display); font-weight: 600; font-size: 1.4rem; max-width: var(--measure); }
+  .rewind-line::after { content: ''; flex: 1; height: 4px; background: repeating-linear-gradient(90deg, var(--ink) 0 14px, transparent 14px 22px); }
+  .move { font-size: 1.3rem; }
+
+  .prose { margin-top: 8px; }
+  .prose h2 { margin-top: 48px; }
+  .prose p, .prose ol, .prose ul { max-width: var(--measure); }
+  .sources li { overflow-wrap: anywhere; }
+</style>
