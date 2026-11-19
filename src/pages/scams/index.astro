@@ -18,9 +18,12 @@ const markets = ['US', 'UK', 'Canada', 'Australia'];
     <ul class="lib wide">
       {scams.map((s) => (
         <li data-markets={s.data.markets.join(' ')}>
-          <a href={`/scams/${s.id}/`}>
-            <span class="l-title">{s.data.title}</span>
-            <span class="l-answer">{s.data.answer}</span>
+          <a href={`/scams/${s.id}/`} class="l-link">
+            <img class="avatar" src="/img/slick.png" alt="" width="64" height="64" />
+            <span class="l-text">
+              <span class="l-title">{s.data.title}</span>
+              <span class="l-answer">{s.data.answer}</span>
+            </span>
           </a>
           <p class="l-move"><strong>Right move:</strong> {s.data.rightMove}</p>
           <ul class="chips">
@@ -37,7 +40,11 @@ const markets = ['US', 'UK', 'Canada', 'Australia'];
   .lib { list-style: none; margin: 24px 0 0; padding: 0; max-width: 760px; }
   .lib > li { border-top: 2px solid var(--line); padding: 20px 0 8px; }
   .lib > li:last-child { border-bottom: 2px solid var(--line); }
-  .lib a { display: block; text-decoration: none; }
+  .lib a { text-decoration: none; }
+  .l-link { display: flex; gap: 16px; align-items: flex-start; }
+  .avatar { flex: none; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: 50% 8%; background: var(--mist); }
+  .l-text { display: block; }
+  .l-move, .lib .chips { margin-left: 80px; }
   .lib a:hover .l-title { text-decoration: underline; text-decoration-thickness: 3px; }
   .l-title { display: block; font-family: var(--display); font-weight: 600; font-size: 1.5rem; line-height: 1.2; }
   .l-answer { display: block; color: var(--muted); margin-top: 4px; }
