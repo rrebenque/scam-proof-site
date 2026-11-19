@@ -18,6 +18,17 @@ redFlags:
   - "Anyone rushing you: it has to be right now"
   - "Anyone asking for cash, gold, gift cards or crypto"
 related: ["voice-clone", "toll-text"]
+sources:
+  - label: "FCC Consumer Alert: Bank Impersonation Scams"
+    url: "https://docs.fcc.gov/public/attachments/DOC-423262A1.pdf"
+  - label: "FTC press release: people reported losing $3.5 billion to imposter scams in 2025"
+    url: "https://ftc.gov/news-events/news/press-releases/2026/06/ftc-data-show-people-reported-losing-3-point-5-billion-imposter-scams-2025"
+  - label: "Bitdefender: FBI warns of bank spoofing calls draining accounts"
+    url: "https://www.bitdefender.com/en-au/blog/hotforsecurity/fbi-warning-bank-spoofing-calls-drain-accounts"
+  - label: "Bank Australia: Could you spot a scammer posing as your bank?"
+    url: "https://www.bankaust.com.au/blog/could-you-spot-a-scammer-posing-as-your-bank"
+  - label: "HousingWire: FBI warning about the Phantom Hacker scam"
+    url: "https://www.housingwire.com/articles/fbi-issues-warning-bank-account-scam-cybersecurity/"
 reviewed: "2026-11-20"
 ---
 

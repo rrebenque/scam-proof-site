@@ -17,5 +17,10 @@ redFlags:
   - "An app showing huge gains that grow fast"
   - "A fee or tax you must pay before you can cash out"
 related: ["zelle", "toll-text"]
+sources:
+  - label: "Techlicious: FBI 2025 online scam losses, including crypto investment fraud"
+    url: "https://www.techlicious.com/blog/fbi-online-scam-losses-2025/"
+  - label: "ScamVerify: Pig Butchering Scams 2026"
+    url: "https://scamverify.ai/blog/pig-butchering-romance-scams-2026"
 reviewed: "2026-11-20"
 ---
