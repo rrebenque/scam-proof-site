@@ -1,0 +1,240 @@
+---
+import Base from '../layouts/Base.astro';
+
+const countries = [
+  {
+    id: 'us',
+    name: 'United States',
+    agencies: [
+      { name: 'FTC: ReportFraud.ftc.gov', url: 'https://reportfraud.ftc.gov', note: 'Report any scam, even if you lost no money.' },
+      { name: 'FBI Internet Crime Complaint Center (IC3)', url: 'https://www.ic3.gov', note: 'For online fraud, especially if you lost money.' },
+      { name: 'IdentityTheft.gov', url: 'https://www.identitytheft.gov', note: 'If a scammer has your personal details, to get a step-by-step recovery plan.' },
+    ],
+    notes: ['Scam texts: forward the message to 7726, then delete it.'],
+  },
+  {
+    id: 'uk',
+    name: 'United Kingdom',
+    agencies: [
+      { name: 'Report Fraud (formerly Action Fraud)', url: 'https://www.reportfraud.police.uk/', note: 'England, Wales and Northern Ireland. Online, or call 0300 123 2040. In Scotland, call Police Scotland on 101.' },
+      { name: 'Call 159 to reach your bank safely', url: 'https://www.stopscamsuk.org.uk/159', note: 'Stop, hang up, call 159. If the scammer may still be on your line, wait a while or use another phone first.' },
+    ],
+    notes: [
+      'Scam texts: forward the message to 7726, then delete it.',
+      'Bank transfer scams: since 7 October 2024, UK banks and payment firms must reimburse eligible victims of authorised push payment scams, up to £85,000 per claim. Ask your bank about your claim, and do it quickly.',
+    ],
+  },
+  {
+    id: 'ca',
+    name: 'Canada',
+    agencies: [
+      { name: 'Canadian Anti-Fraud Centre', url: 'https://antifraudcentre-centreantifraude.ca/scams-fraudes/victim-victime-eng.htm', note: 'Report online, or call toll-free 1-888-495-8501. Whether you were a victim or a witness, you can report.' },
+      { name: 'Your local police', url: '', note: 'Report it and get a file number to keep for your bank and credit bureaus.' },
+    ],
+    notes: ['Scam texts: forward the message to 7726, then delete it.'],
+  },
+  {
+    id: 'au',
+    name: 'Australia',
+    agencies: [
+      { name: 'Scamwatch (National Anti-Scam Centre)', url: 'https://www.scamwatch.gov.au', note: 'Report every scam, even if you lost nothing.' },
+      { name: 'ReportCyber (Australian Cyber Security Centre)', url: 'https://www.cyber.gov.au/report-and-recover', note: 'If you lost money or personal information to an online scam.' },
+      { name: 'IDCARE', url: 'https://www.idcare.org', note: 'Free national identity and cyber support. Call 1800 595 160.' },
+      { name: 'Police', url: '', note: 'For fraud or theft, call 131 444 or report it through ReportCyber.' },
+    ],
+    notes: [],
+  },
+];
+
+const situations = [
+  {
+    id: 'clicked',
+    label: 'I clicked a link or opened a file',
+    steps: [
+      { text: 'Change the passwords for your important accounts, starting with email and banking. Do it from a different, trusted device if you can.' },
+      { text: 'Update your phone or computer and run a security scan.' },
+      { text: 'Watch your bank and card statements closely for the next few months.' },
+    ],
+  },
+  {
+    id: 'code',
+    label: 'I gave a password or one-time code',
+    steps: [
+      { text: 'Reset the password for that account first, then any other account that uses the same password.' },
+      { text: 'Turn on two-step sign-in, and check that the recovery email and phone number are still yours.' },
+      { text: 'Call your bank right away if it was a banking code. A texted code can be the key to your online banking.' },
+    ],
+  },
+  {
+    id: 'bank',
+    label: 'I paid by card or bank transfer',
+    steps: [
+      { text: 'Call your bank or card issuer using the number on the back of your card. Say it was fraud and ask them to stop or recall the payment.' },
+      { text: 'Ask about disputing a card payment, or recalling a bank transfer. The sooner you ask, the better the chance.' },
+      { text: 'In the UK, ask your bank to assess your claim under the bank transfer scam reimbursement rules.', countries: ['uk'] },
+    ],
+  },
+  {
+    id: 'gift',
+    label: 'I paid with gift cards, crypto or a payment app',
+    steps: [
+      { text: 'Report it right away inside the app, or to the company that issued the card or runs the crypto exchange.' },
+      { text: 'Money sent this way is hard to get back, so be ready for that. Reporting is still worth doing, because it can stop the scammer reaching others.' },
+    ],
+  },
+  {
+    id: 'info',
+    label: 'I shared an ID or personal details',
+    steps: [
+      { text: 'Report it at IdentityTheft.gov and follow the recovery plan.', countries: ['us'] },
+      { text: 'Consider a free credit freeze with Equifax, Experian and TransUnion.', countries: ['us'] },
+      { text: 'Contact IDCARE for free help securing your identity.', countries: ['au'] },
+      { text: 'Contact both Canadian credit bureaus, Equifax and TransUnion, and ask about flagging your file.', countries: ['ca'] },
+      { text: 'Tell your bank, and check your credit report for accounts you don’t recognise.', countries: ['uk'] },
+    ],
+  },
+];
+
+const sources = [
+  { label: 'FTC: What to do if you were scammed', url: 'https://consumer.ftc.gov/articles/what-do-if-you-were-scammed' },
+  { label: 'Canadian Anti-Fraud Centre: What to do if you’re a victim of fraud', url: 'https://antifraudcentre-centreantifraude.ca/scams-fraudes/victim-victime-eng.htm' },
+  { label: 'Australian Cyber Security Centre: Recover from scams', url: 'https://www.cyber.gov.au/report-and-recover/recover-from/scams' },
+  { label: 'City of London Police: Report Fraud service goes live', url: 'https://www.cityoflondon.police.uk/news/city-of-london/news/2025/december/report-fraud-service-goes-live-with-full-public-launch-in-january-2026/' },
+  { label: 'Stop Scams UK: Call 159', url: 'https://www.stopscamsuk.org.uk/159' },
+  { label: 'Scottish Financial News: PSR confirms £85,000 scam reimbursement limit', url: 'https://scottishfinancialnews.com/articles/prs-confirms-ps85000-scam-reimbursement-limit' },
+  { label: 'MoneySmart (Australia): What to do if you’ve been scammed', url: 'https://moneysmart.gov.au/check-and-report-scams/what-to-do-if-youve-been-scammed' },
+];
+---
+<Base title="I've been scammed: what now?" description="Step-by-step help after a scam, by country: who to call, who to report to, and what to do first.">
+  <h1>I've been scammed. What now?</h1>
+  <p class="lead">Act fast: the first hour matters most. You're not alone, and it can happen to anyone.</p>
+
+  <h2>1. Do these first</h2>
+  <ol>
+    <li><strong>Stop contact.</strong> Don't reply, and don't send any more money or information.</li>
+    <li><strong>Call your bank or card issuer</strong> using the number on the back of your card, not a number the scammer gave you. Say it was fraud.</li>
+    <li><strong>Secure your accounts.</strong> Change passwords for anything the scammer touched, and turn on two-step sign-in.</li>
+  </ol>
+
+  <h2>2. Choose your country</h2>
+  <div class="picker" role="group" aria-label="Choose your country">
+    {countries.map((c) => (
+      <button type="button" class="pick" data-pick-country={c.id} aria-pressed="false">{c.name}</button>
+    ))}
+  </div>
+  <p class="prompt" id="country-prompt">Pick your country to see who to report to.</p>
+
+  {countries.map((c) => (
+    <section data-country={c.id} hidden>
+      <h3>Report it: {c.name}</h3>
+      <div class="cards">
+        {c.agencies.map((a) => (
+          <div class="card">
+            <h3>{a.url ? <a href={a.url} rel="noopener">{a.name}</a> : a.name}</h3>
+            <p>{a.note}</p>
+          </div>
+        ))}
+      </div>
+      {c.notes.length > 0 && <ul class="plain">{c.notes.map((n) => <li>{n}</li>)}</ul>}
+    </section>
+  ))}
+
+  <h2>3. What happened?</h2>
+  <div class="picker" role="group" aria-label="What happened">
+    {situations.map((s) => (
+      <button type="button" class="pick" data-pick-situation={s.id} aria-pressed="false">{s.label}</button>
+    ))}
+  </div>
+  <p class="prompt" id="situation-prompt">Pick what happened to see extra steps.</p>
+
+  {situations.map((s) => (
+    <section data-situation={s.id} hidden>
+      <h3>{s.label}</h3>
+      <ul class="plain">
+        {s.steps.map((st) => (
+          <li data-country={st.countries ? st.countries.join(' ') : undefined} hidden={st.countries ? true : undefined}>{st.text}</li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <h2>Watch for the second scam</h2>
+  <div class="move">
+    <strong>Be careful</strong>
+    After a scam, other scammers may offer to get your money back for a fee, or claim to be a fraud investigator. Be very wary of anyone who contacts you offering this. Hang up, and don't pay.
+  </div>
+
+  <p class="meta">
+    We can't promise you'll get your money back. Recovery is sometimes possible, especially if you act within hours.
+    Last checked: 20 November 2026. Agency names and numbers change, so confirm them on the agency's own website.
+  </p>
+
+  <h2>Sources</h2>
+  <ul class="plain">
+    {sources.map((s) => <li><a href={s.url} rel="noopener">{s.label}</a></li>)}
+  </ul>
+
+  <noscript>
+    <style>[hidden] { display: block !important; } li[hidden] { display: list-item !important; } .prompt { display: none; }</style>
+  </noscript>
+</Base>
+
+<style>
+  .picker { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .pick {
+    font: inherit; font-weight: 600; font-size: 0.95rem; cursor: pointer;
+    padding: 10px 14px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink);
+  }
+  .pick[aria-pressed='true'] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .prompt { color: var(--muted); font-size: 0.95rem; }
+  section[data-country], section[data-situation] { margin: 16px 0; }
+  section h3 { margin: 16px 0 8px; font-size: 1.1rem; }
+</style>
+
+<script>
+  const countryBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-pick-country]'));
+  const situationBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-pick-situation]'));
+  const ids = countryBtns.map((b) => b.dataset.pickCountry);
+  let country: string | null = null;
+  let situation: string | null = null;
+
+  const fromHash = location.hash.replace('#', '');
+  if (ids.includes(fromHash)) country = fromHash;
+
+  function apply() {
+    countryBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pickCountry === country)));
+    situationBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pickSituation === situation)));
+    document.querySelectorAll<HTMLElement>('[data-country]').forEach((el) => {
+      const list = (el.dataset.country || '').split(' ');
+      el.hidden = !(country && list.includes(country));
+    });
+    document.querySelectorAll<HTMLElement>('section[data-situation]').forEach((el) => {
+      el.hidden = el.dataset.situation !== situation;
+    });
+    const cp = document.getElementById('country-prompt');
+    const sp = document.getElementById('situation-prompt');
+    if (cp) cp.hidden = country !== null;
+    if (sp) sp.hidden = situation !== null;
+  }
+
+  countryBtns.forEach((b) => b.addEventListener('click', () => {
+    country = b.dataset.pickCountry || null;
+    if (country) history.replaceState(null, '', '#' + country);
+    apply();
+  }));
+  situationBtns.forEach((b) => b.addEventListener('click', () => {
+    situation = b.dataset.pickSituation || null;
+    apply();
+  }));
+
+  window.addEventListener('hashchange', () => {
+    const h = location.hash.replace('#', '');
+    if (ids.includes(h)) {
+      country = h;
+      apply();
+    }
+  });
+
+  apply();
+</script>

@@ -40,4 +40,4 @@ Move fast, because the first hour matters.
 2. Report it. In the US, use the FTC's Report Fraud site. In the UK, you can dial 159 to reach your bank safely. In Canada, contact the Canadian Anti-Fraud Centre. In Australia, report it to Scamwatch.
 3. UK readers: ask your bank about the refund rules for bank transfer scams.
 
-A full country-by-country guide is coming soon. Agency names and refund rules change, so check each agency's own website.
+For the right agency in your country, see [I've been scammed: what now?](/been-scammed/). Agency names and refund rules change, so check each agency's own website.
