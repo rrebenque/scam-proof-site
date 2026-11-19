@@ -1,0 +1,111 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const all = await getCollection('scams');
+const guide = (id: string) => all.find((s) => s.id === id);
+
+// Each flag is copied from a guide's own red-flag list, grouped by what the scammer is doing.
+const themes = [
+  {
+    name: 'They rush you',
+    why: 'Pressure stops you from thinking or checking. Real organizations give you time.',
+    move: 'Pause. Hang up or close the chat, then contact the real organization yourself.',
+    flags: [
+      { text: 'Pressure to pay today or face a late fee', id: 'toll-text' },
+      { text: 'Anyone rushing you: it has to be right now', id: 'safe-account' },
+      { text: 'A demand to send money now', id: 'safe-word' },
+    ],
+  },
+  {
+    name: 'They want secrecy',
+    why: 'A scammer needs you cut off from the people who would say "that sounds like a scam."',
+    move: 'Tell someone you trust, and call your bank using the number on your card.',
+    flags: [
+      { text: 'Anyone telling you to keep it secret, even from your bank or your family', id: 'safe-account' },
+      { text: 'A plea to keep it secret from the rest of the family', id: 'voice-clone' },
+    ],
+  },
+  {
+    name: 'They ask for money in a strange way',
+    why: 'Gift cards, crypto, cash and quick transfers are hard or impossible to get back.',
+    move: 'Never pay a stranger this way. A legitimate business takes a card.',
+    flags: [
+      { text: 'A request to pay with gift cards', id: 'voice-clone' },
+      { text: 'Anyone asking for cash, gold, gift cards or crypto', id: 'safe-account' },
+      { text: 'A seller who only accepts Zelle and refuses cards', id: 'zelle' },
+      { text: 'A fee or tax you must pay before you can cash out', id: 'pig-butchering' },
+    ],
+  },
+  {
+    name: 'They ask you to move money or share a code',
+    why: 'Your bank will never ask you to move your money to keep it safe, or read out a texted code.',
+    move: 'Hang up. Call the number on the back of your card.',
+    flags: [
+      { text: 'Anyone asking you to move your money to keep it safe', id: 'safe-account' },
+      { text: 'Anyone asking for a code that was texted to you', id: 'safe-account' },
+    ],
+  },
+  {
+    name: 'They contacted you first',
+    why: 'Unexpected texts, calls and chats are how scams start.',
+    move: "Don't tap links or reply. Open the real app or website yourself.",
+    flags: [
+      { text: "A text about an unpaid toll that you weren't expecting", id: 'toll-text' },
+      { text: 'A link to a toll website you didn\'t open yourself', id: 'toll-text' },
+      { text: 'A stranger who keeps chatting after you say it\'s a wrong number', id: 'pig-butchering' },
+      { text: 'A familiar voice from an unknown number, asking for money', id: 'voice-clone' },
+      { text: 'A call that sounds like family but comes from an unknown number', id: 'safe-word' },
+      { text: 'A caller who can\'t give the family safe word', id: 'safe-word' },
+    ],
+  },
+  {
+    name: 'It sounds too good',
+    why: 'Cheap deals and fast profits are bait.',
+    move: 'Buy from the official site, and never invest with someone you only know by text.',
+    flags: [
+      { text: 'A deal that is cheaper than the official price', id: 'zelle' },
+      { text: 'Investment tips from someone you only know by text', id: 'pig-butchering' },
+      { text: 'An app showing huge gains that grow fast', id: 'pig-butchering' },
+    ],
+  },
+];
+---
+<Base title="Scam red flags" description="The warning signs that show up again and again across scams, and what to do about each one.">
+  <div class="page">
+    <h1>Scam red flags</h1>
+    <p class="lead">Scams change. The warning signs mostly don't. Each one links to the guide where we cover it.</p>
+
+    {themes.map((t) => (
+      <section class="theme">
+        <h2>{t.name}</h2>
+        <p class="why">{t.why}</p>
+        <ul class="flags">
+          {t.flags.map((f) => {
+            const g = guide(f.id);
+            return (
+              <li>
+                {f.text}
+                {g && <> <a class="from" href={`/scams/${g.id}/`}>{g.data.title}</a></>}
+              </li>
+            );
+          })}
+        </ul>
+        <p class="move"><strong>The right move</strong>{t.move}</p>
+      </section>
+    ))}
+
+    <p class="meta">Built from the red flags in our guides. Last reviewed: 2026-11-20.</p>
+  </div>
+</Base>
+
+<style>
+  .theme { margin-top: 48px; max-width: var(--measure); }
+  .theme h2 { margin-top: 0; border-left: 8px solid var(--red); padding-left: 16px; }
+  .why { color: var(--muted); }
+  .flags { list-style: none; padding: 0; margin: 16px 0 20px; }
+  .flags li { position: relative; padding-left: 34px; margin-bottom: 14px; }
+  .flags li::before { content: '\00d7'; position: absolute; left: 4px; top: -6px; font-family: var(--display); font-weight: 600; font-size: 1.8rem; color: var(--red-ink); }
+  .from { display: block; font-size: 0.95rem; color: var(--muted); }
+  .move { font-size: 1.1rem; }
+</style>
