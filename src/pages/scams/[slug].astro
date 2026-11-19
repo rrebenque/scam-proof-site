@@ -1,0 +1,67 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const scams = await getCollection('scams');
+  return scams.map((entry) => ({ params: { slug: entry.id }, props: { entry, all: scams } }));
+}
+
+const { entry, all } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const related = d.related
+  .map((id) => all.find((s) => s.id === id))
+  .filter((s) => s !== undefined);
+---
+<Base title={d.pageTitle} description={d.answer}>
+  <p>
+    {d.markets.map((m) => <span class="tag">{m}</span>)}
+  </p>
+  <h1>{d.pageTitle}</h1>
+  <p class="answer">{d.answer}</p>
+
+  {d.videoId && (
+    <div class="video">
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${d.videoId}`}
+        title={d.title}
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
+  )}
+
+  {d.steps.length > 0 && (
+    <>
+      <h2>How it works</h2>
+      <ol>{d.steps.map((s) => <li>{s}</li>)}</ol>
+    </>
+  )}
+
+  {d.redFlags.length > 0 && (
+    <>
+      <h2>Red flags</h2>
+      <ul class="plain">{d.redFlags.map((s) => <li>{s}</li>)}</ul>
+    </>
+  )}
+
+  <h2>The right move</h2>
+  <div class="move">
+    <strong>Do this instead</strong>
+    {d.rightMove}
+  </div>
+
+  <Content />
+
+  {related.length > 0 && (
+    <>
+      <h2>Related guides</h2>
+      <ul class="plain">
+        {related.map((s) => <li><a href={`/scams/${s.id}/`}>{s.data.title}</a></li>)}
+      </ul>
+    </>
+  )}
+
+  <p class="meta">Last reviewed: {d.reviewed}. Applies to: {d.markets.join(', ')}.</p>
+</Base>

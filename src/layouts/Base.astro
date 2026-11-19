@@ -1,0 +1,81 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Plain-language guides to the scams that target ordinary people, and what to do about them.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content={description} />
+    <title>{title} | Scam-Proof Money</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">Scam-Proof Money</a>
+      <nav>
+        <a href="/scams/">Scam Library</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>
+        General information only. We can't confirm whether a specific message is real, and nothing here
+        is legal or financial advice. Never share passwords, account numbers or ID numbers on this site.
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --ink: #141414;
+    --muted: #5b5b5b;
+    --line: #e4e4e0;
+    --bg: #fbfbf8;
+    --accent: #e1333b;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+    font-size: 18px;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 12px; }
+  h2 { font-size: 1.35rem; margin: 40px 0 12px; }
+  a { color: #0b5cad; }
+  .site-header {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 760px; margin: 0 auto; padding: 16px 20px; border-bottom: 1px solid var(--line);
+  }
+  .brand { font-weight: 800; text-decoration: none; color: var(--ink); }
+  .site-header nav a { margin-left: 16px; font-weight: 600; text-decoration: none; }
+  .site-footer { max-width: 760px; margin: 0 auto; padding: 24px 20px 48px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); }
+  .lead { font-size: 1.15rem; color: var(--muted); }
+  .cards { display: grid; gap: 16px; margin-top: 24px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .card h3 { margin: 0 0 4px; font-size: 1.1rem; }
+  .card p { margin: 0; color: var(--muted); }
+  .card.soon { opacity: 0.6; }
+  .tag { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: #f0efe9; border-radius: 999px; padding: 2px 10px; margin-right: 6px; }
+  .answer { font-size: 1.25rem; font-weight: 700; margin: 12px 0 24px; }
+  .move { border: 2px solid var(--accent); border-radius: 12px; padding: 16px 18px; background: #fff5f5; }
+  .move strong { display: block; margin-bottom: 4px; color: var(--accent); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; }
+  .video { position: relative; padding-top: 56.25%; margin: 24px 0; }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 12px; }
+  .meta { color: var(--muted); font-size: 0.85rem; margin-top: 40px; }
+  ul.plain { padding-left: 20px; }
+  .list-link { display: block; text-decoration: none; color: inherit; }
+  .list-link:hover .card { border-color: var(--ink); }
+</style>

@@ -1,0 +1,20 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const scams = (await getCollection('scams')).sort((a, b) => a.data.episode - b.data.episode);
+---
+<Base title="Scam Library" description="Every scam we've covered: how it works, the red flags, and the right move.">
+  <h1>Scam Library</h1>
+  <p class="lead">Each guide explains how the scam works and the one right move.</p>
+  <div class="cards">
+    {scams.map((s) => (
+      <a class="list-link" href={`/scams/${s.id}/`}>
+        <div class="card">
+          <h3>{s.data.title}</h3>
+          <p>{s.data.answer}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</Base>
