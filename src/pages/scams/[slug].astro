@@ -63,5 +63,14 @@ const related = d.related
     </>
   )}
 
+  {d.sources.length > 0 && (
+    <>
+      <h2>Sources</h2>
+      <ul class="plain">
+        {d.sources.map((s) => <li><a href={s.url} rel="noopener">{s.label}</a></li>)}
+      </ul>
+    </>
+  )}
+
   <p class="meta">Last reviewed: {d.reviewed}. Applies to: {d.markets.join(', ')}.</p>
 </Base>

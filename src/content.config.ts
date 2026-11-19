@@ -15,6 +15,7 @@ const scams = defineCollection({
     steps: z.array(z.string()).default([]),
     redFlags: z.array(z.string()).default([]),
     related: z.array(z.string()).default([]),
+    sources: z.array(z.object({ label: z.string(), url: z.string() })).default([]),
     reviewed: z.string(),
   }),
 });
