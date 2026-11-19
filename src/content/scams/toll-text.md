@@ -5,6 +5,8 @@ pageTitle: "Unpaid Toll Text Scam: How It Works and What To Do"
 answer: "A text asking for $6.99 can empty your bank account."
 rightMove: "Don't tap the link. Open your real toll app yourself, then forward the text to 7726."
 markets: ["US"]
+videoId: "XvKjybyKgfM"
+videoShort: true
 steps:
   - "A text says you owe a toll. Pay today, or pay a late fee."
   - "The link opens a toll website, but the website is fake."
