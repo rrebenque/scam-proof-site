@@ -14,6 +14,15 @@ redFlags:
   - "A seller who only accepts Zelle and refuses cards"
   - "A deal that is cheaper than the official price"
 related: ["safe-account", "pig-butchering"]
+sources:
+  - label: "Peoples Bank: Send Money with Zelle (safety tips)"
+    url: "https://peoplesbancorp.com/zelle"
+  - label: "South Shore Bank: Zelle Safety 101"
+    url: "https://www.southshorebank.com/resources/security-center/zelle%C2%AE-safety-101"
+  - label: "Chargebacks911: Are chargebacks allowed on the Zelle platform?"
+    url: "https://chargebacks911.com/?p=53987"
+  - label: "The Record: New York lawsuit against Zelle's creator alleges features allowed $1 billion in thefts"
+    url: "https://therecord.media/zelle-lawsuit-new-york-state-scams-fraud"
 reviewed: "2026-11-20"
 ---
 
