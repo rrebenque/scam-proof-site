@@ -41,11 +41,13 @@ const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.
               <span class="pill pill-red">Scam example</span>
               <p class="from">State Toll Svcs</p>
               <p class="bubble">Your toll balance of $6.99 is overdue. Pay today to avoid a late fee. <span class="fake-link">tolls-pay-now.com</span></p>
+              <img class="char" src="/img/slick.png" alt="Slick, the scammer character, flexing" width="143" height="300" />
             </div>
             <div class="state" id="state-safe" hidden>
               <span class="pill pill-green">The right move</span>
               <p class="move-big">Don't tap the link.</p>
               <p class="move-text">Open your real toll app yourself. Then forward the text to 7726.</p>
+              <img class="char" src="/img/june.png" alt="Grandma June, smiling" width="110" height="298" />
             </div>
           </div>
         </div>
@@ -106,8 +108,11 @@ const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.
 
   .hero-demo { display: flex; flex-direction: column; align-items: center; }
   .phone { width: min(330px, 100%); border: 10px solid var(--ink); border-radius: 40px; background: var(--mist); overflow: hidden; }
-  .screen { position: relative; min-height: 380px; padding: 22px 18px; }
-  .state > :last-child { margin-bottom: 0; }
+  .screen { position: relative; min-height: 460px; padding: 22px 18px; }
+  .state { display: flex; flex-direction: column; }
+  .state[hidden] { display: none; }
+  .state .pill { align-self: flex-start; }
+  .char { align-self: center; height: 210px; width: auto; margin-top: 22px; }
 
   .pill { display: inline-block; font-family: var(--display); font-weight: 600; font-size: 0.95rem; color: #fff; padding: 3px 12px; border-radius: 999px; margin-bottom: 16px; }
   .pill-red { background: var(--red-ink); }
