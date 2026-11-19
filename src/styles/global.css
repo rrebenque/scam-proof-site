@@ -4,8 +4,8 @@
   --mist: #eef2f6;
   --red: #e1333b;
   --red-ink: #b81d27;
-  --green: #17824f;
-  --muted: #4a5560;
+  --green: #12663d;
+  --muted: #38434d;
   --line: #d5dce3;
   --display: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
   --body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -14,7 +14,9 @@
 
 * { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; font-size: 112.5%; }
+html[data-zoom='large'] { font-size: 131%; }
+html[data-zoom='xl'] { font-size: 150%; }
 
 body {
   margin: 0;
@@ -49,22 +51,22 @@ ol, ul { max-width: var(--measure); }
 .brand:hover { color: var(--ink); }
 .brand svg { flex: none; }
 .site-header nav { display: flex; flex-wrap: wrap; gap: 4px 22px; }
-.site-header nav a { font-weight: 700; text-decoration: none; padding: 6px 0; border-bottom: 3px solid transparent; }
+.site-header nav a { font-weight: 700; text-decoration: none; padding: 12px 0; border-bottom: 3px solid transparent; }
 .site-header nav a:hover { border-bottom-color: var(--red); color: var(--ink); }
 .site-header nav a[aria-current='page'] { border-bottom-color: var(--ink); }
 
 .site-footer { border-top: 1px solid var(--line); background: var(--mist); }
-.site-footer .wrap { padding-top: 28px; padding-bottom: 40px; color: var(--muted); font-size: 0.95rem; }
+.site-footer .wrap { padding-top: 28px; padding-bottom: 40px; color: var(--muted); font-size: 1rem; }
 .site-footer p { margin-bottom: 0.6em; }
 
 /* shared pieces */
 .lead { font-size: 1.3rem; color: var(--muted); margin-top: 14px; }
-.meta { color: var(--muted); font-size: 0.95rem; margin-top: 40px; }
+.meta { color: var(--muted); font-size: 1rem; margin-top: 40px; }
 .plain { padding-left: 1.2em; }
 .plain li { margin-bottom: 0.4em; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
-.chip { display: inline-block; font-size: 0.9rem; font-weight: 700; padding: 3px 12px; border-radius: 999px; background: var(--mist); color: var(--ink); }
+.chip { display: inline-block; font-size: 1rem; font-weight: 700; padding: 3px 12px; border-radius: 999px; background: var(--mist); color: var(--ink); }
 
 .cards { display: grid; gap: 14px; margin-top: 20px; }
 .card { background: var(--paper); border: 2px solid var(--line); border-radius: 14px; padding: 16px 20px; }
@@ -80,8 +82,8 @@ ol, ul { max-width: var(--measure); }
 .move a { color: #fff; }
 
 /* hub controls */
-.picker { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; max-width: none; }
-.pick { font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; padding: 11px 18px; border-radius: 999px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); }
+.picker { display: flex; flex-wrap: wrap; gap: 12px; margin: 14px 0; max-width: none; }
+.pick { font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; min-height: 52px; padding: 12px 22px; border-radius: 999px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); }
 .pick:hover { background: var(--mist); }
 .pick[aria-pressed='true'] { background: var(--ink); color: #fff; }
 .prompt { color: var(--muted); }
@@ -91,6 +93,16 @@ ol, ul { max-width: var(--measure); }
 }
 
 @media (max-width: 560px) {
-  .site-header nav { width: 100%; flex-wrap: nowrap; justify-content: space-between; gap: 0 10px; }
-  .site-header nav a { font-size: 0.92rem; white-space: nowrap; }
+  .site-header nav { width: 100%; justify-content: space-between; gap: 0 10px; }
+  .site-header nav a { font-size: 1rem; }
 }
+
+/* text size control */
+.site-header .tools { display: flex; align-items: center; gap: 8px; width: 100%; }
+.size-label { font-weight: 700; font-size: 1rem; color: var(--muted); }
+.size { display: inline-flex; gap: 6px; }
+.size button { font-family: var(--display); font-weight: 600; min-width: 48px; min-height: 48px; border-radius: 12px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; line-height: 1; }
+.size button[aria-pressed='true'] { background: var(--ink); color: #fff; }
+.size button:nth-child(1) { font-size: 1rem; }
+.size button:nth-child(2) { font-size: 1.25rem; }
+.size button:nth-child(3) { font-size: 1.5rem; }

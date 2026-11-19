@@ -29,6 +29,7 @@ const here = (p: string) => (path === p || path.startsWith(p) ? 'page' : undefin
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>try{var z=localStorage.getItem("textSize");if(z==="large"||z==="xl")document.documentElement.dataset.zoom=z;}catch(e){}</script>
     <title>{title} | Scam-Proof Money</title>
   </head>
   <body>
@@ -46,6 +47,14 @@ const here = (p: string) => (path === p || path.startsWith(p) ? 'page' : undefin
           <a href="/red-flags/" aria-current={here("/red-flags")}>Red flags</a>
           <a href="/been-scammed/" aria-current={here('/been-scammed')}>I've been scammed</a>
         </nav>
+        <div class="tools" role="group" aria-label="Text size">
+          <span class="size-label">Text size</span>
+          <span class="size">
+            <button type="button" data-size="normal" aria-pressed="true" aria-label="Normal text">A</button>
+            <button type="button" data-size="large" aria-pressed="false" aria-label="Larger text">A</button>
+            <button type="button" data-size="xl" aria-pressed="false" aria-label="Largest text">A</button>
+          </span>
+        </div>
       </div>
     </header>
     <main>
@@ -60,5 +69,24 @@ const here = (p: string) => (path === p || path.startsWith(p) ? 'page' : undefin
         </p>
       </div>
     </footer>
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        var btns = document.querySelectorAll('[data-size]');
+        function mark() {
+          var cur = root.dataset.zoom || 'normal';
+          btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.size === cur)); });
+        }
+        btns.forEach(function (b) {
+          b.addEventListener('click', function () {
+            var v = b.dataset.size;
+            if (v === 'normal') { delete root.dataset.zoom; } else { root.dataset.zoom = v; }
+            try { localStorage.setItem('textSize', v); } catch (e) {}
+            mark();
+          });
+        });
+        mark();
+      })();
+    </script>
   </body>
 </html>
