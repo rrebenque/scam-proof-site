@@ -5,116 +5,131 @@ import Base from '../layouts/Base.astro';
 const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.data.episode).slice(0, 3);
 ---
 <Base title="Scam-Proof Money">
-  <div class="wrap hero">
-    <div class="hero-copy">
-      <h1>Got a message that feels off?</h1>
-      <p class="lead">Plain-language guides to the scams aimed at ordinary people, each with the one right move.</p>
+  <div class="band">
+    <div class="wrap hero">
+      <div class="hero-copy">
+        <h1>Not sure if it's a scam? Check before you click.</h1>
+        <p class="lead">Plain-language guides, with the warning signs and the one right move.</p>
 
-      <ul class="paths">
-        <li>
-          <a href="/scams/">
-            <span class="path-title">Look up a scam</span>
-            <span class="path-desc">How it works, the warning signs, and what to do instead.</span>
-          </a>
-        </li>
-        <li>
-          <a href="/been-scammed/">
-            <span class="path-title">I've already been scammed</span>
-            <span class="path-desc">Who to call and who to report to, by country.</span>
-          </a>
-        </li>
-        <li>
-          <a href="/scams/safe-word/">
-            <span class="path-title">Protect my family</span>
-            <span class="path-desc">Set up a family safe word before a scammer calls.</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+        <div class="ask">
+          <p class="ask-q">What happened?</p>
+          <ul class="situations">
+            <li><a href="/scams/toll-text/">A text about a toll</a></li>
+            <li><a href="/scams/safe-account/">A call from my "bank"</a></li>
+            <li><a href="/scams/voice-clone/">A relative's voice asking for money</a></li>
+            <li><a href="/scams/pig-butchering/">A wrong-number text</a></li>
+            <li><a href="/scams/zelle/">A "Zelle only" seller</a></li>
+          </ul>
+        </div>
+      </div>
 
-    <div class="hero-demo">
-      <div class="phone" id="phone" data-state="scam" data-busy="false">
-        <div class="screen">
-          <div class="tape" aria-hidden="true"></div>
-          <div class="states" aria-live="polite">
-            <div class="state" id="state-scam">
-              <span class="pill pill-red">Scam example</span>
-              <p class="from">State Toll Svcs</p>
-              <p class="bubble">Your toll balance of $6.99 is overdue. Pay today to avoid a late fee. <span class="fake-link">tolls-pay-now.com</span></p>
-              <img class="char" src="/img/slick.png" alt="Slick, the scammer character, flexing" width="143" height="300" />
-            </div>
-            <div class="state" id="state-safe" hidden>
-              <span class="pill pill-green">The right move</span>
-              <p class="move-big">Don't tap the link.</p>
-              <p class="move-text">Open your real toll app yourself. Then forward the text to 7726.</p>
-              <img class="char" src="/img/june.png" alt="Grandma June, smiling" width="110" height="298" />
+      <div class="hero-demo">
+        <div class="phone" id="phone" data-state="scam" data-busy="false">
+          <div class="screen">
+            <div class="tape" aria-hidden="true"></div>
+            <div class="states" aria-live="polite">
+              <div class="state" id="state-scam">
+                <span class="pill pill-red">Scam example</span>
+                <p class="from">State Toll Svcs</p>
+                <p class="bubble">Your toll balance of $6.99 is overdue. Pay today to avoid a late fee. <span class="fake-link">tolls-pay-now.com</span></p>
+                <img class="char" src="/img/slick.png" alt="Slick, the scammer character, flexing" width="143" height="300" />
+              </div>
+              <div class="state" id="state-safe" hidden>
+                <span class="pill pill-green">The right move</span>
+                <p class="move-big">Don't tap the link.</p>
+                <p class="move-text">Open your real toll app yourself. Then forward the text to 7726.</p>
+                <img class="char" src="/img/june.png" alt="Grandma June, smiling" width="110" height="298" />
+              </div>
             </div>
           </div>
         </div>
+        <button type="button" class="rewind" id="rewind">
+          <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true"><path d="M10 1v14L1 8l9-7Zm11 0v14l-9-7 9-7Z" fill="currentColor"/></svg>
+          <span id="rewind-label">Rewind</span>
+        </button>
+        <p class="demo-note">A US example. The sender and website are made up.</p>
       </div>
-      <button type="button" class="rewind" id="rewind">
-        <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true"><path d="M10 1v14L1 8l9-7Zm11 0v14l-9-7 9-7Z" fill="currentColor"/></svg>
-        <span id="rewind-label">Rewind</span>
-      </button>
-      <p class="demo-note">A US example. The sender and website are made up.</p>
     </div>
   </div>
 
-  <div class="wrap section">
-    <h2>Latest guides</h2>
+  <div class="alert">
+    <div class="wrap">
+      Already lost money? Stop contact, then call your bank using the number on your card.{' '}
+      <a href="/been-scammed/">Get step-by-step help</a>
+    </div>
+  </div>
+
+  <div class="wrap section first">
+    <h2>Latest scam guides</h2>
+    <p class="sub">Each one lists its sources and the date we last reviewed it.</p>
     <ul class="guide-list">
       {latest.map((s) => (
         <li>
-          <a href={`/scams/${s.id}/`}>
-            <span class="g-title">{s.data.title}</span>
-            <span class="g-answer">{s.data.answer}</span>
-          </a>
-          <p class="g-move"><strong>Right move:</strong> {s.data.rightMove}</p>
+          <span class="g-ep">Episode {s.data.episode}</span>
+          <div class="g-main">
+            <a href={`/scams/${s.id}/`} class="g-title">{s.data.title}</a>
+            <p class="g-move"><strong>Right move:</strong> {s.data.rightMove}</p>
+          </div>
+          <span class="g-markets">{s.data.markets.length === 4 ? 'US · UK · Canada · Australia' : s.data.markets.join(' · ')}</span>
         </li>
       ))}
     </ul>
-    <p><a href="/scams/">See all scam guides</a></p>
+    <p><a href="/scams/"><strong>See all scam guides</strong></a></p>
   </div>
 
   <div class="wrap section">
-    <h2>How every guide works</h2>
-    <div class="trio">
-      <div class="t t-red">
-        <h3>See the scam</h3>
-        <p>We show how it plays out, step by step, and the warning signs along the way.</p>
+    <div class="how">
+      <h2>How every guide works</h2>
+      <div class="trio">
+        <div class="t t-red">
+          <h3>See the scam</h3>
+          <p>We show how it plays out, step by step, and the warning signs along the way.</p>
+        </div>
+        <div class="t t-ink">
+          <h3>Rewind</h3>
+          <p>Then we go back to the moment it could have been stopped.</p>
+        </div>
+        <div class="t t-green">
+          <h3>Learn the one right move</h3>
+          <p>A single action you can remember when it's happening to you.</p>
+        </div>
       </div>
-      <div class="t t-ink">
-        <h3>Rewind</h3>
-        <p>Then we go back to the moment it could have been stopped.</p>
+    </div>
+  </div>
+
+  <div class="wrap section last">
+    <div class="family">
+      <div>
+        <h2>Protect your family</h2>
+        <p>Agree on a family safe word before a scammer calls. It takes five minutes.</p>
       </div>
-      <div class="t t-green">
-        <h3>Learn the one right move</h3>
-        <p>A single action you can remember when it's happening to you.</p>
-      </div>
+      <a class="family-btn" href="/scams/safe-word/">Set up a safe word</a>
     </div>
   </div>
 </Base>
 
 <style>
-  .hero { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center; padding-top: 56px; padding-bottom: 24px; }
-  .hero-copy .lead { max-width: 34ch; }
+  .band { background: var(--navy); color: #fff; }
+  .band h1 { color: #fff; }
+  .hero { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 56px; align-items: center; padding-top: 64px; padding-bottom: 64px; }
+  .hero-copy h1 { max-width: 15ch; }
+  .hero-copy .lead { max-width: 34ch; color: #e3eaf1; font-size: 1.35rem; }
 
-  .paths { list-style: none; margin: 34px 0 0; padding: 0; max-width: 520px; border-top: 2px solid var(--ink); }
-  .paths li { border-bottom: 2px solid var(--line); }
-  .paths a { display: block; padding: 16px 4px; text-decoration: none; }
-  .paths a:hover { background: var(--mist); color: var(--ink); }
-  .path-title { display: block; font-family: var(--display); font-weight: 600; font-size: 1.35rem; }
-  .path-desc { display: block; color: var(--muted); font-size: 1.05rem; }
+  .ask { background: #fff; color: var(--ink); border-radius: 14px; padding: 22px 26px; margin-top: 32px; max-width: 680px; }
+  .ask-q { font-weight: 700; margin: 0 0 12px; }
+  .situations { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; max-width: none; }
+  .situations a { display: inline-flex; align-items: center; min-height: 52px; padding: 8px 20px; border-radius: 999px; border: 2px solid var(--navy); background: var(--mist); color: var(--navy); font-weight: 700; text-decoration: none; }
+  .situations a:hover { background: var(--navy); color: #fff; }
 
   .hero-demo { display: flex; flex-direction: column; align-items: center; }
-  .phone { width: min(330px, 100%); border: 10px solid var(--ink); border-radius: 40px; background: var(--mist); overflow: hidden; }
+  .phone { width: min(330px, 100%); border: 10px solid #e3eaf1; border-radius: 40px; background: var(--mist); overflow: hidden; color: var(--ink); }
   .screen { position: relative; min-height: 460px; padding: 22px 18px; }
   .state { display: flex; flex-direction: column; }
   .state[hidden] { display: none; }
   .state .pill { align-self: flex-start; }
   .char { align-self: center; height: 210px; width: auto; margin-top: 22px; }
 
-  .pill { display: inline-block; font-family: var(--display); font-weight: 600; font-size: 1rem; color: #fff; padding: 3px 12px; border-radius: 999px; margin-bottom: 16px; }
+  .pill { display: inline-block; font-family: var(--display); font-weight: 700; font-size: 1rem; color: #fff; padding: 3px 12px; border-radius: 999px; margin-bottom: 16px; }
   .pill-red { background: var(--red-ink); }
   .pill-green { background: var(--green); }
 
@@ -122,7 +137,7 @@ const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.
   .bubble { background: #dbe2e9; border-radius: 20px 20px 20px 6px; padding: 14px 16px; font-size: 1.05rem; line-height: 1.45; margin: 0; }
   .fake-link { text-decoration: underline; font-weight: 700; word-break: break-all; }
 
-  .move-big { font-family: var(--display); font-weight: 600; font-size: 1.9rem; line-height: 1.15; margin: 0 0 12px; }
+  .move-big { font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: 1.15; margin: 0 0 12px; }
   .move-text { font-size: 1.15rem; margin: 0; }
 
   .tape { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: repeating-linear-gradient(0deg, rgba(20, 20, 20, 0.5) 0 3px, rgba(255, 255, 255, 0.55) 3px 7px); mix-blend-mode: multiply; }
@@ -141,30 +156,46 @@ const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.
     70% { transform: translateX(-4px); }
   }
 
-  .rewind { margin-top: 22px; display: inline-flex; align-items: center; gap: 12px; font: inherit; font-family: var(--display); font-weight: 600; font-size: 1.25rem; padding: 12px 26px; border-radius: 999px; border: 3px solid var(--ink); background: var(--ink); color: #fff; cursor: pointer; }
-  .rewind:hover { background: #fff; color: var(--ink); }
-  .demo-note { margin: 12px 0 0; color: var(--muted); font-size: 1rem; text-align: center; }
+  .rewind { margin-top: 22px; display: inline-flex; align-items: center; gap: 12px; font: inherit; font-family: var(--display); font-weight: 700; font-size: 1.25rem; min-height: 52px; padding: 12px 26px; border-radius: 999px; border: 3px solid #fff; background: #fff; color: var(--navy); cursor: pointer; }
+  .rewind:hover { background: var(--navy); color: #fff; }
+  .demo-note { margin: 12px 0 0; color: #c7d3df; font-size: 1rem; text-align: center; }
+
+  .alert { background: var(--red-ink); color: #fff; font-weight: 700; }
+  .alert .wrap { padding-top: 16px; padding-bottom: 16px; }
+  .alert a { color: #fff; }
 
   .section { padding-top: 24px; padding-bottom: 24px; }
-  .guide-list { list-style: none; margin: 18px 0 20px; padding: 0; max-width: 760px; }
-  .guide-list li { border-top: 2px solid var(--line); padding: 18px 0 20px; }
-  .guide-list li:last-child { border-bottom: 2px solid var(--line); }
-  .guide-list a { display: block; text-decoration: none; }
-  .guide-list a:hover .g-title { text-decoration: underline; text-decoration-thickness: 3px; }
-  .g-title { display: block; font-family: var(--display); font-weight: 600; font-size: 1.45rem; line-height: 1.2; }
-  .g-answer { display: block; color: var(--muted); margin-top: 4px; }
-  .g-move { margin: 8px 0 0; color: var(--green); }
+  .section.first { padding-top: 64px; }
+  .section.last { padding-bottom: 80px; }
+  .sub { color: var(--muted); margin: 8px 0 24px; }
+  .guide-list { list-style: none; margin: 0 0 20px; padding: 0; max-width: none; border-top: 3px solid var(--navy); }
+  .guide-list li { display: flex; flex-wrap: wrap; gap: 8px 32px; align-items: baseline; padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .g-ep { flex: 0 0 120px; font-weight: 700; color: var(--muted); }
+  .g-main { flex: 1 1 420px; min-width: 0; }
+  .g-title { font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.25; text-decoration-thickness: 2px; color: var(--navy); }
+  .g-move { margin: 6px 0 0; color: var(--green); max-width: var(--measure); }
   .g-move strong { color: var(--green); }
+  .g-markets { flex: 0 0 auto; font-weight: 700; color: var(--navy); }
 
-  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin: 18px 0 40px; }
-  .t { border-top: 8px solid var(--ink); padding-top: 14px; }
-  .t-red { border-top-color: var(--red); }
-  .t-green { border-top-color: var(--green); }
+  .how { background: #f1f5f9; border-radius: 16px; padding: 40px 44px; }
+  .how h2 { margin-top: 0; }
+  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 18px; }
+  .t h3 { margin-bottom: 4px; }
+  .t-red h3 { color: var(--red-ink); }
+  .t-ink h3 { color: var(--navy); }
+  .t-green h3 { color: var(--green); }
   .t p { margin: 0; color: var(--muted); }
 
+  .family { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between; border: 2px solid var(--navy); border-radius: 16px; padding: 28px 32px; }
+  .family h2 { margin: 0 0 6px; font-size: 1.9rem; }
+  .family p { margin: 0; }
+  .family-btn { display: inline-block; text-decoration: none; background: var(--navy); color: #fff; font-weight: 700; padding: 16px 30px; border-radius: 12px; }
+  .family-btn:hover { background: var(--red-ink); color: #fff; }
+
   @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 36px; }
+    .hero { grid-template-columns: 1fr; gap: 40px; padding-top: 36px; padding-bottom: 44px; }
     .trio { grid-template-columns: 1fr; gap: 22px; }
+    .how { padding: 28px 24px; }
   }
 </style>
 

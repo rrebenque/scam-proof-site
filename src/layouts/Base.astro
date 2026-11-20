@@ -3,8 +3,8 @@ const social = [
   { label: 'YouTube', url: 'https://www.youtube.com/@scamproofmoney' },
   { label: 'Facebook', url: 'https://www.facebook.com/scamproofmoney' },
 ];
-import '@fontsource/fredoka/400.css';
-import '@fontsource/fredoka/600.css';
+import '@fontsource/source-serif-4/600.css';
+import '@fontsource/source-serif-4/700.css';
 import '@fontsource/atkinson-hyperlegible/400.css';
 import '@fontsource/atkinson-hyperlegible/700.css';
 import '../styles/global.css';
@@ -66,7 +66,7 @@ const here = (p: string) => (path === p || path.startsWith(p) ? 'page' : undefin
     </main>
     <footer class="site-footer">
       <div class="wrap">
-        <p class="follow"><strong>Watch and follow:</strong>
+        <p class="follow"><strong>Watch and follow:</strong>{' '}
           {social.map((x, i) => <>{i > 0 && ' · '}<a href={x.url} rel="noopener">{x.label}</a></>)}
         </p>
         <p>Every guide lists its sources and the date we last reviewed it.</p>

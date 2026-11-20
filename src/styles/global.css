@@ -7,7 +7,8 @@
   --green: #12663d;
   --muted: #38434d;
   --line: #d5dce3;
-  --display: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+  --display: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --navy: #12283f;
   --body: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --measure: 68ch;
 }
@@ -32,7 +33,7 @@ a:hover { color: var(--red-ink); }
 
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
 
-h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.15; margin: 0; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.15; margin: 0; }
 h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: -0.01em; }
 h2 { font-size: 1.7rem; margin: 56px 0 14px; }
 h3 { font-size: 1.25rem; margin: 0 0 6px; }
@@ -47,16 +48,18 @@ ol, ul { max-width: var(--measure); }
 /* header and footer */
 .site-header { border-bottom: 1px solid var(--line); }
 .site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; padding-top: 14px; padding-bottom: 14px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 600; font-size: 1.35rem; text-decoration: none; color: var(--ink); }
-.brand:hover { color: var(--ink); }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; color: var(--navy); font-size: 1.35rem; text-decoration: none; color: var(--ink); }
+.brand:hover { color: var(--navy); }
 .brand svg { flex: none; }
 .site-header nav { display: flex; flex-wrap: wrap; gap: 4px 22px; }
 .site-header nav a { font-weight: 700; text-decoration: none; padding: 12px 0; border-bottom: 3px solid transparent; }
 .site-header nav a:hover { border-bottom-color: var(--red); color: var(--ink); }
 .site-header nav a[aria-current='page'] { border-bottom-color: var(--ink); }
 
-.site-footer { border-top: 1px solid var(--line); background: var(--mist); }
-.site-footer .wrap { padding-top: 28px; padding-bottom: 40px; color: var(--muted); font-size: 1rem; }
+.site-footer { background: var(--navy); color: #e3eaf1; }
+.site-footer .wrap { padding-top: 28px; padding-bottom: 40px; color: #e3eaf1; font-size: 1rem; }
+.site-footer a { color: #fff; }
+.site-footer a:hover { color: #ffd2d4; }
 .site-footer p { margin-bottom: 0.6em; }
 
 /* shared pieces */
