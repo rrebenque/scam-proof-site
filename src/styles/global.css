@@ -28,7 +28,7 @@ body {
   background: var(--paper);
 }
 
-a { color: var(--ink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a { color: var(--navy); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 a:hover { color: var(--red-ink); }
 
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
@@ -40,18 +40,18 @@ h3 { font-size: 1.25rem; margin: 0 0 6px; }
 p { margin: 0 0 1em; max-width: var(--measure); }
 ol, ul { max-width: var(--measure); }
 
-.wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
-.page { max-width: 1040px; margin: 0 auto; padding: 40px 24px 80px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.page { max-width: 1120px; margin: 0 auto; padding: 40px 24px 80px; }
 .page > * { max-width: var(--measure); }
 .page > .wide { max-width: none; }
 
 /* header and footer */
 .site-header { border-bottom: 1px solid var(--line); }
-.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; padding-top: 14px; padding-bottom: 14px; }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-top: 14px; padding-bottom: 14px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; color: var(--navy); font-size: 1.35rem; text-decoration: none; color: var(--ink); }
 .brand:hover { color: var(--navy); }
 .brand svg { flex: none; }
-.site-header nav { display: flex; flex-wrap: wrap; gap: 4px 22px; }
+.site-header nav { display: flex; flex-wrap: wrap; gap: 4px 18px; }
 .site-header nav a { font-weight: 700; text-decoration: none; padding: 12px 0; border-bottom: 3px solid transparent; }
 .site-header nav a:hover { border-bottom-color: var(--red); color: var(--ink); }
 .site-header nav a[aria-current='page'] { border-bottom-color: var(--ink); }
@@ -101,7 +101,7 @@ ol, ul { max-width: var(--measure); }
 }
 
 /* text size control */
-.site-header .tools { display: flex; align-items: center; gap: 8px; width: 100%; }
+.site-header .tools { display: flex; align-items: center; gap: 8px; }
 .size-label { font-weight: 700; font-size: 1rem; color: var(--muted); }
 .size { display: inline-flex; gap: 6px; }
 .size button { font-family: var(--display); font-weight: 600; min-width: 48px; min-height: 48px; border-radius: 12px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; line-height: 1; }

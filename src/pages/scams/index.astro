@@ -18,17 +18,13 @@ const markets = ['US', 'UK', 'Canada', 'Australia'];
     <ul class="lib wide">
       {scams.map((s) => (
         <li data-markets={s.data.markets.join(' ')}>
-          <a href={`/scams/${s.id}/`} class="l-link">
-            <img class="avatar" src="/img/slick.png" alt="" width="64" height="64" />
-            <span class="l-text">
-              <span class="l-title">{s.data.title}</span>
-              <span class="l-answer">{s.data.answer}</span>
-            </span>
-          </a>
-          <p class="l-move"><strong>Right move:</strong> {s.data.rightMove}</p>
-          <ul class="chips">
-            {s.data.markets.map((m) => <li class="chip">{m}</li>)}
-          </ul>
+          <img class="avatar" src="/img/slick.png" alt="" width="64" height="64" />
+          <div class="l-main">
+            <span class="l-ep">Episode {s.data.episode}</span>
+            <a href={`/scams/${s.id}/`} class="l-title">{s.data.title}</a>
+            <p class="l-move"><strong>Right move:</strong> {s.data.rightMove}</p>
+          </div>
+          <span class="l-markets">{s.data.markets.length === 4 ? 'US · UK · Canada · Australia' : s.data.markets.join(' · ')}</span>
         </li>
       ))}
     </ul>
@@ -37,20 +33,15 @@ const markets = ['US', 'UK', 'Canada', 'Australia'];
 </Base>
 
 <style>
-  .lib { list-style: none; margin: 24px 0 0; padding: 0; max-width: 760px; }
-  .lib > li { border-top: 2px solid var(--line); padding: 20px 0 8px; }
-  .lib > li:last-child { border-bottom: 2px solid var(--line); }
-  .lib a { text-decoration: none; }
-  .l-link { display: flex; gap: 16px; align-items: flex-start; }
+  .lib { list-style: none; margin: 28px 0 0; padding: 0; max-width: none; border-top: 3px solid var(--navy); }
+  .lib > li { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: flex-start; padding: 24px 0; border-bottom: 1px solid var(--line); }
   .avatar { flex: none; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: 50% 8%; background: var(--mist); }
-  .l-text { display: block; }
-  .l-move, .lib .chips { margin-left: 80px; }
-  .lib a:hover .l-title { text-decoration: underline; text-decoration-thickness: 3px; }
-  .l-title { display: block; font-family: var(--display); font-weight: 600; font-size: 1.5rem; line-height: 1.2; }
-  .l-answer { display: block; color: var(--muted); margin-top: 4px; }
-  .l-move { margin: 10px 0 12px; color: var(--green); max-width: var(--measure); }
+  .l-main { flex: 1 1 380px; min-width: 0; }
+  .l-ep { display: block; font-weight: 700; color: var(--muted); }
+  .l-title { font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.25; text-decoration-thickness: 2px; color: var(--navy); }
+  .l-move { margin: 6px 0 0; color: var(--green); max-width: var(--measure); }
   .l-move strong { color: var(--green); }
-  .lib .chips { margin: 0 0 8px; }
+  .l-markets { flex: 0 0 auto; font-weight: 700; color: var(--navy); }
   .empty { color: var(--muted); }
 </style>
 
