@@ -32,3 +32,5 @@ reviewed: "2026-11-20"
 3. **No safe word, no money.** Every time.
 
 A good moment to set one up is your next family dinner. Don't write the safe word anywhere online.
+
+Want a printable version? Get the free [Family Protection Kit](/family-kit/).
