@@ -7,7 +7,7 @@ rightMove: "Don't reply, and block the number. Never invest with someone you met
 markets: ["US", "UK", "Canada", "Australia"]
 steps:
   - "A stranger texts: \"Hi Linda, lunch tomorrow?\" You say it's a wrong number, and they keep chatting."
-  - "Weeks later, they share a crypto tip that grows money fast."
+  - "Weeks later, they share a cryptocurrency tip that grows money fast."
   - "An app shows huge gains, so you add more money."
   - "To cash out, you're told you must pay a tax first."
   - "Then the app vanishes, with your money."

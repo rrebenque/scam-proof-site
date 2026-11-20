@@ -1,0 +1,16 @@
+---
+---
+<button type="button" class="print-btn" data-print hidden>
+  <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M7 14h10v7H7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  Print this page
+</button>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((b) => {
+    b.hidden = false;
+    b.addEventListener('click', () => window.print());
+  });
+</script>
+<style>
+  .print-btn { display: inline-flex; align-items: center; gap: 10px; font: inherit; font-weight: 700; min-height: 52px; padding: 10px 22px; margin-top: 36px; border-radius: 999px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); cursor: pointer; }
+  .print-btn:hover { background: var(--mist); }
+</style>

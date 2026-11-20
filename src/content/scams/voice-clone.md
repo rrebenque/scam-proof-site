@@ -5,6 +5,8 @@ pageTitle: "AI Voice Clone Scam: The Fake Family Emergency Call"
 answer: "Scammers only need three seconds of your voice."
 rightMove: "Hang up. Call them back on the number you already have."
 markets: ["US", "UK", "Canada", "Australia"]
+videoId: "xefpfoqicGI"
+videoShort: true
 steps:
   - "Scammers grab a few seconds of your voice from one video you posted."
   - "Then your grandma's phone rings, and the caller sounds exactly like you."

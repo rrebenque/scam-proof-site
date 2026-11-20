@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import PrintButton from '../../components/PrintButton.astro';
 
 export async function getStaticPaths() {
   const scams = await getCollection('scams');
@@ -16,7 +17,7 @@ const related = d.related
 ---
 <Base title={d.pageTitle} description={d.answer}>
   <div class="page">
-    <p class="crumb"><a href="/scams/">Scam Library</a></p>
+    <p class="crumb"><a href="/scams/">All scam guides</a></p>
     <ul class="chips">
       {d.markets.map((m) => <li class="chip">{m}</li>)}
     </ul>
@@ -45,7 +46,7 @@ const related = d.related
         )}
         {d.redFlags.length > 0 && (
           <>
-            <h2>Red flags</h2>
+            <h2>Warning signs</h2>
             <ul class="flags">{d.redFlags.map((s) => <li>{s}</li>)}</ul>
           </>
         )}
@@ -86,6 +87,8 @@ const related = d.related
         </ul>
       </>
     )}
+
+    <PrintButton />
 
     <p class="meta">Last reviewed: {d.reviewed}. Applies to: {d.markets.join(', ')}.</p>
   </div>

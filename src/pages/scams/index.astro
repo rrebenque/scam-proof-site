@@ -5,9 +5,9 @@ import Base from '../../layouts/Base.astro';
 const scams = (await getCollection('scams')).sort((a, b) => b.data.episode - a.data.episode);
 const markets = ['US', 'UK', 'Canada', 'Australia'];
 ---
-<Base title="Scam Library" description="Every scam we've covered: how it works, the red flags, and the right move.">
+<Base title="Scam guides" description="Every scam we've covered: how it works, the warning signs, and the right move.">
   <div class="page">
-    <h1>Scam Library</h1>
+    <h1>Scam guides</h1>
     <p class="lead">Each guide shows how the scam works and the one right move.</p>
 
     <div class="picker" role="group" aria-label="Show guides for">

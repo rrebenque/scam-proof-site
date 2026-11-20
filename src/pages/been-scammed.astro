@@ -58,10 +58,10 @@ const situations = [
   },
   {
     id: 'code',
-    label: 'I gave a password or one-time code',
+    label: 'I gave a password or a code from a text message',
     steps: [
       { text: 'Reset the password for that account first, then any other account that uses the same password.' },
-      { text: 'Turn on two-step sign-in, and check that the recovery email and phone number are still yours.' },
+      { text: 'Turn on two-step sign-in (a code sent to your phone each time you log in), and check that the recovery email and phone number are still yours.' },
       { text: 'Call your bank right away if it was a banking code. A texted code can be the key to your online banking.' },
     ],
   },
@@ -69,16 +69,16 @@ const situations = [
     id: 'bank',
     label: 'I paid by card or bank transfer',
     steps: [
-      { text: 'Call your bank or card issuer using the number on the back of your card. Say it was fraud and ask them to stop or recall the payment.' },
+      { text: 'Call your bank or card company using the number on the back of your card. Say it was fraud and ask them to stop or recall the payment.' },
       { text: 'Ask about disputing a card payment, or recalling a bank transfer. The sooner you ask, the better the chance.' },
-      { text: 'In the UK, ask your bank to assess your claim under the bank transfer scam reimbursement rules.', countries: ['uk'] },
+      { text: 'In the UK, ask your bank to assess your claim under the rules that require banks to pay back some scam victims.', countries: ['uk'] },
     ],
   },
   {
     id: 'gift',
-    label: 'I paid with gift cards, crypto or a payment app',
+    label: 'I paid with gift cards, cryptocurrency (such as Bitcoin) or a payment app',
     steps: [
-      { text: 'Report it right away inside the app, or to the company that issued the card or runs the crypto exchange.' },
+      { text: 'Report it right away inside the app, or to the company that issued the card or runs the cryptocurrency exchange.' },
       { text: 'Money sent this way is hard to get back, so be ready for that. Reporting is still worth doing, because it can stop the scammer reaching others.' },
     ],
   },
@@ -114,7 +114,7 @@ const sources = [
   <ol>
     <li><strong>Stop contact.</strong> Don't reply, and don't send any more money or information.</li>
     <li><strong>Call your bank or card issuer</strong> using the number on the back of your card, not a number the scammer gave you. Say it was fraud.</li>
-    <li><strong>Secure your accounts.</strong> Change passwords for anything the scammer touched, and turn on two-step sign-in.</li>
+    <li><strong>Secure your accounts.</strong> Change passwords for anything the scammer touched, and turn on two-step sign-in (a code sent to your phone each time you log in).</li>
   </ol>
 
   <h2>2. Choose your country</h2>

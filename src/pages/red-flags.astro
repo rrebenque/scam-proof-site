@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import PrintButton from '../components/PrintButton.astro';
 
 const all = await getCollection('scams');
 const guide = (id: string) => all.find((s) => s.id === id);
@@ -28,11 +29,11 @@ const themes = [
   },
   {
     name: 'They ask for money in a strange way',
-    why: 'Gift cards, crypto, cash and quick transfers are hard or impossible to get back.',
+    why: 'Gift cards, cryptocurrency, cash and quick transfers are hard or impossible to get back.',
     move: 'Never pay a stranger this way. A legitimate business takes a card.',
     flags: [
       { text: 'A request to pay with gift cards', id: 'voice-clone' },
-      { text: 'Anyone asking for cash, gold, gift cards or crypto', id: 'safe-account' },
+      { text: 'Anyone asking for cash, gold, gift cards or cryptocurrency', id: 'safe-account' },
       { text: 'A seller who only accepts Zelle and refuses cards', id: 'zelle' },
       { text: 'A fee or tax you must pay before you can cash out', id: 'pig-butchering' },
     ],
@@ -71,9 +72,9 @@ const themes = [
   },
 ];
 ---
-<Base title="Scam red flags" description="The warning signs that show up again and again across scams, and what to do about each one.">
+<Base title="Scam warning signs" description="The warning signs that show up again and again across scams, and what to do about each one.">
   <div class="page">
-    <h1>Scam red flags</h1>
+    <h1>Scam warning signs</h1>
     <p class="lead">Scams change. The warning signs mostly don't. Each one links to the guide where we cover it.</p>
 
     {themes.map((t) => (
@@ -95,7 +96,9 @@ const themes = [
       </section>
     ))}
 
-    <p class="meta">Built from the red flags in our guides. Last reviewed: 2026-11-20.</p>
+    <PrintButton />
+
+    <p class="meta">Built from the warning signs in our guides. Last reviewed: 2026-11-20.</p>
   </div>
 </Base>
 

@@ -10,13 +10,13 @@ steps:
   - "The call. The screen shows your bank's name and even its real number. Scammers can make almost any name or number show up, which is called spoofing."
   - "The panic. The caller says your account is hacked and asks you to read back a code. That code is the key to your online banking."
   - "The secret. You're told not to tell the bank staff or your family. A second caller may join in, posing as police."
-  - "The safe account. You're asked to move your savings to a new account, or hand over cash, gold or crypto. There is no such thing as a safe account. It belongs to the scammer."
+  - "The safe account. You're asked to move your savings to a new account, or hand over cash, gold or cryptocurrency. There is no such thing as a safe account. It belongs to the scammer."
 redFlags:
   - "Anyone asking you to move your money to keep it safe"
   - "Anyone asking for a code that was texted to you"
   - "Anyone telling you to keep it secret, even from your bank or your family"
   - "Anyone rushing you: it has to be right now"
-  - "Anyone asking for cash, gold, gift cards or crypto"
+  - "Anyone asking for cash, gold, gift cards or cryptocurrency"
 related: ["voice-clone", "toll-text"]
 sources:
   - label: "FCC Consumer Alert: Bank Impersonation Scams"
