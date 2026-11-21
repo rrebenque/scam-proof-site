@@ -5,6 +5,8 @@ pageTitle: "Family Safe Word: How To Set One Up"
 answer: "Your family needs a safe word before 2027."
 rightMove: "Make it random, share it face to face, and treat no safe word as no money, every time."
 markets: ["US", "UK", "Canada", "Australia"]
+videoId: "lcS9p8s2SV4"
+videoShort: true
 steps:
   - "A scammer clones your voice and calls your grandma."
   - "The voice says: \"Grandma, it's me. I'm in trouble. Send money now.\""
