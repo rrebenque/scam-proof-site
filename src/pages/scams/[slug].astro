@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PrintButton from '../../components/PrintButton.astro';
+import ShareBar from '../../components/ShareBar.astro';
 
 export async function getStaticPaths() {
   const scams = await getCollection('scams');
@@ -87,6 +88,8 @@ const related = d.related
         </ul>
       </>
     )}
+
+    <ShareBar title={d.title} />
 
     <PrintButton />
 

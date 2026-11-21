@@ -1,0 +1,199 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const all = await getCollection('scams');
+const names: Record<string, string> = {
+  'toll-text': 'the unpaid toll text scam',
+  'voice-clone': 'the fake family emergency call (AI voice clone)',
+  'safe-account': 'the "safe account" bank impersonation scam',
+  zelle: 'the "Zelle only" payment scam',
+  'pig-butchering': 'the wrong-number text and fake investment scam',
+  'safe-word': 'the family emergency scam',
+};
+const guides = Object.fromEntries(
+  all.map((s) => [s.id, { name: names[s.id] ?? s.data.title, title: s.data.title, move: s.data.rightMove, url: `/scams/${s.id}/` }]),
+);
+
+const how = [
+  ['text', 'A text message'],
+  ['call', 'A phone call or voicemail'],
+  ['email', 'An email'],
+  ['chat', 'A chat, social media or dating app message'],
+  ['sale', 'Someone I am buying from or selling to'],
+  ['other', 'Something else'],
+];
+const want = [
+  ['fee', 'Click a link or pay a small fee'],
+  ['family', 'Send money to help a family member or friend'],
+  ['safe', 'Move my money to a "safe" account'],
+  ['payapp', 'Pay a stranger with Zelle or another payment app'],
+  ['invest', 'Put money into an investment, often cryptocurrency'],
+  ['code', 'Give them a code or password'],
+  ['unsure', 'I am not sure'],
+];
+const signs = [
+  'They contacted me first, out of the blue',
+  'They want me to act right now',
+  'They told me to keep it secret',
+  'They want gift cards, cryptocurrency, cash or a payment app',
+  'They asked me to move my money or tell them a code',
+  'It sounds too good to be true',
+];
+---
+<Base title="Is it a scam? Check a message or call" description="Answer three quick questions about a text, call or email. Get the matching scam guide and the right move. Nothing you enter is sent anywhere.">
+  <div class="page">
+    <h1>Is it a scam?</h1>
+    <p class="lead">Answer three quick questions about the text, call or message. You'll get the right move.</p>
+    <p class="private">Nothing you choose here is sent anywhere. Don't type any personal details on this site.</p>
+
+    <noscript><p class="nojs">This checker needs JavaScript. You can read the <a href="/red-flags/">warning signs</a> or browse the <a href="/scams/">scam guides</a> instead.</p></noscript>
+
+    <form id="check" class="wide" data-guides={JSON.stringify(guides)} novalidate>
+      <fieldset>
+        <legend><span class="n">1</span> How did it reach you?</legend>
+        <div class="opts">
+          {how.map(([v, l]) => <label class="opt"><input type="radio" name="how" value={v} /><span>{l}</span></label>)}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">2</span> What do they want you to do?</legend>
+        <div class="opts">
+          {want.map(([v, l]) => <label class="opt"><input type="radio" name="want" value={v} /><span>{l}</span></label>)}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">3</span> Tick anything that fits <span class="opt-note">(or none)</span></legend>
+        <div class="opts">
+          {signs.map((l, i) => <label class="opt"><input type="checkbox" name="sign" value={String(i)} /><span>{l}</span></label>)}
+        </div>
+      </fieldset>
+
+      <p class="err" role="alert" id="err"></p>
+      <button type="submit" class="go">Check it</button>
+    </form>
+
+    <section id="result" class="result" tabindex="-1" hidden aria-live="polite"></section>
+
+    <p class="meta">This is a guide to common patterns. We can't confirm whether a specific message is real. If in doubt, contact the real company or person yourself, using a number you look up or already have.</p>
+  </div>
+</Base>
+
+<script>
+  const form = document.getElementById('check') as HTMLFormElement;
+  const out = document.getElementById('result') as HTMLElement;
+  const err = document.getElementById('err') as HTMLElement;
+  type G = { name: string; title: string; move: string; url: string };
+  const guides: Record<string, G> = JSON.parse(form.dataset.guides || '{}');
+
+  const GENERIC = 'Do not click, reply, pay or share a code. Contact the real company or person yourself, using a phone number you look up or already have. Tell someone you trust.';
+
+  function pick(how: string, want: string): string | null {
+    if (want === 'family') return 'voice-clone';
+    if (want === 'safe') return 'safe-account';
+    if (want === 'invest') return 'pig-butchering';
+    if (want === 'payapp') return how === 'call' ? 'safe-account' : 'zelle';
+    if (want === 'fee' && how === 'text') return 'toll-text';
+    if (want === 'code' && how === 'call') return 'safe-account';
+    if (want === 'unsure' && how === 'chat') return 'pig-butchering';
+    return null;
+  }
+
+  function esc(s: string) { return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string)); }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const how = String(fd.get('how') || '');
+    const want = String(fd.get('want') || '');
+    const n = fd.getAll('sign').length;
+    if (!how || !want) {
+      err.textContent = !how && !want ? 'Please answer questions 1 and 2.' : !how ? 'Please answer question 1.' : 'Please answer question 2.';
+      return;
+    }
+    err.textContent = '';
+
+    const id = pick(how, want);
+    const g = id ? guides[id] : null;
+    const strong = ['family', 'safe', 'invest', 'payapp'].includes(want);
+
+    let level: 'high' | 'mid' | 'low';
+    let head: string;
+    if (n >= 2 || (g && n >= 1) || strong) {
+      level = 'high';
+      head = 'Treat this as a scam until you have checked it yourself.';
+    } else if (n === 1 || g) {
+      level = 'mid';
+      head = 'This has warning signs. Check before you do anything.';
+    } else {
+      level = 'low';
+      head = 'No warning signs ticked. Still check it yourself.';
+    }
+
+    const signsLine = n === 0 ? 'You ticked no warning signs.' : n === 1 ? 'You ticked 1 warning sign.' : `You ticked ${n} warning signs.`;
+    const match = g
+      ? `<p>It matches the pattern of <strong>${esc(g.name)}</strong>.</p>`
+      : `<p>It doesn't match one of our guides exactly, but the same rule applies.</p>`;
+    const extra = id === 'voice-clone' && guides['safe-word']
+      ? `<li><a href="${guides['safe-word'].url}">${esc(guides['safe-word'].title)}</a></li>` : '';
+
+    out.className = `result ${level}`;
+    out.innerHTML = `
+      <h2 id="rh" tabindex="-1">${esc(head)}</h2>
+      ${match}
+      <p class="count">${signsLine}</p>
+      <div class="move2"><strong>The right move</strong><p>${esc(g ? g.move : GENERIC)}</p></div>
+      <ul class="next">
+        ${g ? `<li><a href="${g.url}">Read the guide: ${esc(g.title)}</a></li>` : ''}
+        ${extra}
+        <li><a href="/red-flags/">See all the warning signs</a></li>
+        <li><strong><a href="/been-scammed/">Already paid or shared something? Start here.</a></strong></li>
+      </ul>
+      <button type="button" class="again">Check something else</button>`;
+    out.hidden = false;
+    (out.querySelector('#rh') as HTMLElement).focus();
+    out.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    out.querySelector('.again')!.addEventListener('click', () => {
+      form.reset();
+      out.hidden = true;
+      out.innerHTML = '';
+      window.scrollTo({ top: 0 });
+      (form.querySelector('input') as HTMLElement).focus();
+    });
+  });
+</script>
+
+<style>
+  .private { font-weight: 700; margin-top: 10px; }
+  .nojs { background: var(--mist); padding: 16px 20px; border-radius: 12px; }
+  fieldset { border: 0; padding: 0; margin: 40px 0 0; min-width: 0; }
+  legend { font-family: var(--display); font-weight: 700; font-size: 1.6rem; line-height: 1.25; padding: 0; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; }
+  .n { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 1.3rem; text-align: center; line-height: 40px; }
+  .opt-note { font-family: var(--body); font-weight: 400; font-size: 1.1rem; color: var(--muted); }
+  .opts { display: grid; gap: 10px; max-width: var(--measure); }
+  .opt { display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 10px 18px; border: 2px solid var(--line); border-radius: 12px; background: #fff; cursor: pointer; }
+  .opt:hover { border-color: var(--navy); }
+  .opt:has(input:checked) { border-color: var(--navy); background: var(--mist); }
+  .opt:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .opt input { flex: none; width: 26px; height: 26px; accent-color: var(--navy); margin: 0; }
+  .err { color: var(--red-ink); font-weight: 700; min-height: 1.4em; margin: 24px 0 8px; }
+  .go, .again { font: inherit; font-weight: 700; min-height: 56px; padding: 12px 32px; border-radius: 12px; border: 0; background: var(--navy); color: #fff; font-size: 1.2rem; cursor: pointer; }
+  .go:hover, .again:hover { background: var(--red-ink); }
+  .again { margin-top: 24px; background: #fff; color: var(--navy); border: 2px solid var(--navy); font-size: 1.05rem; }
+  .again:hover { background: var(--navy); color: #fff; }
+
+  .result { margin-top: 44px; padding: 28px 28px 32px; border-radius: 14px; max-width: var(--measure); border-left: 10px solid var(--navy); background: var(--mist); }
+  .result.high { border-left-color: var(--red-ink); background: #fdf1f1; }
+  .result.mid { border-left-color: #a05a00; background: #fff6e8; }
+  .result h2 { margin: 0 0 14px; font-size: 1.8rem; }
+  .result h2:focus { outline: none; }
+  .result p { margin: 0 0 10px; }
+  .count { color: var(--muted); font-weight: 700; }
+  .move2 { background: #fff; border-left: 8px solid var(--green); border-radius: 8px; padding: 16px 20px; margin: 18px 0; font-size: 1.2rem; }
+  .move2 p { margin: 6px 0 0; }
+  .next { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .next a { display: inline-block; padding: 6px 0; }
+  @media print { form, .again { display: none; } }
+</style>

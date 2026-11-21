@@ -1,0 +1,63 @@
+---
+interface Props { title: string }
+const { title } = Astro.props;
+---
+<section class="share" data-share data-title={title} hidden aria-labelledby="share-h">
+  <h2 id="share-h">Send this guide to someone</h2>
+  <p>Someone you know may need it. A quick message could save them thousands.</p>
+  <div class="share-row">
+    <button type="button" class="s-btn s-native" data-native hidden>Share…</button>
+    <a class="s-btn" data-kind="sms" href="#">Text message</a>
+    <a class="s-btn" data-kind="whatsapp" href="#" rel="noopener" target="_blank">WhatsApp</a>
+    <a class="s-btn" data-kind="facebook" href="#" rel="noopener" target="_blank">Facebook</a>
+    <a class="s-btn" data-kind="email" href="#">Email</a>
+    <button type="button" class="s-btn" data-copy>Copy link</button>
+  </div>
+  <p class="share-status" role="status" aria-live="polite"></p>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-share]').forEach((box) => {
+    const url = window.location.href.split('#')[0];
+    const title = box.dataset.title || document.title;
+    const text = `This might help you: ${title}`;
+    const enc = encodeURIComponent;
+    const links: Record<string, string> = {
+      sms: `sms:?&body=${enc(text + ' ' + url)}`,
+      whatsapp: `https://wa.me/?text=${enc(text + ' ' + url)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`,
+      email: `mailto:?subject=${enc(title)}&body=${enc(text + '\n\n' + url)}`,
+    };
+    box.querySelectorAll<HTMLAnchorElement>('[data-kind]').forEach((a) => {
+      a.href = links[a.dataset.kind || ''] || url;
+    });
+    const status = box.querySelector<HTMLElement>('.share-status')!;
+    const native = box.querySelector<HTMLButtonElement>('[data-native]')!;
+    if (navigator.share) {
+      native.hidden = false;
+      native.addEventListener('click', () => {
+        navigator.share({ title, text, url }).catch(() => {});
+      });
+    }
+    box.querySelector<HTMLButtonElement>('[data-copy]')!.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+        status.textContent = 'Link copied. Paste it into a message.';
+      } catch {
+        status.textContent = 'Could not copy. Select the address at the top of your browser and copy it.';
+      }
+    });
+    box.hidden = false;
+  });
+</script>
+<style>
+  .share { margin-top: 48px; padding: 24px; border-radius: 14px; background: var(--mist); max-width: var(--measure); }
+  .share h2 { margin: 0 0 8px; font-size: 1.5rem; }
+  .share p { margin: 0 0 16px; }
+  .share-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .s-btn { display: inline-flex; align-items: center; justify-content: center; font: inherit; font-weight: 700; min-height: 52px; padding: 10px 22px; border-radius: 999px; border: 2px solid var(--ink); background: var(--paper); color: var(--ink); text-decoration: none; cursor: pointer; }
+  .s-btn:hover { background: #fff; text-decoration: underline; }
+  .s-native { background: var(--ink); color: #fff; }
+  .s-native:hover { background: var(--ink); }
+  .share .share-status { margin: 14px 0 0; min-height: 1.4em; font-weight: 700; }
+  @media print { .share { display: none !important; } }
+</style>

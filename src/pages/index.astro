@@ -20,6 +20,7 @@ const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.
             <li><a href="/scams/pig-butchering/">A wrong-number text</a></li>
             <li><a href="/scams/zelle/">A "Zelle only" seller</a></li>
           </ul>
+          <p class="ask-more"><a href="/check/">Not on the list? Answer 3 quick questions</a></p>
         </div>
       </div>
 
@@ -119,6 +120,8 @@ const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.
   .ask-q { font-weight: 700; margin: 0 0 12px; }
   .situations { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; max-width: none; }
   .situations a { display: inline-flex; align-items: center; min-height: 52px; padding: 8px 20px; border-radius: 999px; border: 2px solid var(--navy); background: var(--mist); color: var(--navy); font-weight: 700; text-decoration: none; }
+  .ask-more { margin: 18px 0 0; font-weight: 700; }
+  .ask-more a { display: inline-block; padding: 8px 0; }
   .situations a:hover { background: var(--navy); color: #fff; }
 
   .hero-demo { display: flex; flex-direction: column; align-items: center; }
