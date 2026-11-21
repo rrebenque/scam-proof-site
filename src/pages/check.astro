@@ -10,6 +10,8 @@ const names: Record<string, string> = {
   zelle: 'the "Zelle only" payment scam',
   'pig-butchering': 'the wrong-number text and fake investment scam',
   'safe-word': 'the family emergency scam',
+  likes: 'the "paid to like videos" task scam',
+  overpay: 'the overpayment scam',
 };
 const guides = Object.fromEntries(
   all.map((s) => [s.id, { name: names[s.id] ?? s.data.title, title: s.data.title, move: s.data.rightMove, url: `/scams/${s.id}/` }]),
@@ -29,6 +31,8 @@ const want = [
   ['safe', 'Move my money to a "safe" account'],
   ['payapp', 'Pay a stranger with Zelle or another payment app'],
   ['invest', 'Put money into an investment, often cryptocurrency'],
+  ['task', 'Do online "tasks" or like videos to earn money'],
+  ['refund', 'Send back money because they say they paid too much'],
   ['code', 'Give them a code or password'],
   ['unsure', 'I am not sure'],
 ];
@@ -91,6 +95,8 @@ const signs = [
   const GENERIC = 'Do not click, reply, pay or share a code. Contact the real company or person yourself, using a phone number you look up or already have. Tell someone you trust.';
 
   function pick(how: string, want: string): string | null {
+    if (want === 'task') return 'likes';
+    if (want === 'refund') return 'overpay';
     if (want === 'family') return 'voice-clone';
     if (want === 'safe') return 'safe-account';
     if (want === 'invest') return 'pig-butchering';
@@ -117,7 +123,7 @@ const signs = [
 
     const id = pick(how, want);
     const g = id ? guides[id] : null;
-    const strong = ['family', 'safe', 'invest', 'payapp'].includes(want);
+    const strong = ['family', 'safe', 'invest', 'payapp', 'task', 'refund'].includes(want);
 
     let level: 'high' | 'mid' | 'low';
     let head: string;
