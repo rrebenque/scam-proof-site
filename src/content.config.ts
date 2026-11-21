@@ -13,6 +13,7 @@ const scams = defineCollection({
     markets: z.array(z.string()),
     videoId: z.string().optional(),
     videoShort: z.boolean().default(false),
+    longVideoId: z.string().optional(),
     steps: z.array(z.string()).default([]),
     redFlags: z.array(z.string()).default([]),
     related: z.array(z.string()).default([]),

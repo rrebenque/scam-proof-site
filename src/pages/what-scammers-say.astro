@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import PrintButton from '../components/PrintButton.astro';
+
+type L = { they: string; you: string; id?: string; guide?: string };
+const groups: { name: string; lines: L[] }[] = [
+  {
+    name: 'On a phone call',
+    lines: [
+      { they: 'This is your bank\'s fraud team. Your account is in danger. Move your money to a safe account now.', you: 'I\'ll hang up and call the number on the back of my card.', id: 'safe-account', guide: 'The "safe account" bank scam' },
+      { they: 'Don\'t tell anyone, not even the bank. Someone there may be involved.', you: 'Anyone who says keep it secret is a scammer. I\'m telling my family.', id: 'safe-account', guide: 'The "safe account" bank scam' },
+      { they: 'Grandma, it\'s me. I\'m in trouble. Please don\'t tell Mom.', you: 'What is our family safe word? If you can\'t say it, I\'ll call you back on your number.', id: 'voice-clone', guide: 'AI voice clone scam' },
+      { they: 'I need the money right now, and it has to be gift cards.', you: 'No. I never pay with gift cards. Goodbye.', id: 'voice-clone', guide: 'AI voice clone scam' },
+    ],
+  },
+  {
+    name: 'In a text or chat',
+    lines: [
+      { they: 'Your toll balance is overdue. Pay today to avoid a late fee.', you: 'Don\'t reply. Open your real toll account yourself, then forward the text to 7726 and delete it.', id: 'toll-text', guide: 'Unpaid toll text scam' },
+      { they: 'Hi Linda, are we still on for lunch?', you: 'Don\'t reply. Block the number. A stranger who keeps chatting after "wrong number" is a warning sign.', id: 'pig-butchering', guide: 'Wrong-number text scam' },
+      { they: 'I\'ve made great money with crypto. Let me show you how.', you: 'I don\'t invest with people I only know by text.', id: 'pig-butchering', guide: 'Wrong-number text scam' },
+      { they: 'To withdraw your profits, you first need to pay a fee.', you: 'That is how this scam ends. I\'m stopping, and I\'m not paying.', id: 'pig-butchering', guide: 'Wrong-number text scam' },
+      { they: 'Get paid to like videos. Easy money, no experience needed.', you: 'Don\'t reply. Delete it. A real job never makes you pay to get paid.', id: 'likes', guide: 'Paid to like videos' },
+    ],
+  },
+  {
+    name: 'When buying or selling',
+    lines: [
+      { they: 'Zelle only. I don\'t take cards.', you: 'Then no deal. I\'ll buy from the official site with a credit card.', id: 'zelle', guide: 'Zelle and "Zelle only" sellers' },
+      { they: 'Oops, I sent too much. Please send back the difference.', you: 'I\'ll check my own account first. I refund nothing until the money has cleared.', id: 'overpay', guide: 'Overpayment scam' },
+    ],
+  },
+  {
+    name: 'Any time',
+    lines: [
+      { they: 'Read me the code we just texted you.', you: 'No. A real bank never asks for that code.' },
+      { they: 'This is urgent. You have to act today.', you: 'I\'ll take my time, and I\'ll check with the real company myself.' },
+    ],
+  },
+];
+---
+<Base title="What scammers say" description="The lines scammers use again and again, and exactly what to say back. Free printable sheet included.">
+  <div class="page">
+    <h1>What scammers say, and what to say back</h1>
+    <p class="lead">Scammers repeat the same lines. Know them, and keep your reply ready.</p>
+    <p class="private">These are examples of common patterns. The wording changes, the tricks don't.</p>
+
+    {groups.map((g) => (
+      <section class="group">
+        <h2>{g.name}</h2>
+        <ul class="pairs wide">
+          {g.lines.map((l) => (
+            <li>
+              <p class="they"><span class="lbl">They say</span>“{l.they}”</p>
+              <p class="you"><span class="lbl">You say</span>{l.you}</p>
+              {l.id && <p class="from"><a href={`/scams/${l.id}/`}>Read: {l.guide}</a></p>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <div class="kitcta">
+      <h2>Keep it by the phone</h2>
+      <p>We made a free one-page sheet of these lines for the fridge or the phone table.</p>
+      <p class="dl">
+        <a class="btn" href="/downloads/what-scammers-say-letter.pdf" download>Download for US Letter paper</a>
+        <a class="btn alt" href="/downloads/what-scammers-say-a4.pdf" download>Download for A4 paper</a>
+      </p>
+    </div>
+
+    <PrintButton />
+    <p class="meta">General information only. If you've already paid or shared something, <a href="/been-scammed/">start here</a>.</p>
+  </div>
+</Base>
+
+<style>
+  .private { font-weight: 700; margin-top: 10px; }
+  .group h2 { margin-top: 48px; }
+  .pairs { list-style: none; padding: 0; margin: 18px 0 0; max-width: 820px; display: grid; gap: 14px; }
+  .pairs li { border: 2px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; break-inside: avoid; }
+  .pairs p { margin: 0; padding: 14px 20px; max-width: none; }
+  .they { background: #fdf1f1; border-bottom: 2px solid var(--line); font-weight: 700; }
+  .you { background: #eef7f1; }
+  .lbl { display: block; font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  .they .lbl { color: var(--red-ink); }
+  .you .lbl { color: var(--green); }
+  .from { background: #fff; font-weight: 700; padding-top: 10px !important; padding-bottom: 10px !important; }
+  .kitcta { margin-top: 56px; padding: 24px 28px; background: var(--mist); border-radius: 14px; max-width: 820px; }
+  .kitcta h2 { margin: 0 0 8px; }
+  .dl { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; }
+  .btn { display: inline-flex; align-items: center; min-height: 52px; padding: 10px 24px; border-radius: 12px; background: var(--navy); color: #fff; font-weight: 700; text-decoration: none; }
+  .btn:hover { background: var(--red-ink); color: #fff; }
+  .btn.alt { background: #fff; color: var(--navy); border: 2px solid var(--navy); }
+  .btn.alt:hover { background: var(--navy); color: #fff; }
+  @media print { .kitcta { display: none; } .from { display: none; } }
+</style>

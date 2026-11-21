@@ -61,7 +61,7 @@ ol, ul { max-width: var(--measure); }
 .site-footer a { color: #fff; }
 .site-footer a:hover { color: #ffd2d4; }
 .site-footer p { margin-bottom: 0.6em; }
-.foot-links a { display: inline-block; padding: 10px 2px; }
+.foot-links a { display: inline-block; padding: 10px 0; margin-right: 22px; }
 
 /* shared pieces */
 .lead { font-size: 1.3rem; color: var(--muted); margin-top: 14px; }

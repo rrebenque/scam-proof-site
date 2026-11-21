@@ -35,6 +35,11 @@ img.c{height:78pt;width:auto}
 .card b{display:block;font-family:S,serif;font-size:14.5pt;color:#12283F}
 .card .mv{color:#12663D;font-weight:700;font-size:12.5pt}
 .small{font-size:12pt}
+.say{display:grid;grid-template-columns:1fr 1fr;gap:7pt 12pt}
+.pair{border:1.5pt solid #9aa7b3;border-radius:6pt;overflow:hidden;font-size:12.5pt;line-height:1.25;break-inside:avoid}
+.pair b{display:block;font-size:11pt}
+.they{background:#fdf1f1;padding:5pt 8pt;font-weight:700}.they b{color:#B81D27}
+.you{background:#eef7f1;padding:5pt 8pt}.you b{color:#12663D}
 """
 FOOT="Scam-Proof Money. Free to print and share. General information only, not legal or financial advice. youtube.com/@scamproofmoney"
 def head(title,sub,img):
@@ -86,6 +91,19 @@ docs['talking-with-a-parent-or-grandparent']=head('Talking with a parent or gran
 """+step(1,'Start with a story, not a warning','<br>“I saw a scam where the caller copied someone’s voice. It’s scary how real it sounds.”')+step(2,'Say it can happen to anyone','<br>Smart, careful people get caught, because scammers are professionals.')+step(3,'Agree on one rule','<br>“If anyone asks you for money, call me first, even if they say not to.”')+step(4,'Set up the family safe word together','<br>Do it in person. It takes five minutes.')+step(5,'Make it safe to tell you','<br>If something goes wrong, say “Thank you for telling me.” Shame keeps people quiet, and silence helps scammers.','green')+"""
 <div class="box"><span class="big">If they have already been scammed</span>Stay calm and kind. Help them call their bank using the number on the back of their card, then report it. The “I’ve been scammed” guide at Scam-Proof Money has the steps for each country.</div>
 """
+
+lines=[('This is your bank’s fraud team. Move your money to a safe account.','I’ll hang up and call the number on the back of my card.'),
+('Don’t tell anyone, not even the bank.','Anyone who says keep it secret is a scammer. I’m telling my family.'),
+('Grandma, it’s me. I’m in trouble. Don’t tell Mom.','What is our family safe word? If you can’t say it, I’ll call you back.'),
+('I need the money now, in gift cards.','No. I never pay with gift cards. Goodbye.'),
+('Your toll balance is overdue. Pay today.','Don’t reply. Check my real account. Forward the text to 7726.'),
+('Hi Linda, are we still on for lunch?','Don’t reply. Block the number.'),
+('To withdraw your profits, pay a fee first.','That is how this scam ends. I’m stopping.'),
+('Zelle only. I don’t take cards.','Then no deal. I’ll use a credit card on the official site.'),
+('Oops, I sent too much. Send back the difference.','I refund nothing until the money has cleared in my own account.'),
+('Read me the code we just texted you.','No. A real bank never asks for that code.')]
+docs['what-scammers-say']=head('What scammers say, and what to say back','Keep this by the phone. The wording changes. The tricks don’t.',slick)+'<div class="say">'+''.join(f'<div class="pair"><div class="they"><b>They say</b>“{a}”</div><div class="you"><b>You say</b>{b}</div></div>' for a,b in lines)+'</div>'
+
 for k,v in docs.items():
     html=f'<!doctype html><html><head><meta charset="utf-8"><title>{k}</title><style>{css}</style></head><body><div class="pg">{v}</div><div class="foot">{FOOT}</div></body></html>'
     open(f'/tmp/kit/{k}.html','w').write(html)

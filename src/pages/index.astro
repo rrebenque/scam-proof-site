@@ -98,6 +98,16 @@ const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.
     </div>
   </div>
 
+  <div class="wrap section">
+    <h2>More ways to stay safe</h2>
+    <ul class="more">
+      <li><a href="/quiz/"><strong>Spot the scam quiz</strong><span>Five quick questions. See the right move straight away.</span></a></li>
+      <li><a href="/what-scammers-say/"><strong>What scammers say</strong><span>The lines they use, and what to say back.</span></a></li>
+      <li><a href="/watch/"><strong>Watch our videos</strong><span>Every episode, with its written guide.</span></a></li>
+      <li><a href="/glossary/"><strong>Scam words explained</strong><span>Phishing, spoofing and more, in plain English.</span></a></li>
+    </ul>
+  </div>
+
   <div class="wrap section last">
     <div class="family">
       <div>
@@ -120,6 +130,11 @@ const latest = (await getCollection('scams')).sort((a, b) => b.data.episode - a.
   .ask-q { font-weight: 700; margin: 0 0 12px; }
   .situations { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 12px; max-width: none; }
   .situations a { display: inline-flex; align-items: center; min-height: 52px; padding: 8px 20px; border-radius: 999px; border: 2px solid var(--navy); background: var(--mist); color: var(--navy); font-weight: 700; text-decoration: none; }
+  .more { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; max-width: none; }
+  .more a { display: block; height: 100%; padding: 20px 22px; border: 2px solid var(--line); border-radius: 14px; text-decoration: none; color: var(--ink); background: #fff; }
+  .more a:hover { border-color: var(--navy); background: var(--mist); }
+  .more strong { display: block; font-family: var(--display); font-size: 1.3rem; color: var(--navy); margin-bottom: 6px; }
+  .more span { display: block; }
   .ask-more { margin: 18px 0 0; font-weight: 700; }
   .ask-more a { display: inline-block; padding: 8px 0; }
   .situations a:hover { background: var(--navy); color: #fff; }

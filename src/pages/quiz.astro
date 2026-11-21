@@ -1,0 +1,190 @@
+---
+import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
+
+const questions = [
+  {
+    id: 'toll-text',
+    guide: 'Unpaid toll text scam',
+    scene: { kind: 'Text message', from: 'State Toll Svcs', body: 'Your toll balance is $6.99 and overdue. Pay today to avoid a late fee. tolls-pay-now.com' },
+    q: 'What is the right move?',
+    right: "Don't tap the link. Open my real toll account myself, then forward the text to 7726.",
+    wrong: ['Tap the link and pay. It is only $6.99.', 'Call the phone number in the text to ask about it.'],
+    why: 'The scammers don\'t want $6.99. They want your card number. The link and any number in the text are theirs. Go to the real toll website yourself, and forward the text to 7726 (US, UK and Canada).',
+  },
+  {
+    id: 'safe-account',
+    guide: 'The "safe account" bank scam',
+    scene: { kind: 'Phone call', from: '"Your bank\'s fraud team"', body: 'Someone is draining your account. Move your money to a safe account while we investigate. Don\'t tell anyone.' },
+    q: 'What is the right move?',
+    right: 'Hang up and call the number on the back of my card.',
+    wrong: ['Move the money quickly, before it is gone.', 'Ask the caller for an employee ID number, then do what they say.'],
+    why: 'A real bank never asks you to move your money to keep it safe. Caller ID can be faked, and anyone can read out an ID number. Hang up and call the number on your card.',
+  },
+  {
+    id: 'voice-clone',
+    guide: 'AI voice clone scam',
+    scene: { kind: 'Phone call', from: 'Unknown number', body: '"Grandma, it\'s me. I\'m in trouble. Please don\'t tell Mom. I need gift cards, right now."' },
+    q: 'It sounds exactly like your grandchild. What is the right move?',
+    right: 'Ask for our family safe word. If they can\'t say it, hang up and call them back on the number I already have.',
+    wrong: ['Buy the gift cards. Family comes first.', 'Send the money, then call Mom to check.'],
+    why: 'Scammers can copy a voice from a short recording. Paying first and checking later is how the money is lost. A family safe word, or a call back on a saved number, beats a cloned voice.',
+  },
+  {
+    id: 'zelle',
+    guide: 'Zelle and "Zelle only" sellers',
+    scene: { kind: 'Message from a seller', from: 'Online marketplace', body: 'Concert tickets, half price! Zelle only. I don\'t take cards.' },
+    q: 'What is the right move?',
+    right: 'Say no deal, and buy from the official site with a credit card.',
+    wrong: ['Send the money with Zelle. The price is too good to miss.', 'Send half now, and half when the tickets arrive.'],
+    why: 'Instant payment apps work like cash. If the seller vanishes, your bank probably won\'t refund you. A credit card gives you the best chance to dispute a payment.',
+  },
+  {
+    id: 'overpay',
+    guide: 'Overpayment scam',
+    scene: { kind: 'Email', from: 'Looks like a payment service', body: 'Payment received. The buyer sent $500 for your $300 bike by mistake. Please send back the $200 difference.' },
+    q: 'You are selling a bike. What is the right move?',
+    right: 'Log in to my own payment app or bank, not through the email, and refund nothing until the money has cleared.',
+    wrong: ['Send back the $200. It is the honest thing to do.', 'Click the link in the email to confirm the payment.'],
+    why: 'The email is fake. Nothing arrived in your account, and anything you send back is lost. Only your own account shows what you were really paid, so check it yourself.',
+  },
+];
+---
+<Base title="Spot the scam quiz" description="Five quick questions. Pick the right move for each scam, and see the answer straight away.">
+  <div class="page">
+    <h1>Spot the scam</h1>
+    <p class="lead">Five quick questions. For each message or call, pick the right move.</p>
+    <p class="private">Nothing you choose is sent anywhere. The examples are made up.</p>
+
+    <noscript><p class="nojs">The quiz needs JavaScript. You can read the <a href="/scams/">scam guides</a> instead.</p></noscript>
+
+    <div id="quiz" class="wide" data-q={JSON.stringify(questions)}>
+      <div id="stage"></div>
+    </div>
+
+    <div id="end" hidden>
+      <ShareBar title="Spot the scam: a five-question quiz" />
+    </div>
+  </div>
+</Base>
+
+<script>
+  type Q = { id: string; guide: string; scene: { kind: string; from: string; body: string }; q: string; right: string; wrong: string[]; why: string };
+  const root = document.getElementById('quiz') as HTMLElement;
+  const stage = document.getElementById('stage') as HTMLElement;
+  const end = document.getElementById('end') as HTMLElement;
+  const qs: Q[] = JSON.parse(root.dataset.q || '[]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let i = 0;
+  let score = 0;
+  let missed: Q[] = [];
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
+  const shuffle = <T,>(a: T[]) => { const b = [...a]; for (let k = b.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [b[k], b[j]] = [b[j], b[k]]; } return b; };
+
+  function show() {
+    const q = qs[i];
+    const opts = shuffle([{ t: q.right, ok: true }, ...q.wrong.map((t) => ({ t, ok: false }))]);
+    stage.innerHTML = `
+      <p class="count" id="qh" tabindex="-1">Question ${i + 1} of ${qs.length}</p>
+      <div class="scene">
+        <p class="kind">${esc(q.scene.kind)}</p>
+        <p class="from">${esc(q.scene.from)}</p>
+        <p class="body">${esc(q.scene.body)}</p>
+      </div>
+      <form id="qf" novalidate>
+        <fieldset>
+          <legend>${esc(q.q)}</legend>
+          <div class="opts">
+            ${opts.map((o, k) => `<label class="opt"><input type="radio" name="a" value="${o.ok ? 'y' : 'n'}" /><span>${esc(o.t)}</span></label>`).join('')}
+          </div>
+        </fieldset>
+        <p class="err" id="qe" role="alert"></p>
+        <button type="submit" class="go">Check my answer</button>
+      </form>
+      <div id="fb" aria-live="polite"></div>`;
+    (document.getElementById('qh') as HTMLElement).focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    const form = document.getElementById('qf') as HTMLFormElement;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const v = new FormData(form).get('a');
+      if (!v) { (document.getElementById('qe') as HTMLElement).textContent = 'Please pick an answer.'; return; }
+      const ok = v === 'y';
+      if (ok) score++; else missed.push(q);
+      form.querySelectorAll('input').forEach((x) => ((x as HTMLInputElement).disabled = true));
+      (form.querySelector('.go') as HTMLElement).remove();
+      (document.getElementById('qe') as HTMLElement).textContent = '';
+      const last = i === qs.length - 1;
+      const fb = document.getElementById('fb') as HTMLElement;
+      fb.innerHTML = `
+        <div class="fb ${ok ? 'good' : 'bad'}">
+          <h2 id="fh" tabindex="-1">${ok ? 'Yes, that is the right move.' : 'Not quite.'}</h2>
+          ${ok ? '' : `<p><strong>The right move:</strong> ${esc(q.right)}</p>`}
+          <p>${esc(q.why)}</p>
+          <p><a href="/scams/${q.id}/">Read the guide: ${esc(q.guide)}</a></p>
+        </div>
+        <button type="button" class="go" id="next">${last ? 'See my score' : 'Next question'}</button>`;
+      (document.getElementById('fh') as HTMLElement).focus();
+      document.getElementById('next')!.addEventListener('click', () => { if (last) finish(); else { i++; show(); } });
+    });
+  }
+
+  function finish() {
+    const msg = score === qs.length
+      ? 'Perfect score. You know the right move for every one.'
+      : score >= 3
+        ? 'Nice work. You know most of the right moves.'
+        : 'These scams fool smart people every day. Now you know the right moves.';
+    stage.innerHTML = `
+      <div class="result">
+        <h2 id="rh" tabindex="-1">You got ${score} out of ${qs.length}.</h2>
+        <p>${msg}</p>
+        ${missed.length ? `<p><strong>Worth another look:</strong></p><ul class="next">${missed.map((m) => `<li><a href="/scams/${m.id}/">${esc(m.guide)}</a></li>`).join('')}</ul>` : ''}
+        <p>Someone you know may not know these. Send them the quiz below.</p>
+        <button type="button" class="again" id="again">Take the quiz again</button>
+      </div>`;
+    end.hidden = false;
+    (document.getElementById('rh') as HTMLElement).focus();
+    document.getElementById('again')!.addEventListener('click', () => { i = 0; score = 0; missed = []; end.hidden = true; show(); });
+  }
+
+  show();
+</script>
+
+<style is:global>
+  .private { font-weight: 700; margin-top: 10px; }
+  .nojs { background: var(--mist); padding: 16px 20px; border-radius: 12px; }
+  #quiz { margin-top: 32px; max-width: var(--measure); }
+  .count { font-weight: 700; color: var(--muted); margin: 0 0 14px; }
+  .count:focus { outline: none; }
+  .scene { background: var(--mist); border-radius: 14px; padding: 18px 22px; margin-bottom: 8px; border-left: 8px solid var(--navy); }
+  .scene p { margin: 0; max-width: none; }
+  .kind { font-size: 1rem; font-weight: 700; color: var(--muted); }
+  .from { font-weight: 700; margin: 2px 0 8px !important; }
+  .body { font-size: 1.25rem; }
+  fieldset { border: 0; padding: 0; margin: 28px 0 0; min-width: 0; }
+  legend { font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1.25; padding: 0; margin-bottom: 16px; }
+  .opts { display: grid; gap: 10px; }
+  .opt { display: flex; align-items: flex-start; gap: 14px; min-height: 56px; padding: 14px 18px; border: 2px solid var(--line); border-radius: 12px; background: #fff; cursor: pointer; }
+  .opt:hover { border-color: var(--navy); }
+  .opt:has(input:checked) { border-color: var(--navy); background: var(--mist); }
+  .opt:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .opt input { flex: none; width: 26px; height: 26px; accent-color: var(--navy); margin: 0; }
+  .err { color: var(--red-ink); font-weight: 700; min-height: 1.4em; margin: 18px 0 8px; }
+  .go, .again { font: inherit; font-weight: 700; min-height: 56px; padding: 12px 32px; border-radius: 12px; border: 0; background: var(--navy); color: #fff; font-size: 1.2rem; cursor: pointer; margin-top: 8px; }
+  .go:hover { background: var(--red-ink); }
+  .again { background: #fff; color: var(--navy); border: 2px solid var(--navy); font-size: 1.05rem; margin-top: 12px; }
+  .again:hover { background: var(--navy); color: #fff; }
+  .fb { margin: 24px 0 8px; padding: 22px 24px; border-radius: 14px; border-left: 10px solid var(--navy); }
+  .fb.good { background: #eef7f1; border-left-color: var(--green); }
+  .fb.bad { background: #fff6e8; border-left-color: #a05a00; }
+  .fb h2 { margin: 0 0 10px; font-size: 1.6rem; }
+  .fb h2:focus, .result h2:focus { outline: none; }
+  .fb p { margin: 0 0 10px; }
+  .result { padding: 26px 28px; border-radius: 14px; background: var(--mist); border-left: 10px solid var(--navy); }
+  .result h2 { margin: 0 0 10px; font-size: 2rem; }
+  .next { padding-left: 1.2em; }
+  #end { margin-top: 8px; }
+  @media print { #quiz, #end { display: none; } }
+</style>
