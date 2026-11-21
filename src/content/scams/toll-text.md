@@ -20,9 +20,7 @@ related: ["safe-account", "pig-butchering"]
 sources:
   - label: "FBI IC3 alert: smishing scam about debt for road toll services"
     url: "https://www.ic3.gov/PSA/2024/PSA240412"
-  - label: "CBS News: FTC warning about the unpaid toll text scam"
-    url: "https://www.cbsnews.com/amp/newyork/news/unpaid-toll-text-scam"
-  - label: "Texas Courts: how to report scam text messages (forward to 7726)"
-    url: "https://txcourts.gov/media/how-to-report-scam-text-messages/"
-reviewed: "2026-11-20"
+  - label: "FTC: New data show top text message scams of 2024"
+    url: "https://www.ftc.gov/news-events/news/press-releases/2025/04/new-ftc-data-show-top-text-message-scams-2024-overall-losses-text-scams-hit-470-million"
+reviewed: "2026-11-22"
 ---

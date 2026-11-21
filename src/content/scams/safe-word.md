@@ -18,13 +18,13 @@ redFlags:
   - "A caller who can't give the family safe word"
 related: ["voice-clone", "safe-account"]
 sources:
-  - label: "Money Crashers: AI voice cloning scams and the family secret word"
-    url: "https://www.moneycrashers.com/ai-voice-cloning-scams/"
-  - label: "Stony Creek Township: grandkid and family scams using a family code word"
-    url: "https://stonycreektownship.com/scam-awareness/2024/7/18/grandkid-and-family-scams-using-a-family-code-word"
-  - label: "The Garden Island: what families can do about AI voice cloning scams"
-    url: "https://www.thegardenisland.com/syndicated/what-families-can-do-about-ai-voice-cloning-scams-this-thanksgiving"
-reviewed: "2026-11-20"
+  - label: "FBI IC3 alert I-120324-PSA: Criminals use generative AI to facilitate financial fraud"
+    url: "https://www.ic3.gov/PSA/2024/PSA241203"
+  - label: "FTC: Scammers use fake emergencies to steal your money"
+    url: "https://consumer.ftc.gov/articles/scammers-use-fake-emergencies-steal-your-money"
+  - label: "FTC: Scammers use AI to enhance their family emergency schemes"
+    url: "https://consumer.ftc.gov/consumer-alerts/2023/03/scammers-use-ai-enhance-their-family-emergency-schemes"
+reviewed: "2026-11-22"
 ---
 
 ## How to set up a family safe word
@@ -34,5 +34,9 @@ reviewed: "2026-11-20"
 3. **No safe word, no money.** Every time.
 
 A good moment to set one up is your next family dinner. Don't write the safe word anywhere online.
+
+## What the FBI and FTC say
+
+The FBI recommends agreeing a secret word or phrase with your family so you can confirm who is calling. It also advises hanging up and calling back on a number you already know. The FTC adds that you should contact another family member or friend to check the story, even if the caller told you to keep it secret.
 
 Want a printable version? Get the free [Family Protection Kit](/family-kit/).
