@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
+import PrintButton from '../components/PrintButton.astro';
+import Sources from '../components/Sources.astro';
+
+const methods = [
+  { name: 'Credit card', level: 'most', label: 'Most protection',
+    what: 'If you are charged for something you never got, or the seller turns out to be fake, you can dispute the charge with your card company.',
+    uk: 'UK: for a single item over £100 and up to £30,000, Section 75 can make your card company equally responsible with the seller.' },
+  { name: 'Debit card', level: 'some', label: 'Some protection',
+    what: 'Your bank may be able to reverse the payment through a dispute, often called a chargeback. Ask quickly; there are time limits.' },
+  { name: 'Bank transfer, including Zelle', level: 'low', label: 'Hard to get back',
+    what: 'The money usually moves at once. Call your bank straight away and ask them to reverse it.',
+    uk: 'UK: since 7 October 2024, banks must reimburse eligible victims of scams where you were tricked into sending the payment, up to £85,000.' },
+  { name: 'Payment apps (Venmo, Cash App, PayPal friends and family)', level: 'low', label: 'Hard to get back',
+    what: 'Report it inside the app straight away and ask them to reverse the payment. Sending to "friends" usually means no buyer protection.' },
+  { name: 'Wire transfer (Western Union, MoneyGram, a bank wire)', level: 'none', label: 'Like sending cash',
+    what: 'Once it is sent, you usually can’t get it back. Call the company at once and say a scammer tricked you.' },
+  { name: 'Gift cards', level: 'none', label: 'Only scammers ask',
+    what: 'No real business or government agency will insist you pay with a gift card. If you already did, call the card company, and keep the card and receipt.' },
+  { name: 'Cryptocurrency', level: 'none', label: 'Only scammers ask',
+    what: 'Crypto payments usually can’t be reversed. You only get it back if the person you paid sends it back.' },
+  { name: 'Cash, gold or anything sent by courier', level: 'none', label: 'Gone once handed over',
+    what: 'No bank, police force or government agency sends someone to collect your cash or valuables.' },
+];
+---
+<Base title="They want me to pay this way. Is that safe?" description="Card, bank transfer, Zelle, payment apps, wire, gift cards, crypto: which payments protect you, and which ones only scammers ask for.">
+  <div class="page">
+    <h1>They want me to pay this way. Is that safe?</h1>
+    <p class="lead">How you pay decides whether you can get your money back. Scammers know this, so they push the ways that are hardest to undo.</p>
+
+    <div class="move">
+      <strong>The rule</strong>
+      If someone says you can only pay by gift card, crypto, wire transfer, a payment app or a bank transfer, stop. That’s almost always a scam.
+    </div>
+
+    <h2>Each way to pay, from safest to riskiest</h2>
+    <ul class="pay wide">
+      {methods.map((m) => (
+        <li class={`lv-${m.level}`}>
+          <div class="ph"><h3>{m.name}</h3><span class="tag">{m.label}</span></div>
+          <p>{m.what}</p>
+          {m.uk && <p class="uk">{m.uk}</p>}
+        </li>
+      ))}
+    </ul>
+
+    <h2>Before you pay anyone new</h2>
+    <ul>
+      <li>Use a credit card for online shopping when you can.</li>
+      <li>Never pay to “unlock” a prize, a job, a refund or a loan.</li>
+      <li>If they rush you, refuse to let you hang up, or say to keep it secret, stop.</li>
+      <li>In Canada and Australia, card disputes work in a similar way. Ask your own bank what protection you have.</li>
+    </ul>
+    <p>Already paid? Go to <a href="/been-scammed/">I’ve been scammed: what now?</a></p>
+
+    <Sources reviewed="2026-11-22" items={[
+      ['FTC: One way to spot scams: how someone asks you to pay (2026)', 'https://consumer.ftc.gov/consumer-alerts/2026/07/way-spot-scams-how-someone-asks-you-pay'],
+      ['FTC: What to do if you were scammed', 'https://consumer.ftc.gov/articles/what-do-if-you-were-scammed'],
+      ['FTC: Refund and recovery scams', 'https://consumer.ftc.gov/articles/refund-and-recovery-scams'],
+      ['Which?: Section 75 of the Consumer Credit Act', 'https://www.which.co.uk/consumer-rights/regulation/section-75-of-the-consumer-credit-act-aRZIu0r3DBKi'],
+      ['MoneySavingExpert: Section 75 refunds and chargeback', 'https://www.moneysavingexpert.com/reclaim/section75-protect-your-purchases/'],
+    ]} />
+
+    <ShareBar title="They want me to pay this way. Is that safe?" />
+    <PrintButton />
+  </div>
+</Base>
+
+<style>
+  .pay { list-style: none; padding: 0; margin: 18px 0 0; max-width: 860px; display: grid; gap: 12px; }
+  .pay li { border: 2px solid var(--line); border-left-width: 10px; border-radius: 12px; padding: 16px 20px; background: #fff; break-inside: avoid; }
+  .pay .lv-most { border-left-color: var(--green); }
+  .pay .lv-some { border-left-color: #6a8f3a; }
+  .pay .lv-low { border-left-color: #b7791f; }
+  .pay .lv-none { border-left-color: var(--red-ink); }
+  .ph { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; justify-content: space-between; }
+  .ph h3 { margin: 0; font-size: 1.25rem; }
+  .tag { font-weight: 700; }
+  .lv-most .tag { color: var(--green); }
+  .lv-some .tag { color: #4f6e27; }
+  .lv-low .tag { color: #8a5a10; }
+  .lv-none .tag { color: var(--red-ink); }
+  .pay p { margin: 8px 0 0; }
+  .pay .uk { color: var(--muted); }
+</style>

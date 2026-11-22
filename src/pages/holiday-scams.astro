@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
+import PrintButton from '../components/PrintButton.astro';
+import Sources from '../components/Sources.astro';
+---
+<Base title="Holiday scams: fake delivery texts, fake shops and gift card tricks" description="The scams that peak from November to January, how to spot them, and the one right move for each.">
+  <div class="page">
+    <h1>Holiday scams: delivery texts, fake shops and gift cards</h1>
+    <p class="lead">More parcels, more shopping and more gifts means more scams. Here are the three that keep coming back, and what to do about each.</p>
+
+    <h2>1. The “missed delivery” text</h2>
+    <p>A text or email says your parcel is held, the address is wrong, or there’s a small fee to redeliver it. The link goes to a fake site that takes your card details. These come all year, but there are more when you’re expecting gifts.</p>
+    <div class="move">
+      <strong>The right move</strong>
+      Don’t tap the link. Track the parcel yourself in the shop’s app, or on the carrier’s own website you type in.
+    </div>
+    <ul>
+      <li>US: USPS won’t contact you out of the blue about a delivery unless you asked for updates, and never asks you to pay to redeliver.</li>
+      <li>UK: Royal Mail asks for unpaid postage by leaving a grey Fee to Pay card. It doesn’t collect redelivery fees by text.</li>
+      <li>Forward the text to 7726 in the US and UK, then delete it.</li>
+    </ul>
+
+    <h2>2. The fake shop with amazing prices</h2>
+    <p>An ad on social media shows popular gifts at prices far below anywhere else. The site takes your money, then sends nothing, or something cheap and different.</p>
+    <div class="move">
+      <strong>The right move</strong>
+      Look the shop up before you pay, and pay by credit card. <a href="/check-a-website/">Use our 5-step website check</a>.
+    </div>
+
+    <h2>3. “Pay with gift cards”</h2>
+    <p>A seller, a “boss”, a “grandchild” or a “government office” asks you to pay with gift cards and read out the numbers on the back. Once they have those numbers, the money is gone.</p>
+    <div class="move">
+      <strong>The right move</strong>
+      Gift cards are for gifts. Anyone who asks to be paid with them is a scammer. <a href="/how-to-pay-safely/">See which payments are safe</a>.
+    </div>
+
+    <h2>Also watch for</h2>
+    <ul>
+      <li><strong>Fake charities</strong> that copy real names. Give through the charity’s own website, not a link in a message.</li>
+      <li><strong>Sellers who only take payment apps, wire transfers or crypto.</strong> Only scammers tell you to pay that way.</li>
+      <li><strong>Travel deals</strong> for holiday trips that need full payment today by bank transfer.</li>
+    </ul>
+
+    <Sources reviewed="2026-11-22" items={[
+      ['FTC: Fake shipping notification emails and texts during the holiday season', 'https://consumer.ftc.gov/consumer-alerts/2023/12/fake-shipping-notification-emails-text-messages-what-you-need-know-holiday-season'],
+      ['FTC: Don’t let scammers get in the way of your holiday shopping', 'https://www.consumer.ftc.gov/consumer-alerts/2024/11/dont-let-scammers-get-way-your-holiday-shopping'],
+      ['FTC: Unexpected texts about packages and freebies', 'https://consumer.ftc.gov/node/79449'],
+      ['FTC: Fake shopping sites', 'https://consumer.ftc.gov/node/86798'],
+      ['Royal Mail: Help with online security', 'https://www.royalmail.com/scamprotection'],
+    ]} />
+
+    <ShareBar title="Holiday scams: delivery texts, fake shops and gift cards" />
+    <PrintButton />
+  </div>
+</Base>

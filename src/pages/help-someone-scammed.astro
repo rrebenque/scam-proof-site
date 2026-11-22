@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
+import PrintButton from '../components/PrintButton.astro';
+import Sources from '../components/Sources.astro';
+---
+<Base title="Someone I love got scammed. How can I help?" description="What to say, what to do first, and how to protect them from the next scam, without blame.">
+  <div class="page">
+    <h1>Someone I love got scammed. How can I help?</h1>
+    <p class="lead">How you react in the first conversation matters. People who feel blamed often stop talking, and that’s when scammers come back.</p>
+
+    <h2>What to say</h2>
+    <ul>
+      <li><strong>“This could happen to anyone.”</strong> Scammers do this for a living, and they target everyone.</li>
+      <li><strong>“The scammer is the one at fault, not you.”</strong> Say it more than once.</li>
+      <li><strong>“Thank you for telling me.”</strong> Many people never tell their family at all.</li>
+    </ul>
+    <p>Avoid “How could you fall for that?”, raising your voice, or taking over their phone and accounts without asking. Many older people fear losing their independence, which is a big reason they hide a scam.</p>
+
+    <h2>What to do together, today</h2>
+    <ol>
+      <li>Call their bank or card company, with them, on the number from the back of the card.</li>
+      <li>If they shared a password or code, change it together and turn on two-step sign-in.</li>
+      <li>Report it together. <a href="/been-scammed/">See who to report to in each country</a>.</li>
+      <li>If personal details were shared, follow the identity theft steps on that page.</li>
+    </ol>
+
+    <div class="move">
+      <strong>Watch for the second scam</strong>
+      People who lost money are often contacted again by someone promising to recover it for a fee. That’s a scam too. Tell your loved one now, so they recognise it.
+    </div>
+
+    <h2>If the scammer is still in touch</h2>
+    <p>Romance and investment scammers can keep a hold on someone for months. Ask questions and listen, rather than arguing. Ask who they trust most, and let that person talk to them. Show them our guides, for example <a href="/scams/pig-butchering/">the wrong-number text that turns into an investment</a>.</p>
+    <p>In the US, if you think an older adult is being exploited and can’t protect themselves, Adult Protective Services in their area can help.</p>
+
+    <h2>Protect them from the next one</h2>
+    <ul>
+      <li><a href="/phone-checklist/">Scam-proof their phone in 10 minutes</a>.</li>
+      <li>Choose a <a href="/scams/safe-word/">family safe word</a>.</li>
+      <li>Print the <a href="/family-kit/">free Family Protection Kit</a> and leave the phone card by their phone.</li>
+      <li>Keep talking about scams as normal news, not as a test.</li>
+    </ul>
+
+    <Sources reviewed="2026-11-22" items={[
+      ['FTC: How to help a friend or family member who was scammed', 'https://www.militaryconsumer.gov/node/85115'],
+      ['FTC: What to do if you were scammed', 'https://consumer.ftc.gov/articles/what-do-if-you-were-scammed'],
+      ['FTC: Refund and recovery scams', 'https://consumer.ftc.gov/articles/refund-and-recovery-scams'],
+      ['AARP: 3 ways to help a loved one affected by a scam', 'https://www.aarp.org/money/scams-fraud/supporting-loved-ones/'],
+      ['AARP: When a loved one is a scam victim but refuses to see it', 'https://www.aarp.org/money/scams-fraud/victims-in-denial/'],
+    ]} />
+
+    <ShareBar title="Someone I love got scammed. How can I help?" />
+    <PrintButton />
+  </div>
+</Base>

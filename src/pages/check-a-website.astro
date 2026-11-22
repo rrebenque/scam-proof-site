@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
+import PrintButton from '../components/PrintButton.astro';
+import Sources from '../components/Sources.astro';
+
+const steps = [
+  { t: 'Type the address yourself.', d: 'Don’t trust the link in an ad or a message. Look carefully at the web address: fake shops often copy a real name with an extra word or a different ending.' },
+  { t: 'Search for reviews.', d: 'Search the shop’s name and its web address with words like “review”, “complaint” or “scam”. No results at all for a shop with big discounts is a warning sign too.' },
+  { t: 'Check the price.', d: 'If the price is far lower than at every well-known shop, ask yourself why. Fake shops use low prices to make you hurry.' },
+  { t: 'Read the small print.', d: 'Find the refund policy, who pays for returns, and real contact details. A shop with only a contact form and no address or phone number is risky.' },
+  { t: 'Look at how they want you to pay.', d: 'Pay by credit card if you can. If the only options are a bank transfer, payment app, gift card or crypto, don’t buy.', href: '/how-to-pay-safely/' },
+];
+---
+<Base title="Check a website before you buy" description="Five quick checks before you pay an online shop you don't know.">
+  <div class="page">
+    <h1>Check a website before you buy</h1>
+    <p class="lead">Found a great deal on a shop you’ve never heard of? These five checks take a few minutes.</p>
+
+    <ol class="five wide">
+      {steps.map((s) => (
+        <li>
+          <h2>{s.t}</h2>
+          <p>{s.d}{s.href && <> <a href={s.href}>See which payments protect you</a>.</>}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="move">
+      <strong>The right move</strong>
+      If any check fails, buy it somewhere you know instead. A small saving isn’t worth losing the whole payment.
+    </div>
+
+    <h2>The padlock doesn’t prove it’s real</h2>
+    <p>The padlock and “https” only mean the connection is private. Scam sites can have them too.</p>
+
+    <h2>Already paid a fake shop?</h2>
+    <p>Contact the company you paid with, such as your card company or bank, and ask to dispute the charge. Then report the site. <a href="/been-scammed/">See who to report to in your country</a>.</p>
+
+    <Sources reviewed="2026-11-22" items={[
+      ['FTC: Fake shopping sites', 'https://consumer.ftc.gov/node/86798'],
+      ['FTC: Shopping online during the holidays', 'https://consumer.ftc.gov/node/300947'],
+      ['FTC: Online shopping tips', 'https://consumer.ftc.gov/node/76915'],
+      ['FDIC: Avoid scams while shopping online for bargains', 'https://www.fdic.gov/consumer-resource-center/2022-12/avoid-scams-while-shopping-online-bargains'],
+    ]} />
+
+    <ShareBar title="Check a website before you buy" />
+    <PrintButton />
+  </div>
+</Base>
+
+<style>
+  .five { padding-left: 0; list-style: none; counter-reset: s; max-width: 820px; margin: 24px 0 32px; }
+  .five li { counter-increment: s; position: relative; padding: 0 0 22px 64px; }
+  .five li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 44px; height: 44px; border-radius: 50%; background: var(--navy); color: #fff; font-family: var(--display); font-weight: 700; font-size: 1.3rem; display: grid; place-items: center; }
+  .five h2 { margin: 6px 0 4px; font-size: 1.35rem; }
+  .five p { margin: 0; }
+</style>

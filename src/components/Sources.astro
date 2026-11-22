@@ -1,0 +1,9 @@
+---
+interface Props { items: [string, string][]; reviewed: string }
+const { items, reviewed } = Astro.props;
+---
+<h2>Sources</h2>
+<ul class="plain">
+  {items.map(([l, u]) => <li><a href={u} rel="noopener">{l}</a></li>)}
+</ul>
+<p class="meta">Last reviewed: {reviewed}. General information only, not legal or financial advice.</p>
