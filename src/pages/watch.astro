@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
 const all = (await getCollection('scams')).sort((a, b) => b.data.episode - a.data.episode);
-const shorts = all;
+const shorts = all.filter((s) => s.data.videoId || !s.data.longVideoId);
 const long = all.filter((s) => s.data.longVideoId);
 ---
 <Base title="Watch our videos" description="Every Scam-Proof Money video in one place: short videos and full-length episodes, each with its written guide.">
