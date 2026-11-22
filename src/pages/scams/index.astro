@@ -10,6 +10,14 @@ const markets = ['US', 'UK', 'Canada', 'Australia'];
     <h1>Scam guides</h1>
     <p class="lead">Each guide shows how the scam works and the one right move.</p>
 
+    <form class="gsearch" role="search" action="/search/" method="get">
+      <label for="gq">Search the guides</label>
+      <div class="gs-row">
+        <input id="gq" name="q" type="search" placeholder="For example: toll text, Zelle, gift card" />
+        <button type="submit">Search</button>
+      </div>
+    </form>
+
     <div class="picker" role="group" aria-label="Show guides for">
       <button type="button" class="pick" data-market="all" aria-pressed="true">All countries</button>
       {markets.map((m) => <button type="button" class="pick" data-market={m} aria-pressed="false">{m}</button>)}
@@ -43,6 +51,12 @@ const markets = ['US', 'UK', 'Canada', 'Australia'];
   .l-move strong { color: var(--green); }
   .l-markets { flex: 0 0 auto; font-weight: 700; color: var(--navy); }
   .empty { color: var(--muted); }
+  .gsearch { max-width: 760px; margin: 8px 0 24px; }
+  .gsearch label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .gs-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .gs-row input { flex: 1 1 260px; min-height: 56px; font: inherit; padding: 10px 16px; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); }
+  .gs-row button { min-height: 56px; padding: 10px 26px; font: inherit; font-weight: 700; border: 0; border-radius: 12px; background: var(--navy); color: #fff; cursor: pointer; }
+  .gs-row button:hover { background: var(--red-ink); }
 </style>
 
 <script>

@@ -45,6 +45,8 @@ img.c{height:78pt;width:auto}
 .pc ul{padding-left:18pt}.pc li{margin-bottom:3pt}
 .pcr{font-weight:700;color:#12283F;margin:5pt 0}
 .pcl{display:flex;gap:8pt;align-items:flex-end;font-weight:700;margin-top:4pt}.pcl i{flex:1;border-bottom:1.5pt solid #17212B;height:16pt}
+.ck{display:flex;gap:10pt;align-items:flex-start;margin-bottom:6pt;font-size:12.5pt;line-height:1.25}.bx{flex:none;width:15pt;height:15pt;border:2pt solid #12283F;border-radius:3pt;margin-top:1pt}
+.cty{font-size:11.5pt;line-height:1.3}.cty div{margin-bottom:2pt}
 .cut{border-top:2pt dashed #6b7885;margin:10pt 0;text-align:center;font-size:9.5pt;color:#6b7885;line-height:0}.cut{padding-top:0}
 """
 FOOT="Scam-Proof Money. Free to print and share. General information only, not legal or financial advice. youtube.com/@scamproofmoney"
@@ -120,6 +122,18 @@ def pcard():
 <div class="pcr">Already sent money? Call your bank now.</div>
 <div class="pcl"><span>My bank:</span><i></i></div><div class="pcl"><span>Family:</span><i></i></div></div>"""
 docs['phone-card']=head('Phone card','Print, cut along the dotted line, and keep one by the phone and one in your wallet.',slick)+pcard()+'<div class="cut">cut here</div>'+pcard()
+
+chk=[('Calls',['Turn on call blocking or call labeling (phone settings, phone company, or an app).','Don’t trust caller ID. Hang up and call back on a number you already have.','US: sign up free at donotcall.gov. Scammers ignore it, so keep blocking on.']),
+('Texts',['Filter texts from unknown senders. iPhone: Settings, Messages, Filter Unknown Senders.','Don’t tap links in texts you didn’t expect.','US: forward scam texts to 7726 (SPAM), then delete them.']),
+('Accounts',['Turn on two-step sign-in: email first, then your bank.','Long passwords (12+ characters), different for each account.','Keep your phone’s software up to date.']),
+('Family',['Choose a family safe word. No safe word, no money.','Save your bank’s number from the back of your card in your contacts.'])]
+docs['phone-checklist']=head('Scam-proof a phone in 10 minutes','Tick each box. Based on US Federal Trade Commission advice.',june)+''.join(f'<h2>{g}</h2>'+''.join(f'<div class="ck"><span class="bx"></span><span>{t}</span></div>' for t in ts) for g,ts in chk)
+
+cty=[('United States',['Call your bank or card company first.','Report: ReportFraud.ftc.gov','Online fraud: ic3.gov','Personal details stolen: IdentityTheft.gov','Scam texts: forward to 7726']),
+('United Kingdom',['Call your bank first.','England, Wales, N. Ireland: Report Fraud, 0300 123 2040 or reportfraud.police.uk','Scotland: Police Scotland, 101']),
+('Canada',['Call your bank first.','Canadian Anti-Fraud Centre: 1-888-495-8501','Then report to your local police and keep the file number']),
+('Australia',['Call your bank first.','Report: scamwatch.gov.au','Lost money online: ReportCyber at cyber.gov.au','Free identity help: IDCARE, 1800 595 160'])]
+docs['if-it-already-happened']=head('If it already happened','Act fast. Being scammed can happen to anyone.',june)+step(1,'Stop.','Stop paying and stop replying. Don’t click anything else they send.','red')+step(2,'Call your bank now.','Use the number on the back of your card. Say it was fraud and ask them to stop the payment.','red')+step(3,'Lock your accounts.','If you shared a password or a code, change that password and turn on two-step sign-in.')+step(4,'Report it.','Find your country below. Reporting helps even if you lost nothing.')+step(5,'Watch for the second scam.','Anyone who offers to get your money back for a fee is a scammer too.','green')+'<div class="two" style="gap:8pt 12pt;margin-top:8pt">'+''.join(f'<div class="card cty"><b>{n}</b>'+''.join(f'<div>{x}</div>' for x in xs)+'</div>' for n,xs in cty)+'</div>'
 
 for k,v in docs.items():
     html=f'<!doctype html><html><head><meta charset="utf-8"><title>{k}</title><style>{css}</style></head><body><div class="pg">{v}</div><div class="foot">{FOOT}</div></body></html>'

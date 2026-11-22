@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { terms } from '../data/glossary';
+
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const strip = (md: string) => md.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[#*_>`|-]/g, ' ').replace(/\s+/g, ' ');
+
+const scams = await getCollection('scams');
+type Doc = { u: string; t: string; k: string; s: string; x: string };
+const docs: Doc[] = [
+  ...scams.sort((a, b) => b.data.episode - a.data.episode).map((e) => ({
+    u: `/scams/${e.id}/`,
+    t: e.data.title,
+    k: 'Scam guide',
+    s: e.data.answer,
+    x: [e.data.pageTitle, e.data.rightMove, ...e.data.steps, ...e.data.redFlags, e.data.markets.join(' '), strip(e.body || '')].join(' '),
+  })),
+  { u: '/check/', t: 'Is it a scam? Answer 3 quick questions', k: 'Tool', s: 'Tell us how it reached you and what they want. We point you to the right guide.', x: 'check checker message call text email suspicious unsure' },
+  { u: '/been-scammed/', t: "I've been scammed. What now?", k: 'Help', s: 'Who to call and where to report in the US, UK, Canada and Australia.', x: 'scammed lost money report police bank refund recover help victim FTC IC3 Report Fraud Action Fraud Canadian Anti-Fraud Centre Scamwatch ReportCyber IDCARE identity theft' },
+  { u: '/phone-checklist/', t: 'Scam-proof a phone in 10 minutes', k: 'Checklist', s: 'Call blocking, text filtering, two-step sign-in and more.', x: 'phone mobile iphone android block calls robocalls spam texts filter unknown senders do not call two-factor password update settings mom dad parent grandparent' },
+  { u: '/family-kit/', t: 'Family Protection Kit', k: 'Printables', s: 'Free one-page sheets to print and keep.', x: 'print printable pdf download sheet card wallet safe word numbers kit free' },
+  { u: '/what-scammers-say/', t: 'What scammers say, and what to say back', k: 'Page', s: 'The lines scammers repeat, with a ready reply.', x: 'lines script phrases reply say back phone call' },
+  { u: '/red-flags/', t: 'Scam warning signs', k: 'Page', s: 'The signs that keep repeating, and the right move for each.', x: 'red flags warning signs urgency pressure secrecy gift cards crypto' },
+  { u: '/quiz/', t: 'Spot the scam quiz', k: 'Quiz', s: 'Five quick questions with instant answers.', x: 'quiz test game practice' },
+  { u: '/watch/', t: 'Watch our videos', k: 'Videos', s: 'Every episode, Shorts and full-length.', x: 'video youtube facebook shorts episodes watch' },
+  { u: '/glossary/', t: 'Scam words explained', k: 'Glossary', s: 'Plain-English meanings of scam words.', x: 'glossary words meaning definition' },
+  ...terms.map((t) => ({ u: `/glossary/#${slug(t.term)}`, t: t.term, k: 'Word', s: t.def, x: t.also || '' })),
+];
+---
+<Base title="Search" description="Search every scam guide, checklist and printable on Scam-Proof Money.">
+  <div class="page">
+    <h1>Search</h1>
+    <form class="sform wide" role="search" action="/search/" method="get" data-search>
+      <label for="q">What are you looking for?</label>
+      <div class="srow">
+        <input id="q" name="q" type="search" autocomplete="off" placeholder="For example: toll text, Zelle, gift card" />
+        <button type="submit">Search</button>
+      </div>
+    </form>
+    <p class="count" id="count" role="status" aria-live="polite"></p>
+    <ul class="results wide" id="results" data-docs={JSON.stringify(docs)}></ul>
+    <noscript><p>Search needs JavaScript. Browse <a href="/scams/">all scam guides</a> instead.</p></noscript>
+    <div class="none" id="none" hidden>
+      <p>Not sure what it is? <a href="/check/">Answer 3 quick questions</a>, or browse <a href="/scams/">all scam guides</a>.</p>
+    </div>
+  </div>
+</Base>
+
+<style is:global>
+  .sform { max-width: 760px; margin-top: 12px; }
+  .sform label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .srow { display: flex; gap: 10px; flex-wrap: wrap; }
+  .srow input { flex: 1 1 260px; min-height: 56px; font: inherit; padding: 10px 16px; border: 2px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); }
+  .srow button { min-height: 56px; padding: 10px 26px; font: inherit; font-weight: 700; border: 0; border-radius: 12px; background: var(--navy); color: #fff; cursor: pointer; }
+  .srow button:hover { background: var(--red-ink); }
+  .count { font-weight: 700; margin: 22px 0 0; }
+  .results { list-style: none; padding: 0; margin: 10px 0 0; max-width: 820px; border-top: 3px solid var(--navy); }
+  .results:empty { border-top: 0; }
+  .results li { padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .results .rk { display: block; font-weight: 700; color: var(--muted); font-size: 0.95rem; }
+  .results a { font-family: var(--display); font-weight: 700; font-size: 1.35rem; color: var(--navy); text-decoration-thickness: 2px; }
+  .results p { margin: 4px 0 0; }
+</style>
+
+<script>
+  type Doc = { u: string; t: string; k: string; s: string; x: string };
+  const list = document.getElementById('results')!;
+  const docs: Doc[] = JSON.parse(list.dataset.docs || '[]');
+  const input = document.getElementById('q') as HTMLInputElement;
+  const count = document.getElementById('count')!;
+  const none = document.getElementById('none')!;
+  const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9$£ ]+/g, ' ');
+  const stop = new Set(['a', 'an', 'the', 'is', 'it', 'to', 'of', 'and', 'or', 'i', 'my', 'me', 'a', 'in', 'on', 'for', 'scam', 'scams', 'what', 'how', 'do', 'about']);
+  const idx = docs.map((d) => ({ d, t: norm(d.t), s: norm(d.s), x: norm(d.x) }));
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+  function run(q: string) {
+    const words = norm(q).split(' ').filter((w) => w && !stop.has(w));
+    list.innerHTML = '';
+    none.hidden = true;
+    if (!q.trim()) { count.textContent = ''; return; }
+    const hits = idx.map((e) => {
+      let score = 0;
+      for (const w of words) {
+        const re = new RegExp('\\b' + w.replace(/[$£]/g, '\\$&'));
+        const ws = (re.test(e.t) ? 10 : 0) + (re.test(e.s) ? 4 : 0) + (re.test(e.x) ? 2 : 0);
+        if (!ws) return { e, score: 0 };
+        score += ws;
+      }
+      if (e.d.k === 'Scam guide') score += 1;
+      return { e, score };
+    }).filter((h) => words.length && h.score > 0).sort((a, b) => b.score - a.score).slice(0, 20);
+    count.textContent = hits.length ? `${hits.length} result${hits.length === 1 ? '' : 's'} for "${q.trim()}"` : `Nothing found for "${q.trim()}".`;
+    none.hidden = hits.length > 0;
+    list.innerHTML = hits.map(({ e }) => `<li><span class="rk">${esc(e.d.k)}</span><a href="${e.d.u}">${esc(e.d.t)}</a><p>${esc(e.d.s)}</p></li>`).join('');
+  }
+
+  const q0 = new URLSearchParams(location.search).get('q') || '';
+  input.value = q0;
+  run(q0);
+  let timer = 0;
+  input.addEventListener('input', () => { clearTimeout(timer); timer = window.setTimeout(() => { run(input.value); history.replaceState(null, '', input.value ? `?q=${encodeURIComponent(input.value)}` : location.pathname); }, 200); });
+  document.querySelector('[data-search]')!.addEventListener('submit', (ev) => { ev.preventDefault(); run(input.value); });
+</script>

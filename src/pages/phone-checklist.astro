@@ -1,0 +1,103 @@
+---
+import Base from '../layouts/Base.astro';
+import PrintButton from '../components/PrintButton.astro';
+import ShareBar from '../components/ShareBar.astro';
+
+const groups = [
+  { name: 'Calls', items: [
+    { t: 'Turn on call blocking or call labeling.', d: 'Check your phone\'s built-in settings first. Then ask your phone company what it offers, or try a call-blocking app. Some are free and some charge a fee.' },
+    { t: 'Don\'t trust caller ID.', d: 'Scammers can fake the number on your screen. If a caller asks for money or codes, hang up and call back on a number you already have.' },
+    { t: 'Sign up for the Do Not Call Registry (US).', d: 'It\'s free at donotcall.gov. It cuts some sales calls, but scammers ignore it, so keep call blocking on too.' },
+  ]},
+  { name: 'Texts', items: [
+    { t: 'Filter texts from unknown senders.', d: 'On an iPhone, open Settings, then Messages, and turn on Filter Unknown Senders. On Android the steps differ by phone, so search your phone\'s help for "filter spam texts".' },
+    { t: 'Don\'t tap links in texts you didn\'t expect.', d: 'If a text might be real, contact the company using a phone number or website you know is real, not the one in the text.' },
+    { t: 'Forward scam texts to 7726 (US).', d: 'Forward the text, then delete it. It helps your phone company block similar messages.' },
+  ]},
+  { name: 'Accounts', items: [
+    { t: 'Turn on two-step sign-in for your email first, then your bank.', d: 'It\'s also called two-factor authentication. Even if a scammer learns your password, they can\'t sign in without the second step. Your email matters most, because password resets go there.' },
+    { t: 'Use long passwords, and a different one for each account.', d: 'Aim for at least 12 characters. Your phone or a password manager can remember them for you.' },
+    { t: 'Keep your phone\'s software up to date.', d: 'Turn on automatic updates so you get security fixes without having to think about it.' },
+  ]},
+  { name: 'Family', items: [
+    { t: 'Choose a family safe word.', d: 'Share it face to face, and treat "no safe word" as "no money".', href: '/scams/safe-word/' },
+    { t: 'Save your bank\'s number in your contacts.', d: 'Use the number on the back of your card. Then you can call back without searching.' },
+  ]},
+];
+const sources = [
+  ['FTC: How to block unwanted calls', 'https://consumer.ftc.gov/articles/how-block-unwanted-calls'],
+  ['FTC: Five ways to cut down unwanted calls', 'https://consumer.ftc.gov/consumer-alerts/2025/08/five-ways-help-you-cut-down-unwanted-calls'],
+  ['FTC: How to recognize and report spam text messages', 'https://www.consumer.ftc.gov/articles/0350-text-message-spam'],
+  ['FTC: Dealing with spam texts, emails and junk mail', 'https://consumer.ftc.gov/consumer-alerts/2025/01/dealing-spam-texts-emails-junk-mail'],
+  ['FTC: Use two-factor authentication to protect your accounts', 'https://www.consumer.ftc.gov/articles/use-two-factor-authentication-protect-your-accounts'],
+  ['FTC: Creating strong passwords and other ways to protect your accounts', 'https://consumer.ftc.gov/articles/creating-strong-passwords-and-other-ways-protect-your-accounts'],
+  ['FTC: Password checklist', 'https://www.consumer.ftc.gov/articles/password-checklist'],
+];
+let n = 0;
+---
+<Base title="Scam-proof a phone in 10 minutes" description="A short checklist to protect a phone from scam calls, texts and account takeovers. Free printable sheet included.">
+  <div class="page">
+    <h1>Scam-proof a phone in 10 minutes</h1>
+    <p class="lead">Set this up on your own phone, or sit with a parent or grandparent and do theirs together.</p>
+    <p class="note">Based on US Federal Trade Commission advice. Steps like 7726 and the Do Not Call Registry are for the US. Everything else applies anywhere.</p>
+
+    {groups.map((g) => (
+      <section class="group">
+        <h2>{g.name}</h2>
+        <ul class="tick wide">
+          {g.items.map((i) => {
+            n += 1;
+            const id = `t${n}`;
+            return (
+              <li>
+                <input type="checkbox" id={id} />
+                <label for={id}>
+                  <strong>{i.t}</strong>
+                  <span>{i.d}{i.href && <> <a href={i.href}>Read the guide</a>.</>}</span>
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))}
+
+    <div class="kitcta">
+      <h2>Print it</h2>
+      <p>A free one-page checklist with tick boxes.</p>
+      <p class="dl">
+        <a class="btn" href="/downloads/phone-checklist-letter.pdf" download>Download for US Letter paper</a>
+        <a class="btn alt" href="/downloads/phone-checklist-a4.pdf" download>Download for A4 paper</a>
+      </p>
+    </div>
+
+    <h2>Sources</h2>
+    <ul class="plain sources">
+      {sources.map(([l, u]) => <li><a href={u} rel="noopener">{l}</a></li>)}
+    </ul>
+
+    <ShareBar title="Scam-proof a phone in 10 minutes" />
+    <PrintButton />
+    <p class="meta">Last reviewed: 2026-11-22. General information only.</p>
+  </div>
+</Base>
+
+<style>
+  .note { font-weight: 700; margin-top: 10px; }
+  .group h2 { margin-top: 44px; }
+  .tick { list-style: none; padding: 0; margin: 16px 0 0; max-width: 820px; display: grid; gap: 12px; }
+  .tick li { display: flex; gap: 16px; align-items: flex-start; border: 2px solid var(--line); border-radius: 12px; background: #fff; padding: 16px 20px; break-inside: avoid; }
+  .tick input { flex: none; width: 30px; height: 30px; margin-top: 2px; accent-color: var(--green); }
+  .tick label { cursor: pointer; }
+  .tick strong { display: block; }
+  .tick li:has(input:checked) { background: #eef7f1; border-color: var(--green); }
+  .kitcta { margin-top: 56px; padding: 24px 28px; background: var(--mist); border-radius: 14px; max-width: 820px; }
+  .kitcta h2 { margin: 0 0 8px; }
+  .kitcta p { margin: 0 0 14px; }
+  .dl { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; min-height: 52px; padding: 10px 24px; border-radius: 12px; background: var(--navy); color: #fff; font-weight: 700; text-decoration: none; }
+  .btn:hover { background: var(--red-ink); color: #fff; }
+  .btn.alt { background: #fff; color: var(--navy); border: 2px solid var(--navy); }
+  .btn.alt:hover { background: var(--navy); color: #fff; }
+  @media print { .kitcta { display: none; } }
+</style>

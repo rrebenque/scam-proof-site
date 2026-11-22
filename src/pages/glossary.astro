@@ -1,30 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 
-type T = { term: string; also?: string; def: string; see?: [string, string] };
-const terms: T[] = [
-  { term: 'Authorised push payment (APP) scam', also: 'UK term', def: 'A scam where you are tricked into sending the payment yourself, for example to a "safe account." Since 7 October 2024, UK banks and payment firms must reimburse eligible victims of these scams, up to £85,000 per claim. Ask your bank about your claim quickly.', see: ['/scams/safe-account/', 'The "safe account" bank scam'] },
-  { term: 'Chargeback', def: 'When your card company reverses a card payment after you dispute it. Card payments usually have this protection. Instant bank transfers and payment apps usually do not, so rules differ by payment method and by country.' },
-  { term: 'Cryptocurrency', also: 'crypto, Bitcoin', def: 'Digital money such as Bitcoin. Payments are very hard to reverse or trace, which is why scammers ask for them. A stranger asking you to pay or invest in crypto is a major warning sign.', see: ['/scams/pig-butchering/', 'Wrong-number text and fake investment scam'] },
-  { term: 'Deepfake', def: 'A fake video or recording, made with AI, that makes a real person appear to say or do something they never did. Scammers use them in video calls and in fake endorsements.' },
-  { term: 'Gift card scam', def: 'Scammers ask you to pay with gift cards because they are hard to trace and nearly impossible to get back. Real businesses, banks and government agencies never demand payment in gift cards.' },
-  { term: 'Impersonation scam', also: 'imposter scam', def: 'When a scammer pretends to be someone you trust: your bank, a government agency, a company, or a relative. The FTC reports that impostor scams cost people billions every year.' },
-  { term: 'Instant payment app', also: 'Zelle, Venmo, Cash App', def: 'An app that moves money in seconds. Treat it like handing over cash. Once you send it, it is usually very hard to get back, so only use it with people you know.', see: ['/scams/zelle/', 'Zelle and "Zelle only" sellers'] },
-  { term: 'Malware', def: 'Harmful software that can steal your passwords, spy on your device or lock your files. It often arrives through a link or file in a scam message.' },
-  { term: 'One-time code', also: 'verification code, security code', def: 'A short code sent by text or an app to prove it is you. Never read it out or type it for someone who contacted you. A scammer who has your code can often get into your account.' },
-  { term: 'Overpayment scam', def: 'A buyer "accidentally" pays more than the price, then asks you to send the difference back. The payment is fake or the check bounces, and your refund is gone.', see: ['/scams/overpay/', 'Overpayment scam'] },
-  { term: 'Phishing', def: 'A fake message, usually an email, designed to trick you into clicking a link, opening a file or giving away personal details.' },
-  { term: 'Pig butchering', def: 'A long scam that starts with a friendly message, often a "wrong number" text. The scammer builds trust for weeks, then talks you into putting money into a fake investment, often in cryptocurrency, and keeps asking for more.', see: ['/scams/pig-butchering/', 'Wrong-number text scam'] },
-  { term: 'Safe account scam', def: 'A caller pretends to be your bank and says your money is in danger, so you must move it to a "safe account." The account belongs to the scammer. Your real bank never asks you to move your money.', see: ['/scams/safe-account/', 'The "safe account" bank scam'] },
-  { term: 'Smishing', def: 'Phishing by text message (SMS). A common example is a text about an unpaid toll with a link to a fake payment page.', see: ['/scams/toll-text/', 'Unpaid toll text scam'] },
-  { term: 'Spoofing', also: 'caller ID spoofing', def: 'Faking the name or number on a call, or the sender of a message, so it looks like it came from someone you trust. A spoofed call can even show your bank\'s real number, so hang up and call the number on your card instead.' },
-  { term: 'Task scam', also: 'gamified job scam', def: 'A fake "job" where you earn money for simple online tasks, like liking videos. After a small first payout, you are told to deposit your own money to unlock more. Real jobs never make you pay to get paid.', see: ['/scams/likes/', 'Paid to like videos'] },
-  { term: 'Two-step sign-in', also: 'two-factor authentication, 2FA, multi-factor authentication, MFA', def: 'A second check when you log in, after your password, such as a code sent to your phone. It makes it much harder for a thief to get into your account with a stolen password. Turn it on for email and banking.' },
-  { term: 'Vishing', also: 'voice phishing', def: 'Phishing by phone call. The caller pretends to be your bank, a government office or a family member to get money or information.' },
-  { term: 'Voice cloning', def: 'Using AI to copy someone\'s voice from a short recording, such as a video on social media. Scammers use it to fake a call from a relative in trouble. A family safe word beats it.', see: ['/scams/voice-clone/', 'AI voice clone scam'] },
-  { term: 'Wire transfer', def: 'A direct bank-to-bank transfer of money. Once sent, a wire is very hard to reverse. Scammers like it for that reason.' },
-  { term: '7726', also: '"SPAM" on a phone keypad', def: 'The number to forward scam texts to in the US, UK and Canada. Forward the message to 7726, then delete it. In Australia, report scams to Scamwatch instead.' },
-];
+import { terms } from '../data/glossary';
 const sorted = [...terms].sort((a, b) => a.term.localeCompare(b.term, 'en', { numeric: true }));
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
