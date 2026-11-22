@@ -1,7 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
 
 const items = [
+  { slug: 'phone-card', title: 'Phone card', desc: 'Two small cards to cut out. Keep one by the phone and one in your wallet: stop, hang up, call back.' },
   { slug: 'family-safe-word', title: 'Our family safe word', desc: 'How to choose one and share it, with space to note when you set it.' },
   { slug: 'if-someone-calls-asking-for-money', title: 'Someone is calling asking for money?', desc: 'Five steps to keep by the phone. The right move is always the same.' },
   { slug: 'important-numbers', title: 'Our important numbers', desc: 'Fill in your bank, card company and trusted people once. Includes where to report a scam in the US, UK, Canada and Australia.' },
@@ -13,7 +15,16 @@ const items = [
 <Base title="Family Protection Kit" description="Free printable sheets to protect your family from scams: safe word, phone-side steps, important numbers and warning signs.">
   <div class="page">
     <h1>Family Protection Kit</h1>
-    <p class="lead">Six free sheets to print and keep. Each is one page, in large type.</p>
+    <p class="lead">Seven free sheets to print and keep. Each is one page, in large type.</p>
+
+    <div class="all">
+      <h2>Get the whole kit</h2>
+      <p>All seven sheets in one download.</p>
+      <p class="dl">
+        <a class="btn" href="/downloads/family-protection-kit-letter.zip" download>Download everything (US Letter)</a>
+        <a class="btn alt" href="/downloads/family-protection-kit-a4.zip" download>Download everything (A4)</a>
+      </p>
+    </div>
 
     <ul class="kit wide">
       {items.map((i) => (
@@ -28,14 +39,19 @@ const items = [
       ))}
     </ul>
 
+    <ShareBar title="the Family Protection Kit" heading="Send the kit to someone" blurb="A free set of printable sheets for a parent, grandparent or friend." />
+
     <h2>Free to share</h2>
     <p>Print as many as you like, and pass them to family, friends and neighbours. Please don't edit them or sell them.</p>
     <p>Not sure which paper size? The US and Canada use Letter. The UK and Australia use A4.</p>
-    <p class="meta">Last reviewed: 2026-11-21. General information only.</p>
+    <p class="meta">Last reviewed: 2026-11-22. General information only.</p>
   </div>
 </Base>
 
 <style>
+  .all { margin-top: 28px; max-width: 760px; }
+  .all h2 { margin: 0 0 6px; }
+  .all p { margin: 0 0 14px; }
   .kit { list-style: none; margin: 32px 0 0; padding: 0; max-width: 760px; }
   .kit li { border-top: 3px solid var(--navy); padding: 22px 0 18px; }
   .kit li:last-child { border-bottom: 1px solid var(--line); }

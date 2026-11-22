@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PrintButton from '../../components/PrintButton.astro';
 import ShareBar from '../../components/ShareBar.astro';
+import ListenButton from '../../components/ListenButton.astro';
 
 export async function getStaticPaths() {
   const scams = await getCollection('scams');
@@ -24,6 +25,8 @@ const related = d.related
     </ul>
     <h1>{d.pageTitle}</h1>
     <p class="answer">{d.answer}</p>
+
+    <ListenButton />
 
     {d.videoId && (
       <div class:list={["video", "wide", { short: d.videoShort }]}>

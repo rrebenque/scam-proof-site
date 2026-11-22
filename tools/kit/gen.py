@@ -40,6 +40,12 @@ img.c{height:78pt;width:auto}
 .pair b{display:block;font-size:11pt}
 .they{background:#fdf1f1;padding:5pt 8pt;font-weight:700}.they b{color:#B81D27}
 .you{background:#eef7f1;padding:5pt 8pt}.you b{color:#12663D}
+.pc{border:3pt solid #12283F;border-radius:10pt;padding:9pt 16pt;font-size:13pt}
+.pch{font-family:S,serif;font-weight:700;font-size:22pt;color:#B81D27;margin-bottom:5pt}
+.pc ul{padding-left:18pt}.pc li{margin-bottom:3pt}
+.pcr{font-weight:700;color:#12283F;margin:5pt 0}
+.pcl{display:flex;gap:8pt;align-items:flex-end;font-weight:700;margin-top:4pt}.pcl i{flex:1;border-bottom:1.5pt solid #17212B;height:16pt}
+.cut{border-top:2pt dashed #6b7885;margin:10pt 0;text-align:center;font-size:9.5pt;color:#6b7885;line-height:0}.cut{padding-top:0}
 """
 FOOT="Scam-Proof Money. Free to print and share. General information only, not legal or financial advice. youtube.com/@scamproofmoney"
 def head(title,sub,img):
@@ -103,6 +109,17 @@ lines=[('This is your bank’s fraud team. Move your money to a safe account.','
 ('Oops, I sent too much. Send back the difference.','I refund nothing until the money has cleared in my own account.'),
 ('Read me the code we just texted you.','No. A real bank never asks for that code.')]
 docs['what-scammers-say']=head('What scammers say, and what to say back','Keep this by the phone. The wording changes. The tricks don’t.',slick)+'<div class="say">'+''.join(f'<div class="pair"><div class="they"><b>They say</b>“{a}”</div><div class="you"><b>You say</b>{b}</div></div>' for a,b in lines)+'</div>'
+
+def pcard():
+    return """<div class="pc"><div class="pch">STOP. Hang up. Call back.</div><ul>
+<li>Hang up, even if it sounds like family.</li>
+<li>Call back on a number you already have.</li>
+<li>Ask for the family safe word. No safe word, no money.</li>
+<li>Never pay with gift cards, crypto or a payment app.</li>
+<li>Banks never ask you to move your money.</li></ul>
+<div class="pcr">Already sent money? Call your bank now.</div>
+<div class="pcl"><span>My bank:</span><i></i></div><div class="pcl"><span>Family:</span><i></i></div></div>"""
+docs['phone-card']=head('Phone card','Print, cut along the dotted line, and keep one by the phone and one in your wallet.',slick)+pcard()+'<div class="cut">cut here</div>'+pcard()
 
 for k,v in docs.items():
     html=f'<!doctype html><html><head><meta charset="utf-8"><title>{k}</title><style>{css}</style></head><body><div class="pg">{v}</div><div class="foot">{FOOT}</div></body></html>'

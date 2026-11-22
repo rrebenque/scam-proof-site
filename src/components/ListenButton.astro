@@ -1,0 +1,85 @@
+---
+---
+<div class="listen" data-listen hidden>
+  <button type="button" class="l-btn" data-play aria-pressed="false">
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Z" fill="currentColor"/></svg>
+    <span data-label>Listen to this guide</span>
+  </button>
+  <button type="button" class="l-btn l-alt" data-stop hidden>Stop</button>
+  <span class="sr" role="status" aria-live="polite" data-status></span>
+</div>
+<script>
+  const box = document.querySelector<HTMLElement>('[data-listen]');
+  if (box && 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window) {
+    const synth = window.speechSynthesis;
+    const play = box.querySelector<HTMLButtonElement>('[data-play]')!;
+    const stop = box.querySelector<HTMLButtonElement>('[data-stop]')!;
+    const label = box.querySelector<HTMLElement>('[data-label]')!;
+    const status = box.querySelector<HTMLElement>('[data-status]')!;
+    box.hidden = false;
+    let state: 'idle' | 'playing' | 'paused' = 'idle';
+    let token = 0;
+
+    const collect = () => {
+      const sel = ['h1', '.answer', '.move', '.steps li', '.flags li', '.prose p', '.prose li', '.prose h2', '.prose h3'];
+      const page = document.querySelector('.page')!;
+      const parts: string[] = [];
+      const intro = (id: string, t: string) => parts.push(t);
+      const h1 = page.querySelector('h1'); if (h1) parts.push(h1.textContent || '');
+      const ans = page.querySelector('.answer'); if (ans) parts.push(ans.textContent || '');
+      const mv = page.querySelector('.move'); if (mv) parts.push((mv.textContent || '').replace(/^\s*The right move/, 'The right move. '));
+      const steps = page.querySelectorAll('.steps li');
+      if (steps.length) { intro('s', 'How the scam works.'); steps.forEach((e) => parts.push(e.textContent || '')); }
+      const flags = page.querySelectorAll('.flags li');
+      if (flags.length) { intro('f', 'Warning signs.'); flags.forEach((e) => parts.push(e.textContent || '')); }
+      page.querySelectorAll('.prose p, .prose li, .prose h2, .prose h3').forEach((e) => parts.push(e.textContent || ''));
+      void sel;
+      return parts.map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean)
+        .map((p) => (/[.!?:"”)]$/.test(p) ? p : p + '.'));
+    };
+
+    const reset = () => {
+      state = 'idle';
+      label.textContent = 'Listen to this guide';
+      play.setAttribute('aria-pressed', 'false');
+      stop.hidden = true;
+    };
+
+    const start = () => {
+      synth.cancel();
+      const my = ++token;
+      const lines = collect();
+      state = 'playing';
+      label.textContent = 'Pause';
+      play.setAttribute('aria-pressed', 'true');
+      stop.hidden = false;
+      status.textContent = 'Reading the guide aloud.';
+      lines.forEach((t, i) => {
+        const u = new SpeechSynthesisUtterance(t);
+        u.lang = document.documentElement.lang || 'en';
+        u.rate = 0.95;
+        if (i === lines.length - 1) u.onend = () => { if (my === token) { reset(); status.textContent = 'Finished.'; } };
+        u.onerror = (ev) => { if (my === token && ev.error !== 'canceled' && ev.error !== 'interrupted') reset(); };
+        synth.speak(u);
+      });
+    };
+
+    play.addEventListener('click', () => {
+      if (state === 'idle') start();
+      else if (state === 'playing') { synth.pause(); state = 'paused'; label.textContent = 'Resume'; status.textContent = 'Paused.'; }
+      else { synth.resume(); state = 'playing'; label.textContent = 'Pause'; status.textContent = 'Reading.'; }
+    });
+    stop.addEventListener('click', () => { token++; synth.cancel(); reset(); status.textContent = 'Stopped.'; play.focus(); });
+    window.addEventListener('pagehide', () => synth.cancel());
+  }
+</script>
+<style>
+  .listen { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 24px; }
+  .l-btn { display: inline-flex; align-items: center; gap: 10px; font: inherit; font-weight: 700; min-height: 52px; padding: 10px 22px; border-radius: 999px; border: 2px solid var(--navy); background: var(--navy); color: #fff; cursor: pointer; }
+  .l-btn:hover { background: var(--red-ink); border-color: var(--red-ink); }
+  .l-alt { background: #fff; color: var(--navy); }
+  .l-alt:hover { color: #fff; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .listen[hidden], .l-btn[hidden] { display: none; }
+  @media print { .listen { display: none; } }
+</style>

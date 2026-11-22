@@ -1,10 +1,10 @@
 ---
-interface Props { title: string }
-const { title } = Astro.props;
+interface Props { title: string; heading?: string; blurb?: string }
+const { title, heading = 'Send this guide to someone', blurb = 'Someone you know may need it. A quick message could save them thousands.' } = Astro.props;
 ---
 <section class="share" data-share data-title={title} hidden aria-labelledby="share-h">
-  <h2 id="share-h">Send this guide to someone</h2>
-  <p>Someone you know may need it. A quick message could save them thousands.</p>
+  <h2 id="share-h">{heading}</h2>
+  <p>{blurb}</p>
   <div class="share-row">
     <button type="button" class="s-btn s-native" data-native hidden>Share…</button>
     <a class="s-btn" data-kind="sms" href="#">Text message</a>
