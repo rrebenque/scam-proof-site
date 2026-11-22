@@ -5,6 +5,7 @@ pageTitle: "The Safe Account Bank Scam: Fake Bank Calls"
 answer: "Your bank will never ask you to move your money."
 rightMove: "Hang up. Call the number on the back of your card, not the number that called you."
 markets: ["US", "UK", "Canada", "Australia"]
+longVideoId: "ksakDEv5prc"
 steps:
   - "The text. A message asks about a big charge you didn't make and says to reply YES or NO. Replying tells the scammer your number works."
   - "The call. The screen shows your bank's name and even its real number. Scammers can make almost any name or number show up, which is called spoofing."
