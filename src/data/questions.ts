@@ -27,6 +27,21 @@ export const groups: { name: string; items: Question[] }[] = [
         guide: 'hmrc-refund',
       },
       {
+        q: 'Does myGov email you a link to sign in?',
+        a: 'No. myGov never sends you an email or text with a link to sign in. An email with a sign-in link or button is a scam. Don\'t click: sign in to myGov yourself in the official app or by typing my.gov.au, and report the email to Scamwatch or reportascam@servicesaustralia.gov.au.',
+        guide: 'mygov-email',
+      },
+      {
+        q: 'A text says I owe a small fee to redeliver a parcel. Is it real?',
+        a: 'Treat it as a scam. USPS says it doesn\'t charge a fee for redelivery, and the link is a trick to get your card details. Don\'t tap the link: check your tracking in the courier\'s own app or website, and forward the text to 7726 (US, UK, Canada).',
+        guide: 'parcel-redelivery-fee',
+      },
+      {
+        q: 'Someone I met online asked me for money. Is it a scam?',
+        a: 'Yes. If someone you met online but have never met in person asks you for money, it\'s a scam, no matter the story. Never send money or gifts to someone you haven\'t met in person. Talk to someone you trust, and report the profile to the app or site.',
+        guide: 'romance-red-flags',
+      },
+      {
         q: 'A stranger texted me by mistake and wants to chat. Is it a scam?',
         a: 'It can be the start of a "pig butchering" investment scam: weeks of friendly chat, then a fake trading app, often using cryptocurrency. Don\'t reply, block the number, and never invest with someone you met by text.',
         guide: 'pig-butchering',

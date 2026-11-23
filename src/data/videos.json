@@ -112,6 +112,13 @@
       "id": "elMVYt0F3PM",
       "scheduled": "2026-12-07",
       "live": false
+    },
+    {
+      "guide": "hi-mum",
+      "kind": "long",
+      "id": "_ezcwsPwAOU",
+      "scheduled": "2026-12-08",
+      "live": false
     }
   ]
 }
