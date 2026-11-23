@@ -12,6 +12,17 @@ const names: Record<string, string> = {
   'safe-word': 'the family emergency scam',
   likes: 'the "paid to like videos" task scam',
   overpay: 'the overpayment scam',
+  'qr-meter': 'the fake QR code sticker scam',
+  'pay-methods': 'a scam that asks for a payment only scammers use',
+  popup: 'the fake "virus detected" pop-up (tech support scam)',
+  'amazon-call': 'the fake Amazon charge call',
+  skimmers: 'card skimming',
+  'sim-swap': 'the SIM swap scam',
+  'paypal-invoice': 'the PayPal invoice scam',
+  'is-this-you': 'the "Is this you in this video?" scam',
+  'hmrc-refund': 'the fake HMRC tax refund text',
+  'cra-call': 'the fake CRA tax call',
+  'hi-mum': 'the "Hi Mum, new number" scam',
 };
 const guides = Object.fromEntries(
   all.map((s) => [s.id, { name: names[s.id] ?? s.data.title, title: s.data.title, move: s.data.rightMove, url: `/scams/${s.id}/` }]),
@@ -33,6 +44,9 @@ const want = [
   ['invest', 'Put money into an investment, often cryptocurrency'],
   ['task', 'Do online "tasks" or like videos to earn money'],
   ['refund', 'Send back money because they say they paid too much'],
+  ['tax', 'Pay a tax bill, or claim a tax refund'],
+  ['support', 'Call a number about a charge, an invoice or a virus warning, or let them into my computer'],
+  ['login', 'Log in through a link, for example to watch a video'],
   ['code', 'Give them a code or password'],
   ['unsure', 'I am not sure'],
 ];
@@ -97,7 +111,10 @@ const signs = [
   function pick(how: string, want: string): string | null {
     if (want === 'task') return 'likes';
     if (want === 'refund') return 'overpay';
-    if (want === 'family') return 'voice-clone';
+    if (want === 'family') return how === 'text' || how === 'chat' ? 'hi-mum' : 'voice-clone';
+    if (want === 'tax') return how === 'call' ? 'cra-call' : 'hmrc-refund';
+    if (want === 'support') return how === 'call' ? 'amazon-call' : how === 'email' ? 'paypal-invoice' : 'popup';
+    if (want === 'login') return 'is-this-you';
     if (want === 'safe') return 'safe-account';
     if (want === 'invest') return 'pig-butchering';
     if (want === 'payapp') return how === 'call' ? 'safe-account' : 'zelle';
@@ -123,7 +140,7 @@ const signs = [
 
     const id = pick(how, want);
     const g = id ? guides[id] : null;
-    const strong = ['family', 'safe', 'invest', 'payapp', 'task', 'refund'].includes(want);
+    const strong = ['family', 'safe', 'invest', 'payapp', 'task', 'refund', 'tax', 'support'].includes(want);
 
     let level: 'high' | 'mid' | 'low';
     let head: string;

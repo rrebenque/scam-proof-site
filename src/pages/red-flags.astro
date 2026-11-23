@@ -16,6 +16,9 @@ const themes = [
       { text: 'Pressure to pay today or face a late fee', id: 'toll-text' },
       { text: 'Anyone rushing you: it has to be right now', id: 'safe-account' },
       { text: 'A demand to send money now', id: 'safe-word' },
+      { text: 'Threats of arrest, police or prison', id: 'cra-call' },
+      { text: 'A deadline like "claim before midnight"', id: 'hmrc-refund' },
+      { text: 'A warning with alarms, countdowns or flashing colours', id: 'popup' },
     ],
   },
   {
@@ -25,6 +28,7 @@ const themes = [
     flags: [
       { text: 'Anyone telling you to keep it secret, even from your bank or your family', id: 'safe-account' },
       { text: 'A plea to keep it secret from the rest of the family', id: 'voice-clone' },
+      { text: 'Pressure to pay today and keep it secret', id: 'pay-methods' },
     ],
   },
   {
@@ -39,6 +43,10 @@ const themes = [
       { text: 'A job that asks you to pay to get paid', id: 'likes' },
       { text: 'A buyer who pays too much and asks you to send the difference back', id: 'overpay' },
       { text: 'A "payment received" email you can\'t see in your own account', id: 'overpay' },
+      { text: 'Being sent to a Bitcoin or crypto ATM', id: 'pay-methods' },
+      { text: 'Someone coming to collect cash or gold from your home', id: 'pay-methods' },
+      { text: 'An urgent payment to an account that isn\'t in your child\'s name', id: 'hi-mum' },
+      { text: 'Being asked for card details to receive money', id: 'hmrc-refund' },
     ],
   },
   {
@@ -48,6 +56,9 @@ const themes = [
     flags: [
       { text: 'Anyone asking you to move your money to keep it safe', id: 'safe-account' },
       { text: 'Anyone asking for a code that was texted to you', id: 'safe-account' },
+      { text: 'Someone asking for remote access to your computer', id: 'popup' },
+      { text: 'A login page that appears after you tap a link', id: 'is-this-you' },
+      { text: 'Sign-in codes or password-reset messages you didn\'t ask for', id: 'sim-swap' },
     ],
   },
   {
@@ -62,6 +73,12 @@ const themes = [
       { text: 'An unexpected text offering money to like videos or rate products', id: 'likes' },
       { text: 'A call that sounds like family but comes from an unknown number', id: 'safe-word' },
       { text: 'A caller who can\'t give the family safe word', id: 'safe-word' },
+      { text: 'A message from a new number saying it\'s your child', id: 'hi-mum' },
+      { text: 'A surprise call about an order you didn\'t make', id: 'amazon-call' },
+      { text: 'An invoice for something you never bought, with a phone number to call', id: 'paypal-invoice' },
+      { text: 'A pop-up that gives you a phone number to call', id: 'popup' },
+      { text: 'A short, odd message with a video link, even from someone you know', id: 'is-this-you' },
+      { text: 'A text offering a tax refund', id: 'hmrc-refund' },
     ],
   },
   {
@@ -73,6 +90,17 @@ const themes = [
       { text: 'Investment tips from someone you only know by text', id: 'pig-butchering' },
       { text: 'An app showing huge gains that grow fast', id: 'pig-butchering' },
       { text: 'Easy money for liking videos or rating products', id: 'likes' },
+    ],
+  },
+  {
+    name: 'Something looks or feels wrong',
+    why: 'Fake readers, stickers and lost signal are physical clues. Trust them.',
+    move: 'Stop, and pay or sign in another way you know is real.',
+    flags: [
+      { text: 'A QR code that is a sticker, or sits on top of another code', id: 'qr-meter' },
+      { text: 'A card reader that wiggles, feels loose or looks bulkier than the one next to it', id: 'skimmers' },
+      { text: 'A keypad that feels thick or spongy', id: 'skimmers' },
+      { text: 'Your phone suddenly loses service for no clear reason', id: 'sim-swap' },
     ],
   },
 ];
@@ -103,7 +131,7 @@ const themes = [
 
     <PrintButton />
 
-    <p class="meta">Built from the warning signs in our guides. Last reviewed: 2026-11-20.</p>
+    <p class="meta">Built from the warning signs in our guides. Last reviewed: 2026-11-23.</p>
   </div>
 </Base>
 
