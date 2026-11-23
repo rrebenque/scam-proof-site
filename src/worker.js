@@ -9,6 +9,13 @@ export default {
       url.port = '';
       return Response.redirect(url.toString(), 301);
     }
-    return env.ASSETS.fetch(request);
+    const res = await env.ASSETS.fetch(request);
+    // Brand images (logo) may be loaded by other sites' tools, e.g. the AdSense consent-message editor.
+    if (url.pathname.startsWith('/brand/')) {
+      const out = new Response(res.body, res);
+      out.headers.set('Access-Control-Allow-Origin', '*');
+      return out;
+    }
+    return res;
   },
 };
