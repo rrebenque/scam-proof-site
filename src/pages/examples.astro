@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
+import PrintButton from '../components/PrintButton.astro';
+import { examples } from '../data/examples';
+
+const all = await getCollection('scams');
+
+type Seg = { text: string; n?: number };
+const parse = (s: string): Seg[] => {
+  const out: Seg[] = [];
+  let last = 0;
+  for (const m of s.matchAll(/\[\[(\d+):(.+?)\]\]/g)) {
+    if (m.index! > last) out.push({ text: s.slice(last, m.index) });
+    out.push({ text: m[2], n: Number(m[1]) });
+    last = m.index! + m[0].length;
+  }
+  if (last < s.length) out.push({ text: s.slice(last) });
+  return out;
+};
+
+const items = examples.map((ex, i) => {
+  const g = all.find((s) => s.id === ex.guide);
+  if (!g) throw new Error(`examples.ts: unknown guide "${ex.guide}"`);
+  const flags = g.data.redFlags;
+  const msgs = ex.messages.map(parse);
+  const used = new Set(msgs.flat().filter((s) => s.n).map((s) => s.n!));
+  for (const n of [...used, ...ex.flags]) {
+    if (!flags[n - 1]) throw new Error(`examples.ts: ${ex.guide} has no red flag #${n}`);
+  }
+  return { ex, g, msgs, id: `ex-${i + 1}`,
+    marked: ex.flags.filter((n) => used.has(n)).map((n) => ({ n, text: flags[n - 1] })),
+    later: ex.flags.filter((n) => !used.has(n)).map((n) => flags[n - 1]) };
+});
+const channels = [...new Set(examples.map((e) => e.channel))];
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+<Base title="Scam text examples, with the warning signs marked" description="Real-looking scam texts, chats, emails, pop-ups and calls, with every warning sign highlighted and the one right move for each.">
+  <div class="page">
+    <h1>Is this text a scam? Examples with the warning signs marked</h1>
+    <p class="lead">Scam messages follow patterns. Here are common ones as they really look, with each warning sign highlighted and explained.</p>
+    <p class="private">Every name, amount, phone number and web address below is made up. Links are shown broken with [.] so they can't be tapped.</p>
+
+    <nav class="jump wide" aria-label="Jump to a type of message">
+      <ul>{channels.map((c) => <li><a href={`#${slug(c)}`}>{c}</a></li>)}</ul>
+    </nav>
+
+    {channels.map((c) => (
+      <section class="chan" id={slug(c)}>
+        <h2>{c}s</h2>
+        {items.filter((it) => it.ex.channel === c).map((it) => (
+          <article class="ex wide" id={it.id}>
+            <h3><a href={`/scams/${it.g.id}/`}>{it.g.data.pageTitle}</a>{it.ex.market && <span class="mk"> ({it.ex.market})</span>}</h3>
+            <div class="grid">
+              <div class:list={['mock', slug(c)]}>
+                <p class="tag">Scam example</p>
+                <p class="from">{it.ex.from}</p>
+                {it.msgs.map((segs) => (
+                  <p class="bubble">
+                    {segs.map((s) => s.n
+                      ? <mark>{s.text}<sup aria-label={`warning sign ${s.n}`}>{it.marked.findIndex((f) => f.n === s.n) + 1}</sup></mark>
+                      : s.text)}
+                  </p>
+                ))}
+              </div>
+              <div class="notes">
+                <h4>Warning signs</h4>
+                <ol>{it.marked.map((f) => <li>{f.text}</li>)}</ol>
+                {it.later.length > 0 && (
+                  <>
+                    <h4>If it goes further, watch for</h4>
+                    <ul>{it.later.map((t) => <li>{t}</li>)}</ul>
+                  </>
+                )}
+                <p class="move-line"><strong>The right move:</strong> {it.g.data.rightMove}</p>
+                <p class="more"><a href={`/scams/${it.g.id}/`}>Read the full guide</a></p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </section>
+    ))}
+
+    <p>Got a message that isn't here? Try the <a href="/check/">3-question scam checker</a>, see <a href="/what-scammers-say/">what scammers say and what to say back</a>, or read the <a href="/red-flags/">warning signs</a>.</p>
+    <p class="meta">General information only. We can't confirm whether a specific message is real. If in doubt, contact the company yourself using a number or app you already trust.</p>
+
+    <ShareBar title="Is this text a scam? Examples with the warning signs marked" />
+    <PrintButton />
+  </div>
+</Base>
+
+<style>
+  .jump ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; max-width: none; }
+  .jump a { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 14px; border-radius: 999px; background: var(--mist); color: var(--navy); font-weight: 700; text-decoration: none; }
+  .chan { margin-top: 44px; scroll-margin-top: 16px; }
+  .ex { padding: 24px 0; border-top: 1px solid var(--line); scroll-margin-top: 16px; }
+  .ex h3 { margin: 0 0 14px; }
+  .ex .mk { font-weight: 400; color: var(--muted); font-size: 0.9em; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 24px; align-items: start; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  .mock { background: var(--mist); border: 2px solid var(--line); border-radius: 18px; padding: 14px 16px 18px; }
+  .mock .tag { display: inline-block; margin: 0 0 8px; padding: 2px 10px; border-radius: 6px; background: #B81D27; color: #fff; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .mock .from { margin: 0 0 10px; font-weight: 700; color: var(--muted); font-size: 0.95rem; overflow-wrap: anywhere; }
+  .bubble { background: #fff; border-radius: 16px 16px 16px 4px; padding: 10px 14px; margin: 0 0 8px; max-width: 34em; overflow-wrap: anywhere; box-shadow: 0 1px 0 var(--line); }
+  .email .bubble, .pop-up-on-a-computer .bubble, .phone-call .bubble { border-radius: 10px; }
+  .pop-up-on-a-computer .bubble:first-of-type { border: 2px solid #B81D27; font-weight: 700; }
+  mark { background: #fde4e5; color: inherit; border-bottom: 2px solid #B81D27; padding: 0 2px; }
+  mark sup { display: inline-block; min-width: 1.4em; margin-left: 3px; padding: 0 4px; border-radius: 999px; background: #B81D27; color: #fff; font-size: 0.7em; font-weight: 700; line-height: 1.5; text-align: center; vertical-align: super; }
+  .notes h4 { margin: 0 0 6px; font-size: 1.05rem; }
+  .notes ol, .notes ul { margin: 0 0 14px; }
+  .notes ol li::marker { color: #B81D27; font-weight: 700; }
+  .move-line { margin: 0 0 8px; padding: 10px 14px; border-left: 4px solid #17824F; background: #eaf5ef; border-radius: 6px; }
+  .more { margin: 0; font-weight: 700; }
+  @media print { .jump { display: none; } .ex { break-inside: avoid; } }
+</style>

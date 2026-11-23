@@ -8,6 +8,7 @@ import '@fontsource/source-serif-4/700.css';
 import '@fontsource/atkinson-hyperlegible/400.css';
 import '@fontsource/atkinson-hyperlegible/700.css';
 import '../styles/global.css';
+import { ogPages, ogKey } from '../data/ogPages';
 
 interface Props {
   title: string;
@@ -47,6 +48,8 @@ const siteSchema = {
 const extra = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const ld = (o: unknown) => JSON.stringify(o).replace(/</g, '\\u003c');
 const path = Astro.url.pathname;
+// Share image: each guide and listed page has its own; everything else uses the default.
+const ogPath = /^\/scams\/[^/]+\/$/.test(path) || ogPages[path] ? `/og/${ogKey(path)}.png` : '/og.png';
 const here = (p: string) => (path === p || path.startsWith(p) ? 'page' : undefined);
 ---
 <!doctype html>
@@ -63,7 +66,7 @@ const here = (p: string) => (path === p || path.startsWith(p) ? 'page' : undefin
     <meta property="og:title" content={`${title} | Scam-Proof Money`} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={new URL(path, Astro.site).href} />
-    <meta property="og:image" content={new URL('/og.png', Astro.site).href} />
+    <meta property="og:image" content={new URL(ogPath, Astro.site).href} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -106,7 +109,8 @@ const here = (p: string) => (path === p || path.startsWith(p) ? 'page' : undefin
         <p class="follow"><strong>Watch and follow:</strong>{' '}
           {social.map((x, i) => <>{i > 0 && ' · '}<a href={x.url} rel="noopener">{x.label}</a></>)}
         </p>
-        <p class="foot-links"><a href="/search/">Search</a> <a href="/check/">Is it a scam?</a> <a href="/questions/">Quick answers</a> <a href="/quiz/">Spot the scam quiz</a> <a href="/what-scammers-say/">What scammers say</a> <a href="/glossary/">Scam words explained</a> <a href="/phone-checklist/">Scam-proof a phone</a> <a href="/how-to-pay-safely/">Safe ways to pay</a> <a href="/check-a-website/">Check a website</a> <a href="/holiday-scams/">Holiday scams</a> <a href="/help-someone-scammed/">Help someone who was scammed</a> <a href="/watch/">Watch our videos</a> <a href="/family-kit/">Family Protection Kit</a></p>
+        <p class="foot-links"><a href="/search/">Search</a> <a href="/check/">Is it a scam?</a> <a href="/questions/">Quick answers</a> <a href="/examples/">Scam text examples</a> <a href="/quiz/">Spot the scam quiz</a> <a href="/what-scammers-say/">What scammers say</a> <a href="/glossary/">Scam words explained</a> <a href="/phone-checklist/">Scam-proof a phone</a> <a href="/how-to-pay-safely/">Safe ways to pay</a> <a href="/check-a-website/">Check a website</a> <a href="/holiday-scams/">Holiday scams</a> <a href="/help-someone-scammed/">Help someone who was scammed</a> <a href="/watch/">Watch our videos</a> <a href="/family-kit/">Family Protection Kit</a></p>
+        <p class="foot-links"><strong>By country:</strong> <a href="/us/">United States</a> <a href="/uk/">United Kingdom</a> <a href="/canada/">Canada</a> <a href="/australia/">Australia</a></p>
         <p class="foot-links"><a href="/about/">About</a> <a href="/contact/">Contact</a> <a href="/privacy/">Privacy</a> <a href="/disclaimer/">Disclaimer</a></p>
         <p>Every guide lists its sources and the date we last reviewed it.</p>
         <p>

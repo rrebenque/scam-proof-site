@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const guides = (await getCollection('scams')).sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+<Base title="Page not found" description="That page doesn't exist. Find the scam guide you were looking for.">
+  <div class="page">
+    <h1>We couldn't find that page</h1>
+    <p class="lead">The link may be old or mistyped. Here's how to find what you need.</p>
+
+    <div class="move">
+      <strong>Worried about a message right now?</strong>
+      Don't tap any links in it and don't reply. Then use the <a href="/check/">3-question scam checker</a>, or see <a href="/questions/">quick answers</a>.
+    </div>
+
+    <h2>Search the site</h2>
+    <form class="find" action="/search/" method="get" role="search">
+      <label for="q404">What are you looking for?</label>
+      <div class="row">
+        <input id="q404" name="q" type="search" placeholder="e.g. toll text, Zelle, HMRC" autocomplete="off" />
+        <button type="submit">Search</button>
+      </div>
+    </form>
+
+    <h2>Popular pages</h2>
+    <ul>
+      <li><a href="/been-scammed/">I've been scammed: what now?</a></li>
+      <li><a href="/examples/">Scam text examples, with the warning signs marked</a></li>
+      <li><a href="/scams/">All scam guides</a></li>
+      <li><a href="/family-kit/">Free Family Protection Kit</a></li>
+    </ul>
+
+    <h2>Every scam guide</h2>
+    <ul class="all">
+      {guides.map((g) => <li><a href={`/scams/${g.id}/`}>{g.data.title}</a></li>)}
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .find label { display: block; font-weight: 700; margin-bottom: 8px; }
+  .find .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .find input { flex: 1 1 240px; min-height: 52px; font: inherit; padding: 8px 14px; border: 2px solid var(--line); border-radius: 12px; }
+  .find button { min-height: 52px; padding: 8px 22px; font: inherit; font-weight: 700; color: #fff; background: var(--navy); border: 0; border-radius: 12px; cursor: pointer; }
+  .all { columns: 2 260px; }
+  .all li { break-inside: avoid; }
+</style>

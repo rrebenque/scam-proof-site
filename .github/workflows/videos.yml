@@ -1,0 +1,40 @@
+name: Embed newly public videos
+
+# Shorts go public at 8:00 AM Manila (00:00 UTC) and long-forms at 2:00 AM Manila
+# (18:00 UTC). Check shortly after each, plus once mid-day as a catch-up.
+on:
+  schedule:
+    - cron: '20 0 * * *'
+    - cron: '20 7 * * *'
+    - cron: '20 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: videos
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check YouTube for newly public videos
+        run: node tools/videos/check.mjs
+      - name: Commit and push if anything went live
+        run: |
+          if git diff --quiet -- src/data/videos.json; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git config user.name "scam-proof-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/videos.json
+          git commit -m "Embed newly public videos"
+          git push

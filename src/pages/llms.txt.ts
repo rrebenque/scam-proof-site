@@ -21,6 +21,8 @@ export const GET: APIRoute = async ({ site }) => {
     '## Help and tools',
     '',
     `- [Is it a scam? Quick answers](${u('/questions/')}): short answers to the scam questions people ask most`,
+    `- [Scam text examples](${u('/examples/')}): example scam texts, chats, emails, pop-ups and calls with each warning sign marked`,
+    `- Scams by country: [United States](${u('/us/')}), [United Kingdom](${u('/uk/')}), [Canada](${u('/canada/')}), [Australia](${u('/australia/')}): where to report and the scams aimed at each country`,
     `- [Is it a scam? 3-question checker](${u('/check/')}): answer three questions about a message or call`,
     `- [I've been scammed: what now?](${u('/been-scammed/')}): first steps and where to report in the US, UK, Canada and Australia`,
     `- [Help someone who was scammed](${u('/help-someone-scammed/')})`,

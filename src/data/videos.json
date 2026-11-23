@@ -1,0 +1,110 @@
+{
+  "_about": "Scheduled YouTube videos for each guide. tools/videos/check.mjs (run by .github/workflows/videos.yml) sets live=true once YouTube shows the video as public on @scamproofmoney; only live videos are embedded. Add new episodes here as soon as they are scheduled.",
+  "videos": [
+    {
+      "guide": "likes",
+      "kind": "short",
+      "id": "9MujEKY6T_I",
+      "scheduled": "2026-11-25",
+      "live": false
+    },
+    {
+      "guide": "overpay",
+      "kind": "short",
+      "id": "6SlT1z87HQs",
+      "scheduled": "2026-11-26",
+      "live": false
+    },
+    {
+      "guide": "qr-meter",
+      "kind": "short",
+      "id": "twsiIaHVbcc",
+      "scheduled": "2026-11-27",
+      "live": false
+    },
+    {
+      "guide": "pay-methods",
+      "kind": "long",
+      "id": "KSEKTdTDMOE",
+      "scheduled": "2026-11-28",
+      "live": false
+    },
+    {
+      "guide": "popup",
+      "kind": "short",
+      "id": "4QaiRazizZ8",
+      "scheduled": "2026-11-29",
+      "live": false
+    },
+    {
+      "guide": "amazon-call",
+      "kind": "short",
+      "id": "cgdy8ak_atg",
+      "scheduled": "2026-11-30",
+      "live": false
+    },
+    {
+      "guide": "skimmers",
+      "kind": "short",
+      "id": "fy00YB3mQQQ",
+      "scheduled": "2026-12-01",
+      "live": false
+    },
+    {
+      "guide": "skimmers",
+      "kind": "long",
+      "id": "CLN1DoERNzk",
+      "scheduled": "2026-12-02",
+      "live": false
+    },
+    {
+      "guide": "sim-swap",
+      "kind": "short",
+      "id": "qgi36XCqDug",
+      "scheduled": "2026-12-02",
+      "live": false
+    },
+    {
+      "guide": "paypal-invoice",
+      "kind": "short",
+      "id": "Y4MyHFlipNA",
+      "scheduled": "2026-12-03",
+      "live": false
+    },
+    {
+      "guide": "is-this-you",
+      "kind": "short",
+      "id": "LuYmBAnmdnI",
+      "scheduled": "2026-12-04",
+      "live": false
+    },
+    {
+      "guide": "is-this-you",
+      "kind": "long",
+      "id": "RCZBPhcVX34",
+      "scheduled": "2026-12-05",
+      "live": false
+    },
+    {
+      "guide": "hmrc-refund",
+      "kind": "short",
+      "id": "IkIARmJIuy4",
+      "scheduled": "2026-12-05",
+      "live": false
+    },
+    {
+      "guide": "cra-call",
+      "kind": "short",
+      "id": "x5LLj6kdNc0",
+      "scheduled": "2026-12-06",
+      "live": false
+    },
+    {
+      "guide": "hi-mum",
+      "kind": "short",
+      "id": "elMVYt0F3PM",
+      "scheduled": "2026-12-07",
+      "live": false
+    }
+  ]
+}

@@ -1,10 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import { videosFor, longOnly } from '../lib/videos';
 
-const all = (await getCollection('scams')).sort((a, b) => b.data.episode - a.data.episode);
-const shorts = all.filter((s) => s.data.videoId || !s.data.longVideoId);
-const long = all.filter((s) => s.data.longVideoId);
+const all = (await getCollection('scams'))
+  .sort((a, b) => b.data.episode - a.data.episode)
+  .map((s) => ({ ...s, v: videosFor(s) }));
+// A guide with only a long-form (no Short planned) is listed under full-length videos only.
+const shorts = all.filter((s) => !longOnly(s));
+const long = all.filter((s) => s.v.long);
 ---
 <Base title="Watch our videos" description="Every Scam-Proof Money video in one place: short videos and full-length episodes, each with its written guide.">
   <div class="page">
@@ -25,10 +29,10 @@ const long = all.filter((s) => s.data.longVideoId);
             <a class="t" href={`/scams/${s.id}/`}>{s.data.title}</a>
             <p class="a">{s.data.answer}</p>
             <p class="links">
-              {s.data.videoId
+              {s.v.short
                 ? <>
                     <a href={`/scams/${s.id}/`}>Watch it with the guide</a>
-                    <a href={`https://www.youtube.com/shorts/${s.data.videoId}`} rel="noopener">Open on YouTube</a>
+                    <a href={`https://www.youtube.com/shorts/${s.v.short}`} rel="noopener">Open on YouTube</a>
                   </>
                 : <>
                     <span class="soon">Video coming soon</span>
@@ -47,8 +51,8 @@ const long = all.filter((s) => s.data.longVideoId);
             <li>
               <span class="ep">Episode {s.data.episode}</span>
               <div class="main">
-                <a class="t" href={`https://www.youtube.com/watch?v=${s.data.longVideoId}`} rel="noopener">{s.data.title}</a>
-                <p class="links"><a href={`https://www.youtube.com/watch?v=${s.data.longVideoId}`} rel="noopener">Watch on YouTube</a><a href={`/scams/${s.id}/`}>Read the guide</a></p>
+                <a class="t" href={`https://www.youtube.com/watch?v=${s.v.long}`} rel="noopener">{s.data.title}</a>
+                <p class="links"><a href={`https://www.youtube.com/watch?v=${s.v.long}`} rel="noopener">Watch on YouTube</a><a href={`/scams/${s.id}/`}>Read the guide</a></p>
               </div>
             </li>
           ))}

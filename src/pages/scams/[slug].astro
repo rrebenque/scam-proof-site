@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import PrintButton from '../../components/PrintButton.astro';
 import ShareBar from '../../components/ShareBar.astro';
 import ListenButton from '../../components/ListenButton.astro';
+import { videosFor } from '../../lib/videos';
 
 export async function getStaticPaths() {
   const scams = await getCollection('scams');
@@ -13,6 +14,9 @@ export async function getStaticPaths() {
 const { entry, all } = Astro.props;
 const d = entry.data;
 const { Content } = await render(entry);
+const vid = videosFor(entry);
+// Frontmatter videos say whether they're vertical; scheduled ones from videos.json are always Shorts.
+const isShort = d.videoId ? d.videoShort : true;
 const related = d.related
   .map((id) => all.find((s) => s.id === id))
   .filter((s) => s !== undefined);
@@ -45,10 +49,10 @@ const article = {
 
     <ListenButton />
 
-    {d.videoId && (
-      <div class:list={["video", "wide", { short: d.videoShort }]}>
+    {vid.short && (
+      <div class:list={["video", "wide", { short: isShort }]}>
         <iframe
-          src={`https://www.youtube-nocookie.com/embed/${d.videoId}`}
+          src={`https://www.youtube-nocookie.com/embed/${vid.short}`}
           title={d.title}
           loading="lazy"
           allowfullscreen
@@ -56,12 +60,12 @@ const article = {
       </div>
     )}
 
-    {d.longVideoId && (
+    {vid.long && (
       <section class="longvid wide" aria-labelledby="long-h">
         <h2 id="long-h">Watch the full video</h2>
         <div class="video">
           <iframe
-            src={`https://www.youtube-nocookie.com/embed/${d.longVideoId}`}
+            src={`https://www.youtube-nocookie.com/embed/${vid.long}`}
             title={`${d.title} (full video)`}
             loading="lazy"
             allowfullscreen

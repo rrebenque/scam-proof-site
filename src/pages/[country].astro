@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
+import PrintButton from '../components/PrintButton.astro';
+import { countries, situations, sources } from '../data/countries';
+
+// One page per country, built only from facts already on the site: the agencies and
+// steps in src/data/countries.ts and the guides tagged with that market.
+const pages = [
+  { slug: 'us', id: 'us', market: 'US', name: 'the US', long: 'United States' },
+  { slug: 'uk', id: 'uk', market: 'UK', name: 'the UK', long: 'United Kingdom' },
+  { slug: 'canada', id: 'ca', market: 'Canada', name: 'Canada', long: 'Canada' },
+  { slug: 'australia', id: 'au', market: 'Australia', name: 'Australia', long: 'Australia' },
+];
+
+export function getStaticPaths() {
+  return ['us', 'uk', 'canada', 'australia'].map((country) => ({ params: { country } }));
+}
+
+const p = pages.find((x) => x.slug === Astro.params.country)!;
+const c = countries.find((x) => x.id === p.id)!;
+const guides = (await getCollection('scams')).filter((g) => g.data.markets.includes(p.market));
+const local = guides.filter((g) => g.data.markets.length < 4).sort((a, b) => a.data.episode - b.data.episode);
+const everywhere = guides.filter((g) => g.data.markets.length >= 4).sort((a, b) => a.data.episode - b.data.episode);
+const extra = situations
+  .map((s) => ({ ...s, steps: s.steps.filter((st) => st.countries?.includes(p.id)) }))
+  .filter((s) => s.steps.length > 0);
+const srcs = sources.filter((s) => !s.countries || s.countries.includes(p.id));
+const others = pages.filter((x) => x.slug !== p.slug);
+const title = `Scams in ${p.name}: where to report and how to get help`;
+---
+<Base title={title} description={`Who to report a scam to in ${p.name}, what to do first, and the scams aimed at people in ${p.name}, with the one right move for each.`}>
+  <div class="page">
+    <p class="crumb"><a href="/been-scammed/">I've been scammed</a></p>
+    <h1>Scams in {p.name}</h1>
+    <p class="lead">Where to report a scam in {p.name}, what to do first, and the scams aimed at people there.</p>
+
+    <h2>Just been scammed? Do these first</h2>
+    <ol>
+      <li><strong>Stop contact.</strong> Don't reply, and don't send any more money or information.</li>
+      <li><strong>Call your bank or card company</strong> using the number on the back of your card, not a number the scammer gave you. Say it was fraud.</li>
+      <li><strong>Secure your accounts.</strong> Change passwords for anything the scammer touched, and turn on two-step sign-in (a code sent to your phone each time you log in).</li>
+    </ol>
+
+    <h2>Where to report a scam in {p.name}</h2>
+    <div class="cards">
+      {c.agencies.map((a) => (
+        <div class="card">
+          <h3>{a.url ? <a href={a.url} rel="noopener">{a.name}</a> : a.name}</h3>
+          <p>{a.note}</p>
+        </div>
+      ))}
+    </div>
+    {c.notes.length > 0 && <ul class="plain">{c.notes.map((n) => <li>{n}</li>)}</ul>}
+
+    {extra.length > 0 && (
+      <>
+        <h2>Extra steps in {p.name}</h2>
+        {extra.map((s) => (
+          <section>
+            <h3>{s.label}</h3>
+            <ul class="plain">{s.steps.map((st) => <li>{st.text}</li>)}</ul>
+          </section>
+        ))}
+      </>
+    )}
+    <p>More help, step by step: <a href={`/been-scammed/#${p.id}`}>I've been scammed: what now?</a> · <a href="/help-someone-scammed/">Helping someone else</a> · <a href="/how-to-pay-safely/">Which payments you can get back</a></p>
+
+    {local.length > 0 && (
+      <>
+        <h2>Scams aimed at people in {p.name}</h2>
+        <ul class="gl wide">
+          {local.map((g) => (
+            <li><a href={`/scams/${g.id}/`}><strong>{g.data.title}</strong><span>{g.data.rightMove}</span></a></li>
+          ))}
+        </ul>
+      </>
+    )}
+
+    <h2>{local.length > 0 ? 'Scams found everywhere, including' : 'Scams aimed at people in'} {p.name}</h2>
+    <ul class="gl wide">
+      {everywhere.map((g) => (
+        <li><a href={`/scams/${g.id}/`}><strong>{g.data.title}</strong><span>{g.data.rightMove}</span></a></li>
+      ))}
+    </ul>
+
+    <p>Other countries: {others.map((o, i) => <>{i > 0 && ' · '}<a href={`/${o.slug}/`}>{o.long}</a></>)}</p>
+
+    <p class="meta">Agency names and numbers change, so confirm them on the agency's own website. Last checked: 20 November 2026.</p>
+
+    <h2>Sources</h2>
+    <ul class="plain">{srcs.map((s) => <li><a href={s.url} rel="noopener">{s.label}</a></li>)}</ul>
+
+    <ShareBar title={title} />
+    <PrintButton />
+  </div>
+</Base>
+
+<style>
+  .gl { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 10px; }
+  .gl a { display: block; padding: 14px 18px; border: 2px solid var(--line); border-radius: 14px; background: var(--paper); text-decoration: none; color: inherit; }
+  .gl a:hover { border-color: var(--ink); }
+  .gl strong { display: block; color: var(--navy); font-size: 1.1rem; }
+  .gl span { display: block; margin-top: 4px; color: var(--muted); }
+  section h3 { margin: 18px 0 6px; }
+</style>
