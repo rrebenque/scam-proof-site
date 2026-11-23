@@ -2,6 +2,13 @@
   "_about": "Scheduled YouTube videos for each guide. tools/videos/check.mjs (run by .github/workflows/videos.yml) sets live=true once YouTube shows the video as public on @scamproofmoney; only live videos are embedded. Add new episodes here as soon as they are scheduled.",
   "videos": [
     {
+      "guide": "pig-butchering",
+      "kind": "short",
+      "id": "l39t_SchjCM",
+      "scheduled": "2026-11-24",
+      "live": false
+    },
+    {
       "guide": "likes",
       "kind": "short",
       "id": "9MujEKY6T_I",
