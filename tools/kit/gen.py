@@ -49,7 +49,7 @@ img.c{height:78pt;width:auto}
 .cty{font-size:11.5pt;line-height:1.3}.cty div{margin-bottom:2pt}
 .cut{border-top:2pt dashed #6b7885;margin:10pt 0;text-align:center;font-size:9.5pt;color:#6b7885;line-height:0}.cut{padding-top:0}
 """
-FOOT="Scam-Proof Money. Free to print and share. General information only, not legal or financial advice. youtube.com/@scamproofmoney"
+FOOT="Scam-Proof Money. Free to print and share. General information only, not legal or financial advice. scamproofmoney.com"
 def head(title,sub,img):
     return f'<div class="top"><div><h1>{title}</h1><p class="sub">{sub}</p></div><img class="c" src="{img}" alt=""></div>'
 def step(n,t,d='',cls=''):
