@@ -5,6 +5,8 @@ pageTitle: "Paid a Stranger on Zelle? Why Your Bank Probably Won't Refund You"
 answer: "Your money is probably gone, and your bank won't fix it."
 rightMove: "Say no deal to \"Zelle only\" sellers. Buy from the official site with a credit card, and use Zelle only for people you know."
 markets: ["US"]
+videoId: "xTNLdGU_4Hg"
+videoShort: true
 steps:
   - "You find cheap tickets online."
   - "The seller says: \"Zelle only. No cards.\""
