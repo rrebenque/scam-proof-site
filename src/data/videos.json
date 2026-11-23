@@ -119,6 +119,27 @@
       "id": "_ezcwsPwAOU",
       "scheduled": "2026-12-08",
       "live": false
+    },
+    {
+      "guide": "mygov-email",
+      "kind": "short",
+      "id": "Zye_5aQVvpQ",
+      "scheduled": "2026-12-08",
+      "live": false
+    },
+    {
+      "guide": "parcel-redelivery-fee",
+      "kind": "short",
+      "id": "oiIS-V2vHHw",
+      "scheduled": "2026-12-09",
+      "live": false
+    },
+    {
+      "guide": "romance-red-flags",
+      "kind": "short",
+      "id": "sw1N7DO7ROQ",
+      "scheduled": "2026-12-10",
+      "live": false
     }
   ]
 }
