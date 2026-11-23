@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import ShareBar from '../components/ShareBar.astro';
+import PrintButton from '../components/PrintButton.astro';
+import { groups } from '../data/questions';
+
+const all = await getCollection('scams');
+const guide = (id: string) => all.find((s) => s.id === id);
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+
+// Fail the build if a question points at a guide that doesn't exist.
+for (const g of groups) for (const it of g.items) {
+  if (!guide(it.guide)) throw new Error(`questions.ts: unknown guide "${it.guide}"`);
+}
+
+const reviewed = all.map((s) => s.data.reviewed).sort().at(-1);
+const site = Astro.site!;
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  url: new URL('/questions/', site).href,
+  mainEntity: groups.flatMap((g) => g.items.map((it) => ({
+    '@type': 'Question',
+    name: it.q,
+    acceptedAnswer: { '@type': 'Answer', text: it.a, url: new URL(`/scams/${it.guide}/`, site).href },
+  }))),
+};
+---
+<Base title="Is it a scam? Quick answers to common questions" description="Short, sourced answers to the scam questions people ask most: toll texts, Hi Mum texts, Zelle refunds, safe-account calls, HMRC and CRA scams and more." schema={faq}>
+  <div class="page">
+    <h1>Is it a scam? Quick answers</h1>
+    <p class="lead">The questions people ask most, each answered in a few lines. Every answer comes from one of our guides, where you'll find the sources.</p>
+
+    <nav class="jump wide" aria-label="Jump to a topic">
+      <ul>
+        {groups.map((g) => <li><a href={`#${slug(g.name)}`}>{g.name}</a></li>)}
+      </ul>
+    </nav>
+
+    {groups.map((g) => (
+      <section class="qgroup" id={slug(g.name)} aria-labelledby={`${slug(g.name)}-h`}>
+        <h2 id={`${slug(g.name)}-h`}>{g.name}</h2>
+        {g.items.map((it) => {
+          const s = guide(it.guide)!;
+          return (
+            <article class="qa" id={slug(it.q)}>
+              <h3>{it.q}</h3>
+              <p>{it.a}</p>
+              <p class="more"><a href={`/scams/${it.guide}/`}>Full guide: {s.data.pageTitle}</a>{s.data.markets.length < 4 && <span class="where"> ({s.data.markets.join(', ')})</span>}</p>
+            </article>
+          );
+        })}
+      </section>
+    ))}
+
+    <p>Not covered here? Try the <a href="/check/">3-question scam checker</a>, or see <a href="/been-scammed/">what to do if you've already paid</a>.</p>
+    <p class="meta">Last reviewed {reviewed}. General information only. Rules about refunds differ by country and by bank.</p>
+
+    <ShareBar title="Is it a scam? Quick answers to common questions" />
+    <PrintButton />
+  </div>
+</Base>
+
+<style>
+  .jump ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; max-width: none; }
+  .jump a { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 14px; border-radius: 999px; background: var(--mist); color: var(--navy); font-weight: 700; text-decoration: none; }
+  .jump a:hover { background: var(--navy); color: #fff; }
+  .qgroup { margin-top: 44px; scroll-margin-top: 16px; }
+  .qa { padding: 20px 0; border-top: 1px solid var(--line); scroll-margin-top: 16px; }
+  .qa h3 { margin: 0 0 8px; }
+  .qa p { margin: 0; }
+  .qa .more { margin-top: 10px; font-weight: 700; }
+  .qa .where { font-weight: 400; color: var(--muted); }
+</style>

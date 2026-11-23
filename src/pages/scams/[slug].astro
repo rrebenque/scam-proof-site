@@ -16,8 +16,25 @@ const { Content } = await render(entry);
 const related = d.related
   .map((id) => all.find((s) => s.id === id))
   .filter((s) => s !== undefined);
+const site = Astro.site!;
+const pageUrl = new URL(`/scams/${entry.id}/`, site).href;
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: d.pageTitle,
+  description: `${d.answer} ${d.rightMove}`,
+  url: pageUrl,
+  mainEntityOfPage: pageUrl,
+  dateModified: d.reviewed,
+  inLanguage: 'en',
+  author: { '@id': new URL('/#org', site).href },
+  publisher: { '@id': new URL('/#org', site).href },
+  isPartOf: { '@id': new URL('/#site', site).href },
+  about: d.title,
+  citation: d.sources.map((x) => ({ '@type': 'CreativeWork', name: x.label, url: x.url })),
+};
 ---
-<Base title={d.pageTitle} description={d.answer}>
+<Base title={d.pageTitle} description={d.answer} schema={article}>
   <div class="page">
     <p class="crumb"><a href="/scams/">All scam guides</a></p>
     <ul class="chips">
