@@ -3,7 +3,8 @@ const HOST = 'scamproofmoney.com';
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.hostname !== HOST && url.hostname !== 'localhost') {
+    // Wrong host (www, workers.dev) or plain http: send one permanent redirect to https://scamproofmoney.com.
+    if (url.hostname !== 'localhost' && (url.hostname !== HOST || url.protocol === 'http:')) {
       url.hostname = HOST;
       url.protocol = 'https:';
       url.port = '';
